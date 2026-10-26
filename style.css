@@ -2409,7 +2409,7 @@ Existing classes and functionality preserved
     max-height: calc(100vh - 40px);
     padding: 28px;
     
-    overflow-y: auto;
+    /* overflow-y: auto; */
     
     border: 1px solid #52604c;
     border-radius: 15px;
