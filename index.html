@@ -512,75 +512,110 @@
 
   <!-- FIREBASE ONLINE COUNTER -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-    import {
-      getDatabase,
-      ref,
-      onValue,
-      onDisconnect,
-      set,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCkJJcpdLfWH8XZBuT8tgOkOKuj6ZtEzcY",
-      authDomain: "safebucketbypass.firebaseapp.com",
-      databaseURL: "https://safebucketbypass-default-rtdb.firebaseio.com",
-      projectId: "safebucketbypass",
-      storageBucket: "safebucketbypass.firebasestorage.app",
-      messagingSenderId: "659506734507",
-      appId: "1:659506734507:web:1e4268f7746380b41bdeee"
-    };
+  import {
+    getAuth,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
-    const onlineCount = document.getElementById("onlineCount");
+  import {
+    getDatabase,
+    ref,
+    get,
+    onValue,
+    onDisconnect,
+    set,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
 
-    try {
-      const app = initializeApp(firebaseConfig);
-      const database = getDatabase(app);
+  const firebaseConfig = {
+    apiKey: "AIzaSyCkJJcpdLfWH8XZBuT8tgOkOKuj6ZtEzcY",
+    authDomain: "safebucketbypass.firebaseapp.com",
+    databaseURL: "https://safebucketbypass-default-rtdb.firebaseio.com",
+    projectId: "safebucketbypass",
+    storageBucket: "safebucketbypass.firebasestorage.app",
+    messagingSenderId: "659506734507",
+    appId: "1:659506734507:web:1e4268f7746380b41bdeee"
+  };
 
-      if (!onlineCount) {
-        throw new Error('Missing element with id="onlineCount"');
+  const onlineCount = document.getElementById("onlineCount");
+  const profileNavName = document.getElementById("profileNavName");
+
+  try {
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const auth = getAuth(app);
+
+    // LOAD THE LOGGED-IN USERNAME
+    onAuthStateChanged(auth, async (user) => {
+      if (!profileNavName) return;
+
+      if (!user) {
+        profileNavName.textContent = "Username";
+        return;
       }
 
-      let visitorId = sessionStorage.getItem("safeBucketVisitorId");
+      try {
+        const snapshot = await get(ref(database, `users/${user.uid}`));
 
-      if (!visitorId) {
-        visitorId =
-          globalThis.crypto?.randomUUID?.() ||
-          `${Date.now()}-${Math.random().toString(36).slice(2)}`;
-
-        sessionStorage.setItem("safeBucketVisitorId", visitorId);
-      }
-
-      const visitorRef = ref(database, `onlineVisitors/${visitorId}`);
-      const visitorsRef = ref(database, "onlineVisitors");
-
-      onDisconnect(visitorRef).remove().catch((error) => {
-        console.error("Disconnect setup failed:", error);
-      });
-
-      set(visitorRef, {
-        connectedAt: serverTimestamp()
-      }).catch((error) => {
-        console.error("Could not register visitor:", error);
-        onlineCount.textContent = "—";
-      });
-
-      onValue(
-        visitorsRef,
-        (snapshot) => {
-          const visitors = snapshot.val() || {};
-          onlineCount.textContent = Object.keys(visitors).length;
-        },
-        (error) => {
-          console.error("Could not read visitor count:", error);
-          onlineCount.textContent = "—";
+        if (snapshot.exists()) {
+          const profile = snapshot.val();
+          profileNavName.textContent =
+            profile.username || user.displayName || "Member";
+        } else {
+          profileNavName.textContent = user.displayName || "Member";
         }
-      );
-    } catch (error) {
-      console.error("Online counter initialization failed:", error);
-      if (onlineCount) onlineCount.textContent = "—";
+      } catch (error) {
+        console.error("Could not load username:", error);
+        profileNavName.textContent = user.displayName || "Member";
+      }
+    });
+
+    // EXISTING ONLINE COUNTER
+    if (!onlineCount) {
+      throw new Error('Missing element with id="onlineCount"');
     }
+
+    let visitorId = sessionStorage.getItem("safeBucketVisitorId");
+
+    if (!visitorId) {
+      visitorId =
+        globalThis.crypto?.randomUUID?.() ||
+        `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+      sessionStorage.setItem("safeBucketVisitorId", visitorId);
+    }
+
+    const visitorRef = ref(database, `onlineVisitors/${visitorId}`);
+    const visitorsRef = ref(database, "onlineVisitors");
+
+    onDisconnect(visitorRef).remove().catch((error) => {
+      console.error("Disconnect setup failed:", error);
+    });
+
+    set(visitorRef, {
+      connectedAt: serverTimestamp()
+    }).catch((error) => {
+      console.error("Could not register visitor:", error);
+      onlineCount.textContent = "—";
+    });
+
+    onValue(
+      visitorsRef,
+      (snapshot) => {
+        const visitors = snapshot.val() || {};
+        onlineCount.textContent = Object.keys(visitors).length;
+      },
+      (error) => {
+        console.error("Could not read visitor count:", error);
+        onlineCount.textContent = "—";
+      }
+    );
+  } catch (error) {
+    console.error("Firebase initialization failed:", error);
+    if (onlineCount) onlineCount.textContent = "—";
+  }
   </script>
 
   <!-- MAIN JAVASCRIPT -->
