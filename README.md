@@ -8,9 +8,7 @@ Add a suggestions tab or a button with a google form with a way users can sugges
 
 Add a level system with quests to get exp and at certain levels u gain a certain rank or privileges other users dont get
 
-Add smth with all ur links like for example “follow me on roblox, subscribe my yt”, etc.
 
-Add a apps thing like one of those floating things but with apps like yt, discord, chatgpt, etc
 
 Add a partners tab with other unblockers
 
@@ -28,4 +26,4 @@ For the games page a button that takes u to a random game if bored
 
 A total site visits thing with milestones and u add smth new every milestone
 
-A fps counter at the top
+
