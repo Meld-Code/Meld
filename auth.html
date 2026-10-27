@@ -3,34 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d120d">
 <title>Safe Bucket | Account</title>
-  <style>
-/* ============================================================
-   SAFE BUCKET — AUTHENTICATION THEME
-   Matching the main website's green game hub style
-   ============================================================ */
-
+<style>
 :root {
     color-scheme: dark;
 
-    --bg: #101210;
-    --panel: #191c19;
-    --panel2: #222622;
-    --panel3: #2a302a;
-    --line: #303730;
+    --bg: #090d09;
+    --bg-soft: #101710;
+    --panel: rgba(22, 30, 22, .86);
+    --panel-light: rgba(34, 45, 33, .8);
+    --line: rgba(151, 197, 103, .2);
 
-    --text: #f2f5f0;
-    --muted: #9ca69b;
-    --white: #ffffff;
+    --text: #f3f8ef;
+    --muted: #a1aea0;
+    --muted-2: #738070;
 
-    --accent: #76b900;
-    --accent-light: #a3e635;
-    --accent-dark: #496f00;
+    --green: #86c52b;
+    --green-light: #b7f35c;
+    --green-dark: #3e6c0c;
 
-    --danger: #ff626e;
+    --red: #ff747d;
 
-    --radius: 12px;
-    --shadow: 0 18px 55px #0008;
+    --radius: 18px;
+    --shadow: 0 30px 90px rgba(0, 0, 0, .55);
 }
 
 * {
@@ -50,30 +46,38 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    padding: 24px;
+    padding: 30px 18px;
+    overflow-x: hidden;
 
     background:
-        radial-gradient(
-            ellipse at 50% -30%,
-            #293421 0,
-            transparent 55%
-        ),
-        radial-gradient(
-            circle at 50% 45%,
-            #1b271b 0,
-            transparent 65%
-        ),
-        var(--bg);
+        radial-gradient(circle at 12% 18%, rgba(118, 185, 0, .13), transparent 25%),
+        radial-gradient(circle at 87% 78%, rgba(72, 111, 0, .15), transparent 28%),
+        linear-gradient(135deg, #080b08 0%, #111811 48%, #090d09 100%);
 
     color: var(--text);
-
     font-family:
+        Inter,
+        ui-sans-serif,
         system-ui,
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
         sans-serif;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: .35;
+
+    background-image:
+        linear-gradient(rgba(151, 197, 103, .035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(151, 197, 103, .035) 1px, transparent 1px);
+
+    background-size: 42px 42px;
+    mask-image: linear-gradient(to bottom, black, transparent 85%);
 }
 
 button,
@@ -91,49 +95,80 @@ button:disabled {
 }
 
 button:focus-visible,
-input:focus-visible {
-    outline: 2px solid var(--accent-light);
-    outline-offset: 3px;
+input:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--green-light);
+    outline-offset: 4px;
 }
 
-/* ============================================================
-   AUTHENTICATION CARD
-   ============================================================ */
+/* Decorative floating lights */
 
-.auth-container,
-.auth-card,
-.container,
-.card {
+.orb {
+    position: fixed;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(15px);
+    opacity: .16;
+    background: var(--green);
+    animation: floatOrb 9s ease-in-out infinite;
+}
+
+.orb-one {
+    top: 7%;
+    left: -100px;
+}
+
+.orb-two {
+    right: -100px;
+    bottom: 4%;
+    width: 260px;
+    height: 260px;
+    animation-delay: -3s;
+    background: #4e820d;
+}
+
+@keyframes floatOrb {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-20px) scale(1.05);
+    }
+}
+
+/* Main layout */
+
+.page-shell {
     position: relative;
-
-    width: min(440px, 100%);
-    margin: auto;
-    padding: 32px;
-
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(260px, .85fr) minmax(360px, 440px);
+    width: min(980px, 100%);
+    min-height: 610px;
     overflow: hidden;
 
-    border: 1px solid #45533d;
-    border-radius: 18px;
+    border: 1px solid rgba(162, 207, 115, .22);
+    border-radius: 26px;
 
     background:
-        radial-gradient(
-            ellipse at 50% 0%,
-            #76b90012,
-            transparent 55%
-        ),
-        linear-gradient(145deg, #202620, #121612);
+        linear-gradient(135deg, rgba(34, 48, 31, .82), rgba(9, 14, 9, .95)),
+        var(--panel);
 
     box-shadow:
-        0 35px 100px #000b,
-        inset 0 1px 0 #ffffff12;
+        var(--shadow),
+        inset 0 1px 0 rgba(255, 255, 255, .08);
 
-    animation: authCardIn .4s ease;
+    backdrop-filter: blur(18px);
+    animation: pageIn .55s ease both;
 }
 
-@keyframes authCardIn {
+@keyframes pageIn {
     from {
         opacity: 0;
-        transform: translateY(14px) scale(.98);
+        transform: translateY(18px) scale(.98);
     }
 
     to {
@@ -142,411 +177,475 @@ input:focus-visible {
     }
 }
 
-/* ============================================================
-   HEADINGS AND TEXT
-   ============================================================ */
+/* Branding panel */
 
-h1 {
-    margin-bottom: 10px;
+.brand-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 46px 38px;
+    overflow: hidden;
 
+    border-right: 1px solid rgba(162, 207, 115, .14);
+
+    background:
+        linear-gradient(150deg, rgba(118, 185, 0, .18), transparent 42%),
+        linear-gradient(180deg, rgba(10, 18, 10, .2), rgba(7, 11, 7, .8));
+}
+
+.brand-panel::after {
+    content: "";
+    position: absolute;
+    width: 330px;
+    height: 330px;
+    right: -150px;
+    bottom: -150px;
+    border: 1px solid rgba(183, 243, 92, .18);
+    border-radius: 50%;
+    box-shadow:
+        0 0 0 35px rgba(183, 243, 92, .03),
+        0 0 0 70px rgba(183, 243, 92, .025);
+}
+
+.brand-top {
+    position: relative;
+    z-index: 1;
+}
+
+.logo-wrap {
+    display: grid;
+    place-items: center;
+    width: 88px;
+    height: 88px;
+    margin-bottom: 28px;
+
+    border: 1px solid rgba(183, 243, 92, .38);
+    border-radius: 24px;
+
+    background:
+        linear-gradient(145deg, rgba(183, 243, 92, .18), rgba(118, 185, 0, .04)),
+        rgba(9, 15, 9, .6);
+
+    box-shadow:
+        0 18px 35px rgba(0, 0, 0, .25),
+        0 0 35px rgba(118, 185, 0, .12);
+}
+
+.logo-wrap img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 14px rgba(0, 0, 0, .35));
+}
+
+.logo-fallback {
+    display: none;
+    color: var(--green-light);
+    font-size: 34px;
+    font-weight: 900;
+}
+
+.eyebrow {
+    margin-bottom: 13px;
+    color: var(--green-light);
+    font-size: 10px;
+    font-weight: 850;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+}
+
+.brand-panel h1 {
+    max-width: 330px;
+    margin-bottom: 17px;
+    color: #f5faef;
+    font-size: clamp(32px, 4vw, 47px);
+    font-weight: 900;
+    letter-spacing: -2.7px;
+    line-height: .98;
+}
+
+.brand-panel h1 span {
+    color: var(--green-light);
+}
+
+.brand-description {
+    max-width: 330px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.75;
+}
+
+.feature-list {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 11px;
+    margin-top: 35px;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    color: #c9d5c3;
+    font-size: 12px;
+}
+
+.feature-icon {
+    display: grid;
+    place-items: center;
+    width: 27px;
+    height: 27px;
+    flex: 0 0 27px;
+
+    border: 1px solid rgba(183, 243, 92, .25);
+    border-radius: 9px;
+
+    background: rgba(118, 185, 0, .12);
+    color: var(--green-light);
+    font-size: 13px;
+}
+
+.brand-footer {
+    position: relative;
+    z-index: 1;
+    color: var(--muted-2);
+    font-size: 10px;
+    letter-spacing: .5px;
+}
+
+/* Authentication panel */
+
+.auth-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 45px 45px 36px;
+    background: rgba(10, 15, 10, .42);
+}
+
+.auth-header {
+    margin-bottom: 27px;
+}
+
+.auth-header h2 {
+    margin-bottom: 8px;
     color: var(--text);
-
-    font-size: 28px;
+    font-size: 25px;
     font-weight: 850;
     letter-spacing: -1px;
-    line-height: 1.15;
 }
 
-h2 {
-    margin-bottom: 12px;
-
-    color: var(--text);
-
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: -.5px;
-}
-
-h3 {
-    margin-bottom: 8px;
-
-    color: var(--text);
-
-    font-size: 15px;
-    font-weight: 750;
-}
-
-p {
+.auth-header p {
     color: var(--muted);
-
     font-size: 12px;
-    line-height: 1.7;
+    line-height: 1.6;
+}
+
+.form-section {
+    width: 100%;
+}
+
+.field {
+    margin-bottom: 16px;
 }
 
 label {
     display: block;
     margin-bottom: 7px;
-
-    color: #cbd6c5;
-
+    color: #cbd7c6;
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 750;
 }
 
-/* ============================================================
-   INPUTS
-   ============================================================ */
+.optional {
+    color: var(--muted-2);
+    font-weight: 500;
+}
 
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+input {
     display: block;
-
     width: 100%;
-    height: 46px;
-    padding: 0 13px;
-    margin-bottom: 15px;
+    height: 47px;
+    padding: 0 14px;
 
-    border: 1px solid #384236;
-    border-radius: 9px;
-
+    border: 1px solid rgba(142, 170, 132, .25);
+    border-radius: 11px;
     outline: none;
 
-    background: #111611;
+    background: rgba(7, 12, 7, .75);
     color: var(--text);
-
     font-size: 13px;
 
     transition:
         border-color .2s ease,
+        background .2s ease,
         box-shadow .2s ease,
-        background .2s ease;
+        transform .2s ease;
 }
 
 input::placeholder {
-    color: #657060;
+    color: #657261;
 }
 
 input:hover {
-    border-color: #52604c;
+    border-color: rgba(183, 243, 92, .38);
 }
 
 input:focus {
-    border-color: var(--accent);
-
-    background: #151b15;
-
+    border-color: var(--green);
+    background: rgba(15, 24, 13, .95);
     box-shadow:
-        0 0 0 3px #76b90020,
-        0 0 18px #76b9000b;
-
-    outline: none;
+        0 0 0 4px rgba(134, 197, 43, .12),
+        0 0 24px rgba(134, 197, 43, .08);
+    transform: translateY(-1px);
 }
 
-/* ============================================================
-   BUTTONS
-   ============================================================ */
-
-button,
-.button {
-    min-height: 44px;
-    padding: 11px 15px;
-
-    border: 1px solid var(--line);
-    border-radius: 9px;
-
-    background: var(--panel2);
-    color: var(--text);
-
-    font-size: 12px;
-    font-weight: 750;
-
+.action-button,
+.google-button,
+.logout-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 47px;
+    border-radius: 11px;
     cursor: pointer;
-
+    font-size: 12px;
+    font-weight: 800;
     transition:
         transform .2s ease,
-        color .2s ease,
-        background .2s ease,
         border-color .2s ease,
+        background .2s ease,
         box-shadow .2s ease;
 }
 
-button:hover:not(:disabled),
-.button:hover {
-    transform: translateY(-1px);
-
-    border-color: #668d2d;
-
-    background: #28351b;
-    color: var(--accent-light);
+.action-button {
+    margin-top: 7px;
+    border: 1px solid var(--green);
+    background: linear-gradient(135deg, #8dcc2e, #6ba817);
+    color: #0d1608;
+    box-shadow: 0 10px 25px rgba(118, 185, 0, .16);
 }
 
-button:active:not(:disabled) {
-    transform: scale(.98);
-}
-
-/* Primary authentication buttons */
-
-#signInButton,
-#loginButton,
-#signUpButton,
-#createAccountButton,
-#googleSignInButton {
-    width: 100%;
-    margin-top: 8px;
-}
-
-/* Green primary buttons */
-
-#signInButton,
-#loginButton,
-#signUpButton,
-#createAccountButton {
-    border-color: var(--accent);
-
-    background: var(--accent);
-    color: #10150a;
-}
-
-#signInButton:hover:not(:disabled),
-#loginButton:hover:not(:disabled),
-#signUpButton:hover:not(:disabled),
-#createAccountButton:hover:not(:disabled) {
-    border-color: var(--accent-light);
-
-    background: var(--accent-light);
-    color: #10150a;
-
+.action-button:hover:not(:disabled) {
+    border-color: var(--green-light);
+    background: linear-gradient(135deg, #b0ed4e, #83c72a);
     box-shadow:
-        0 8px 20px #76b90033,
-        0 0 0 3px #76b90018;
+        0 13px 30px rgba(118, 185, 0, .24),
+        0 0 0 4px rgba(134, 197, 43, .1);
+    transform: translateY(-2px);
 }
 
-/* Google button */
-
-#googleSignInButton {
-    border-color: #45533d;
-
-    background: #191d19;
-    color: var(--text);
+.secondary-action {
+    margin-top: 10px;
+    border: 1px solid rgba(151, 197, 103, .23);
+    background: rgba(37, 49, 35, .75);
+    color: #d8e2d3;
 }
 
-#googleSignInButton:hover:not(:disabled) {
-    border-color: #668d2d;
-    background: #222a20;
-    color: var(--text);
+.secondary-action:hover:not(:disabled) {
+    border-color: rgba(183, 243, 92, .55);
+    background: rgba(58, 76, 46, .85);
+    color: var(--green-light);
+    transform: translateY(-2px);
 }
 
-/* Sign out button */
-
-#signOutButton,
-#logoutButton {
-    width: 100%;
-    margin-top: 12px;
-
-    border-color: #633a3e;
-    background: #28191b;
-    color: #ff9ba3;
-}
-
-#signOutButton:hover:not(:disabled),
-#logoutButton:hover:not(:disabled) {
-    border-color: var(--danger);
-    background: #382023;
-    color: #ffb0b6;
-}
-
-/* ============================================================
-   SPACING BETWEEN FORM ELEMENTS
-   ============================================================ */
-
-form {
-    width: 100%;
-}
-
-form button {
-    display: block;
-}
-
-hr {
-    height: 1px;
-    margin: 20px 0;
-
-    border: 0;
-    background: var(--line);
-}
-
-.auth-divider,
 .divider {
     display: flex;
     align-items: center;
     gap: 12px;
-
-    margin: 18px 0;
-
-    color: var(--muted);
+    margin: 21px 0;
+    color: var(--muted-2);
     font-size: 10px;
 }
 
-.auth-divider::before,
-.auth-divider::after,
 .divider::before,
 .divider::after {
     content: "";
-
     height: 1px;
     flex: 1;
-
-    background: var(--line);
+    background: rgba(151, 197, 103, .18);
 }
 
-/* ============================================================
-   STATUS MESSAGES
-   ============================================================ */
+.google-icon {
+    display: grid;
+    place-items: center;
+    width: 21px;
+    height: 21px;
+    margin-right: 9px;
+    border-radius: 50%;
+    background: #fff;
+    color: #4285f4;
+    font-size: 12px;
+    font-weight: 900;
+}
 
-#message,
-#status,
-#statusMessage {
-    margin-top: 14px;
-    padding: 11px 12px;
+#message {
+    min-height: 42px;
+    margin-top: 17px;
+    padding: 11px 13px;
 
-    border: 1px solid var(--line);
-    border-radius: 9px;
+    border: 1px solid rgba(151, 197, 103, .18);
+    border-radius: 11px;
 
-    background: #151b15;
+    background: rgba(21, 31, 20, .72);
     color: var(--muted);
-
     font-size: 11px;
-    line-height: 1.6;
-
+    line-height: 1.55;
     overflow-wrap: anywhere;
 }
 
-.error,
+#message.error,
 .error-message {
-    border-color: #633a3e;
-    background: #28191b;
-    color: #ff9ba3;
+    border-color: rgba(255, 116, 125, .34);
+    background: rgba(72, 25, 29, .55);
+    color: #ffabb1;
 }
 
-.success,
+#message.success,
 .success-message {
-    border-color: #496f00;
-    background: #182018;
-    color: var(--accent-light);
+    border-color: rgba(134, 197, 43, .35);
+    background: rgba(35, 61, 21, .5);
+    color: var(--green-light);
 }
 
-/* ============================================================
-   ACCOUNT INFORMATION
-   ============================================================ */
+/* Account state */
 
-#accountSection,
-.account-section,
-.account-info {
-    margin-top: 20px;
+.account-box {
+    margin-top: 4px;
     padding: 17px;
 
-    border: 1px solid var(--line);
-    border-radius: 12px;
+    border: 1px solid rgba(151, 197, 103, .24);
+    border-radius: 14px;
 
-    background: #151b15;
+    background:
+        linear-gradient(135deg, rgba(118, 185, 0, .11), rgba(16, 25, 15, .72));
 }
 
-#accountSection h2,
-.account-section h2 {
-    margin-bottom: 12px;
+.account-box h3 {
+    margin-bottom: 9px;
+    color: var(--green-light);
+    font-size: 15px;
 }
 
 #accountInfo {
-    overflow-wrap: anywhere;
-
-    color: #cbd6c5;
-
+    color: #cad8c4;
     font-size: 12px;
-    line-height: 1.9;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
 }
 
-#accountInfo strong {
-    color: var(--accent-light);
+.logout-button {
+    margin-top: 15px;
+    border: 1px solid rgba(255, 116, 125, .28);
+    background: rgba(70, 27, 31, .62);
+    color: #ffabb1;
 }
 
-/* ============================================================
-   LINKS
-   ============================================================ */
-
-a {
-    color: var(--accent-light);
-    text-decoration: none;
-
-    transition:
-        color .2s ease,
-        text-shadow .2s ease;
+.logout-button:hover:not(:disabled) {
+    border-color: var(--red);
+    background: rgba(94, 34, 40, .8);
+    transform: translateY(-2px);
 }
 
-a:hover {
-    color: var(--white);
-    text-shadow: 0 0 12px #a3e63544;
-}
-
-.back-link,
-.backLink {
+.back-link {
     display: block;
-
-    margin-top: 22px;
-
+    margin-top: 24px;
     color: var(--muted);
-
     font-size: 11px;
     text-align: center;
+    text-decoration: none;
+    transition: color .2s ease;
 }
 
-.back-link:hover,
-.backLink:hover {
-    color: var(--accent-light);
+.back-link:hover {
+    color: var(--green-light);
 }
 
-/* ============================================================
-   MOBILE
-   ============================================================ */
+.hidden {
+    display: none !important;
+}
 
-@media (max-width: 480px) {
+/* Responsive layout */
+
+@media (max-width: 760px) {
     body {
-        padding: 15px;
+        align-items: flex-start;
+        padding: 16px;
     }
 
-    .auth-container,
-    .auth-card,
-    .container,
-    .card {
-        width: 100%;
-        padding: 23px 19px;
-
-        border-radius: 15px;
+    .page-shell {
+        display: block;
+        min-height: auto;
+        margin: auto;
     }
 
-    h1 {
-        font-size: 25px;
+    .brand-panel {
+        min-height: 390px;
+        padding: 34px 27px;
+        border-right: 0;
+        border-bottom: 1px solid rgba(162, 207, 115, .14);
     }
 
-    h2 {
-        font-size: 19px;
+    .brand-panel h1 {
+        max-width: 500px;
+        font-size: 40px;
     }
 
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
-        height: 45px;
+    .brand-description {
+        max-width: 500px;
     }
 
-    button,
-    .button {
-        min-height: 43px;
+    .feature-list {
+        margin-top: 27px;
+    }
+
+    .auth-panel {
+        padding: 34px 27px 30px;
     }
 }
 
-/* ============================================================
-   REDUCED MOTION
-   ============================================================ */
+@media (max-width: 430px) {
+    body {
+        padding: 10px;
+    }
+
+    .page-shell {
+        border-radius: 20px;
+    }
+
+    .brand-panel {
+        min-height: 360px;
+        padding: 28px 21px;
+    }
+
+    .auth-panel {
+        padding: 29px 21px 25px;
+    }
+
+    .brand-panel h1 {
+        font-size: 34px;
+        letter-spacing: -1.8px;
+    }
+
+    .logo-wrap {
+        width: 72px;
+        height: 72px;
+        margin-bottom: 23px;
+        border-radius: 20px;
+    }
+
+    .logo-wrap img {
+        width: 53px;
+        height: 53px;
+    }
+
+    .auth-header h2 {
+        font-size: 22px;
+    }
+}
 
 @media (prefers-reduced-motion: reduce) {
     *,
@@ -557,195 +656,428 @@ a:hover {
         transition-duration: .01ms !important;
     }
 }
-    </style>
+</style>
 </head>
 <body>
-<main class="card">
-<h1>Safe Bucket</h1>
-<p id="subtitle">Create your account or sign in.</p>
+<div class="orb orb-one"></div>
+<div class="orb orb-two"></div>
+<main class="page-shell">
+    <section class="brand-panel">
+        <div class="brand-top">
+            <div class="logo-wrap">
+                <img
+                    src="./Images/MeldLogo.png"
+                    alt="Safe Bucket logo"
+                    onerror="this.style.display='none'; document.querySelector('.logo-fallback').style.display='block';"
+                >
+                <span class="logo-fallback">M</span>
+            </div>
+        <p class="eyebrow">Meld Account</p>
 
-<label for="username">Username (for new accounts)</label>
-<input id="username" maxlength="20" placeholder="Choose a username"
-autocomplete="username">
+        <h1>
+            Your games.<br>
+            Your <span>space.</span>
+        </h1>
 
-<form id="form">
-<input id="email" type="email" placeholder="Email address"
-autocomplete="email" required>
-<input id="password" type="password" placeholder="Password"
-autocomplete="current-password" minlength="6" required>
-<button id="login" type="submit">Sign In</button>
-<button id="signup" type="button">Create Account</button>
-</form>
+        <p class="brand-description">
+            Sign in to keep your Meld profile, favorite games,
+            and member information connected across the site.
+        </p>
 
-<button id="google" class="secondary" type="button">
-Continue with Google
-</button>
-<p id="message" role="status">New accounts start as Member.</p>
-<div id="account" hidden>
-<p id="accountInfo"></p>
-<button id="logout" class="secondary" type="button">Sign Out</button>
-</div>
-<p><a href="./index.html">Back to Safe Bucket</a></p>
+        <div class="feature-list">
+            <div class="feature">
+                <span class="feature-icon">✓</span>
+                <span>Save your Meld profile</span>
+            </div>
+
+            <div class="feature">
+                <span class="feature-icon">◆</span>
+                <span>Access your member account</span>
+            </div>
+
+            <div class="feature">
+                <span class="feature-icon">✦</span>
+                <span>Built for the Meld community</span>
+            </div>
+        </div>
+    </div>
+
+    <p class="brand-footer">Meld // COMMUNITY ACCESS</p>
+</section>
+
+<section class="auth-panel">
+    <div class="auth-header">
+        <h2 id="authTitle">Welcome back</h2>
+        <p id="subtitle">Create your account or sign in to continue.</p>
+    </div>
+
+    <div id="authForms" class="form-section">
+        <div class="field">
+            <label for="username">
+                Username <span class="optional">(new accounts)</span>
+            </label>
+
+            <input
+                id="username"
+                maxlength="20"
+                placeholder="Choose a username"
+                autocomplete="username"
+            >
+        </div>
+
+        <form id="form">
+            <div class="field">
+                <label for="email">Email address</label>
+
+                <input
+                    id="email"
+                    type="email"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+
+            <div class="field">
+                <label for="password">Password</label>
+
+                <input
+                    id="password"
+                    type="password"
+                    placeholder="At least 6 characters"
+                    autocomplete="current-password"
+                    minlength="6"
+                    required
+                >
+            </div>
+
+            <button id="login" class="action-button" type="submit">
+                Sign In
+            </button>
+
+            <button id="signup" class="action-button secondary-action" type="button">
+                Create Account
+            </button>
+        </form>
+
+        <div class="divider">
+            <span>OR CONTINUE WITH</span>
+        </div>
+
+        <button id="google" class="google-button secondary-action" type="button">
+            <span class="google-icon">G</span>
+            Continue with Google
+        </button>
+
+        <p id="message" role="status">
+            New accounts start as Member.
+        </p>
+    </div>
+
+    <div id="account" class="account-box" hidden>
+        <h3>Account active</h3>
+        <p id="accountInfo"></p>
+
+        <button id="logout" class="logout-button" type="button">
+            Sign Out
+        </button>
+    </div>
+
+    <a class="back-link" href="./index.html">
+        ← Back to Meld
+    </a>
+</section>
+
 </main>
-
 <script type="module">
 import { initializeApp } from
 "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+
 import {
-getAuth,onAuthStateChanged,createUserWithEmailAndPassword,
-signInWithEmailAndPassword,GoogleAuthProvider,signInWithPopup,
-signOut,updateProfile
-} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    getAuth,
+    onAuthStateChanged,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup,
+    signOut,
+    updateProfile
+} from
+"https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
 import {
-getDatabase,ref,get,set,runTransaction,update
-} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+    getDatabase,
+    ref,
+    get,
+    set,
+    runTransaction
+} from
+"https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
-const app=initializeApp({
-apiKey:"AIzaSyCkJJcpdLfWH8XZBuT8tgOkOKuj6ZtEzcY",
-authDomain:"safebucketbypass.firebaseapp.com",
-databaseURL:"https://safebucketbypass-default-rtdb.firebaseio.com",
-projectId:"safebucketbypass",
-storageBucket:"safebucketbypass.firebasestorage.app",
-messagingSenderId:"659506734507",
-appId:"1:659506734507:web:1e4268f7746380b41bdeee"
-});
-const auth=getAuth(app),db=getDatabase(app);
-const provider=new GoogleAuthProvider();
-const $=id=>document.getElementById(id);
-const message=$("message");
-
-function say(text){message.textContent=text}
-function cleanUsername(value){return value.trim()}
-function validUsername(name){
-return /^[a-zA-Z0-9_]{3,20}$/.test(name);
-}
-function errorText(e){
-const errors={
-"auth/email-already-in-use":"That email already has an account.",
-"auth/invalid-email":"Enter a valid email address.",
-"auth/weak-password":"Use a stronger password.",
-"auth/invalid-credential":"Email or password is incorrect.",
-"auth/unauthorized-domain":"This domain is not authorized in Firebase.",
-"PERMISSION_DENIED":"Firebase database rules denied this action."
-};
-say(errors[e.code]||e.message||"Something went wrong.");
-}
-
-async function ensureProfile(user,requestedName){
-const userRef=ref(db,"users/"+user.uid);
-const existing=await get(userRef);
-
-if(existing.exists()){
-say("Welcome back, "+(existing.val().username||"Member")+"!");
-return;
-}
-
-const username=cleanUsername(requestedName||"");
-if(!validUsername(username)){
-throw new Error("Choose a username with 3–20 letters, numbers, or underscores.");
-}
-const lower=username.toLowerCase();
-const claim=await runTransaction(ref(db,"usernames/"+lower),current=>{
-return current===null?user.uid:undefined;
+const app = initializeApp({
+    apiKey: "AIzaSyCkJJcpdLfWH8XZBuT8tgOkOKuj6ZtEzcY",
+    authDomain: "safebucketbypass.firebaseapp.com",
+    databaseURL: "https://safebucketbypass-default-rtdb.firebaseio.com",
+    projectId: "safebucketbypass",
+    storageBucket: "safebucketbypass.firebasestorage.app",
+    messagingSenderId: "659506734507",
+    appId: "1:659506734507:web:1e4268f7746380b41bdeee"
 });
 
-if(!claim.committed){
-throw new Error("That username is already taken. Try another.");
+const auth = getAuth(app);
+const db = getDatabase(app);
+const provider = new GoogleAuthProvider();
+
+const $ = id => document.getElementById(id);
+const message = $("message");
+
+function say(text, type = "") {
+    message.textContent = text;
+    message.className = type;
 }
 
-try{
-await set(userRef,{
-username:username,
-usernameLower:lower,
-displayName:username,
-photoURL:user.photoURL||"",
-rank:"Member",
-favoriteGames:[],
-createdAt:Date.now(),
-totalTimeSeconds:0
+function cleanUsername(value) {
+    return value.trim();
+}
+
+function validUsername(name) {
+    return /^[a-zA-Z0-9_]{3,20}$/.test(name);
+}
+
+function errorText(error) {
+    const errors = {
+        "auth/email-already-in-use": "That email already has an account.",
+        "auth/invalid-email": "Enter a valid email address.",
+        "auth/weak-password": "Use a stronger password.",
+        "auth/invalid-credential": "Email or password is incorrect.",
+        "auth/unauthorized-domain": "This domain is not authorized in Firebase.",
+        "PERMISSION_DENIED": "Firebase database rules denied this action."
+    };
+
+    say(
+        errors[error.code] || error.message || "Something went wrong.",
+        "error"
+    );
+}
+
+async function ensureProfile(user, requestedName) {
+    const userRef = ref(db, "users/" + user.uid);
+    const existing = await get(userRef);
+
+    if (existing.exists()) {
+        say(
+            "Welcome back, " +
+            (existing.val().username || "Member") +
+            "!",
+            "success"
+        );
+        return;
+    }
+
+    const username = cleanUsername(requestedName || "");
+
+    if (!validUsername(username)) {
+        throw new Error(
+            "Choose a username with 3–20 letters, numbers, or underscores."
+        );
+    }
+
+    const lower = username.toLowerCase();
+
+    const claim = await runTransaction(
+        ref(db, "usernames/" + lower),
+        current => current === null ? user.uid : undefined
+    );
+
+    if (!claim.committed) {
+        throw new Error(
+            "That username is already taken. Try another."
+        );
+    }
+
+    try {
+        await set(userRef, {
+            username,
+            usernameLower: lower,
+            displayName: username,
+            photoURL: user.photoURL || "",
+            rank: "Member",
+            favoriteGames: [],
+            createdAt: Date.now(),
+            totalTimeSeconds: 0
+        });
+
+        if (user.displayName !== username) {
+            await updateProfile(user, {
+                displayName: username
+            });
+        }
+
+        say(
+            "Account created! Welcome to Safe Bucket, " +
+            username +
+            ".",
+            "success"
+        );
+    } catch (error) {
+        say(
+            "Your username may have been reserved, but profile setup failed. " +
+            "Please tell the site owner this error: " +
+            error.message,
+            "error"
+        );
+
+        throw error;
+    }
+}
+
+$("form").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    $("login").disabled = true;
+
+    try {
+        const result = await signInWithEmailAndPassword(
+            auth,
+            $("email").value.trim(),
+            $("password").value
+        );
+
+        const snapshot = await get(
+            ref(db, "users/" + result.user.uid)
+        );
+
+        if (!snapshot.exists()) {
+            say(
+                "You're signed in, but your profile isn't set up yet. " +
+                "Sign out and contact the site owner.",
+                "error"
+            );
+            return;
+        }
+
+        say(
+            "Signed in as " + snapshot.val().username + ".",
+            "success"
+        );
+    } catch (error) {
+        errorText(error);
+    } finally {
+        $("login").disabled = false;
+    }
 });
-if(user.displayName!==username){
-await updateProfile(user,{displayName:username});
-}
-say("Account created! Welcome to Safe Bucket, "+username+".");
-}catch(e){
-say("Your username may have been reserved, but profile setup failed. Please tell the site owner this error: "+e.message);
-throw e;
-}
-}
 
-$("form").addEventListener("submit",async e=>{
-e.preventDefault();
-$("login").disabled=true;
-try{
-const result=await signInWithEmailAndPassword(
-auth,$("email").value.trim(),$("password").value);
-const snap=await get(ref(db,"users/"+result.user.uid));
-if(!snap.exists()){
-say("You're signed in, but your profile isn't set up yet. Sign out and contact the site owner.");
-return;
-}
-say("Signed in as "+snap.val().username+".");
-}catch(e){errorText(e)}
-finally{$("login").disabled=false}
+$("signup").addEventListener("click", async () => {
+    const username = cleanUsername($("username").value);
+
+    if (!validUsername(username)) {
+        say(
+            "Username must be 3–20 characters using letters, numbers, or underscores.",
+            "error"
+        );
+        return;
+    }
+
+    if (!$("form").reportValidity()) {
+        return;
+    }
+
+    $("signup").disabled = true;
+
+    try {
+        const result = await createUserWithEmailAndPassword(
+            auth,
+            $("email").value.trim(),
+            $("password").value
+        );
+
+        await ensureProfile(result.user, username);
+    } catch (error) {
+        errorText(error);
+    } finally {
+        $("signup").disabled = false;
+    }
 });
 
-$("signup").addEventListener("click",async()=>{
-const username=cleanUsername($("username").value);
-if(!validUsername(username)){
-say("Username must be 3–20 characters using letters, numbers, or underscores.");
-return;
-}
-if(!$("form").reportValidity())return;
-$("signup").disabled=true;
-try{
-const result=await createUserWithEmailAndPassword(
-auth,$("email").value.trim(),$("password").value);
-await ensureProfile(result.user,username);
-}catch(e){errorText(e)}
-finally{$("signup").disabled=false}
+$("google").addEventListener("click", async () => {
+    const username = cleanUsername($("username").value);
+
+    $("google").disabled = true;
+
+    try {
+        const result = await signInWithPopup(auth, provider);
+        const snapshot = await get(
+            ref(db, "users/" + result.user.uid)
+        );
+
+        if (snapshot.exists()) {
+            say(
+                "Welcome back, " +
+                snapshot.val().username +
+                "!",
+                "success"
+            );
+        } else {
+            if (!validUsername(username)) {
+                await signOut(auth);
+
+                say(
+                    "Choose a username first, then tap Continue with Google again.",
+                    "error"
+                );
+
+                return;
+            }
+
+            await ensureProfile(result.user, username);
+        }
+    } catch (error) {
+        errorText(error);
+    } finally {
+        $("google").disabled = false;
+    }
 });
 
-$("google").addEventListener("click",async()=>{
-const username=cleanUsername($("username").value);
-$("google").disabled=true;
-try{
-const result=await signInWithPopup(auth,provider);
-const snap=await get(ref(db,"users/"+result.user.uid));
-if(snap.exists()){
-say("Welcome back, "+snap.val().username+"!");
-}else{
-if(!validUsername(username)){
-await signOut(auth);
-say("Choose a username first, then tap Continue with Google again.");
-return;
-}
-await ensureProfile(result.user,username);
-}
-}catch(e){errorText(e)}
-finally{$("google").disabled=false}
+$("logout").addEventListener("click", async () => {
+    try {
+        await signOut(auth);
+        say("You have signed out.", "success");
+    } catch (error) {
+        errorText(error);
+    }
 });
 
-$("logout").addEventListener("click",async()=>{
-try{await signOut(auth);say("You have signed out.")}
-catch(e){errorText(e)}
-});
+onAuthStateChanged(auth, async user => {
+    const signedIn = Boolean(user);
 
-onAuthStateChanged(auth,async user=>{
-$("account").hidden=!user;
-$("form").hidden=!!user;
-$("signup").hidden=!!user;
-$("google").hidden=!!user;
-$("username").hidden=!!user;
-$("subtitle").textContent=user?"Your Safe Bucket account":"Create your account or sign in.";
-if(user){
-try{
-const snap=await get(ref(db,"users/"+user.uid));
-$("accountInfo").textContent=snap.exists()
-?"Username: "+snap.val().username+" | Rank: "+snap.val().rank
-:"Signed in, but profile setup is incomplete.";
-}catch(e){$("accountInfo").textContent="Signed in. Profile could not be loaded."}
-}
+    $("account").hidden = !signedIn;
+    $("authForms").hidden = signedIn;
+
+    $("authTitle").textContent = signedIn
+        ? "Your account"
+        : "Welcome back";
+
+    $("subtitle").textContent = signedIn
+        ? "Your Safe Bucket profile is currently active."
+        : "Create your account or sign in to continue.";
+
+    if (signedIn) {
+        try {
+            const snapshot = await get(
+                ref(db, "users/" + user.uid)
+            );
+
+            $("accountInfo").textContent = snapshot.exists()
+                ? "Username: " +
+                  snapshot.val().username +
+                  "  •  Rank: " +
+                  snapshot.val().rank
+                : "Signed in, but profile setup is incomplete.";
+        } catch {
+            $("accountInfo").textContent =
+                "Signed in. Profile could not be loaded.";
+        }
+    }
 });
 </script>
 </body>
