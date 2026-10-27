@@ -432,80 +432,137 @@
   </div>
 
   <!-- BUILT-IN BROWSER -->
-  <div class="browser" id="browser">
-    <div class="browserBar">
-      <button class="browserButton" id="closeBrowser" type="button" aria-label="Close browser">✕</button>
-      <button class="browserButton" id="backButton" type="button" aria-label="Go back">←</button>
-      <button class="browserButton" id="forwardButton" type="button" aria-label="Go forward">→</button>
-      <button class="browserButton" id="controlPanelToggle" type="button" title="Open controls" aria-label="Open control panel">CTRL</button>
+<div class="browser" id="browser">
+  <div class="browserChrome">
+
+    <!-- TAB ROW -->
+    <div class="browserTabRow">
+      <div class="browserTab active">
+        <img src="Images/MeldLogo.png" alt="" class="browserTabIcon">
+        <span class="browserTabTitle">Meld Browser</span>
+        <button class="browserTabClose" id="closeBrowser" type="button" aria-label="Close browser">×</button>
+      </div>
+
+      <button class="newTabButton" type="button" aria-label="New tab">+</button>
     </div>
 
-    <!-- CONTROL PANEL -->
-    <div id="controlPanel" aria-label="Game controls">
-      <div class="controlHeader">
-        <h3>Control Center</h3>
-        <button id="controlPanelClose" type="button" aria-label="Close controls">✕</button>
+    <!-- NAVIGATION ROW -->
+    <div class="browserNavigationRow">
+      <div class="browserNavigationButtons">
+        <button class="browserButton" id="backButton" type="button" aria-label="Go back" title="Go back">
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+        </button>
+
+        <button class="browserButton" id="forwardButton" type="button" aria-label="Go forward" title="Go forward">
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </button>
+
+        <button class="browserButton" id="refreshButton" type="button" aria-label="Refresh page" title="Refresh page">
+          <i class="fa-solid fa-rotate-right" aria-hidden="true"></i>
+        </button>
+
+        <button class="browserButton" id="homeButton" type="button" aria-label="Home" title="Home">
+          <i class="fa-solid fa-house" aria-hidden="true"></i>
+        </button>
       </div>
 
-      <div class="controlStatus">
-        <span class="controlStatusDot" id="controlStatusDot"></span>
-        <span id="controlStatusText">Controls ready</span>
+      <div class="browserAddressBar">
+        <i class="fa-solid fa-lock browserLockIcon" aria-hidden="true"></i>
+
+        <input
+          id="browserAddress"
+          class="browserAddressInput"
+          type="text"
+          value="meld://home"
+          autocomplete="off"
+          spellcheck="false"
+          aria-label="Address bar"
+        >
+
+        <button class="addressActionButton" type="button" aria-label="Bookmark page" title="Bookmark page">
+          <i class="fa-regular fa-star" aria-hidden="true"></i>
+        </button>
       </div>
 
-      <div class="controlSection">
-        <div class="controlSectionTitle">Keyboard</div>
+      <div class="browserExtraButtons">
+        <button class="browserButton" id="controlPanelToggle" type="button" title="Open controls" aria-label="Open control panel">
+          <i class="fa-solid fa-skull" aria-hidden="true"></i>
+        </button>
 
-        <div class="controlGrid">
-          <button class="controlKey" data-key="w" type="button">W · Forward</button>
-          <button class="controlKey" data-key="a" type="button">A · Left</button>
-          <button class="controlKey" data-key="d" type="button">D · Right</button>
-          <button class="controlKey" data-key="s" type="button">S · Back</button>
-          <button class="controlKey" data-key=" " type="button">SPACE</button>
-          <button class="controlKey" data-key="Shift" type="button">SHIFT</button>
-          <button class="controlAction controlWide" id="releaseAllKeys" type="button">Release All Keys</button>
-        </div>
-      </div>
-
-      <div class="controlSection">
-        <div class="controlSectionTitle">Auto Clicker</div>
-
-        <div class="controlInputRow">
-          <input id="autoClickInterval" type="number" min="50" max="10000" step="50" value="500" aria-label="Click interval in milliseconds">
-          <button id="autoClickStart" class="controlAction" type="button">Start</button>
-        </div>
-
-        <h1 class="above">Coming Soon</h1>
-        <div class="ctrlBlur"></div>
-
-        <div class="controlStats">
-          <span>Interval: <strong id="controlIntervalLabel">500 ms</strong></span>
-          <span>Clicks: <strong id="controlClickCount">0</strong></span>
-        </div>
-
-        <div class="controlGrid" style="margin-top: 8px">
-          <button id="singleClickButton" class="controlAction controlWide" type="button">Send One Click</button>
-          <button id="resetClickCount" class="controlAction controlWide" type="button">Reset Counter</button>
-        </div>
-      </div>
-
-      <div class="controlNotice">
-        These are best-effort controls for compatible pages. External games may ignore simulated input or block access from the browser.
-      </div>
-
-      <div class="controlShortcuts">
-        <kbd>CTRL</kbd> Open/close this panel<br>
-        <kbd>ESC</kbd> Close the panel or browser
+        <button class="browserButton browserMenuButton" type="button" aria-label="Browser menu" title="Browser menu">
+          <i class="fa-solid fa-ellipsis-vertical" aria-hidden="true"></i>
+        </button>
       </div>
     </div>
-
-    <!-- DuckDuckGo and other supported pages load here -->
-    <iframe
-      id="browserFrame"
-      title="Meld Browser"
-      referrerpolicy="strict-origin-when-cross-origin"
-      allow="fullscreen"
-    ></iframe>
   </div>
+
+  <!-- CONTROL PANEL -->
+  <div id="controlPanel" aria-label="Game controls">
+    <div class="controlHeader">
+      <h3>Control Center</h3>
+      <button id="controlPanelClose" type="button" aria-label="Close controls">✕</button>
+    </div>
+
+    <div class="controlStatus">
+      <span class="controlStatusDot" id="controlStatusDot"></span>
+      <span id="controlStatusText">Controls ready</span>
+    </div>
+
+    <div class="controlSection">
+      <div class="controlSectionTitle">Keyboard</div>
+
+      <div class="controlGrid">
+        <button class="controlKey" data-key="w" type="button">W · Forward</button>
+        <button class="controlKey" data-key="a" type="button">A · Left</button>
+        <button class="controlKey" data-key="d" type="button">D · Right</button>
+        <button class="controlKey" data-key="s" type="button">S · Back</button>
+        <button class="controlKey" data-key=" " type="button">SPACE</button>
+        <button class="controlKey" data-key="Shift" type="button">SHIFT</button>
+        <button class="controlAction controlWide" id="releaseAllKeys" type="button">Release All Keys</button>
+      </div>
+    </div>
+
+    <div class="controlSection">
+      <div class="controlSectionTitle">Auto Clicker</div>
+
+      <div class="controlInputRow">
+        <input id="autoClickInterval" type="number" min="50" max="10000" step="50" value="500" aria-label="Click interval in milliseconds">
+        <button id="autoClickStart" class="controlAction" type="button">Start</button>
+      </div>
+
+      <h1 class="above">Coming Soon</h1>
+      <div class="ctrlBlur"></div>
+
+      <div class="controlStats">
+        <span>Interval: <strong id="controlIntervalLabel">500 ms</strong></span>
+        <span>Clicks: <strong id="controlClickCount">0</strong></span>
+      </div>
+
+      <div class="controlGrid" style="margin-top: 8px">
+        <button id="singleClickButton" class="controlAction controlWide" type="button">Send One Click</button>
+        <button id="resetClickCount" class="controlAction controlWide" type="button">Reset Counter</button>
+      </div>
+    </div>
+
+    <div class="controlNotice">
+      These are best-effort controls for compatible pages. External games may ignore simulated input or block access from the browser.
+    </div>
+
+    <div class="controlShortcuts">
+      <kbd>CTRL</kbd> Open/close this panel<br>
+      <kbd>ESC</kbd> Close the panel or browser
+    </div>
+  </div>
+
+  <!-- PAGE CONTENT -->
+  <iframe
+    id="browserFrame"
+    title="Meld Browser"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allow="fullscreen"
+  ></iframe>
+</div>
+
 
   <!-- ONLINE VISITOR TRACKER -->
   <script type="module" src="./tracker.js"></script>
