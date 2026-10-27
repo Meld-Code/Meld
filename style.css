@@ -3183,3 +3183,311 @@ PROFILE AND LEADERBOARD — MOBILE
     }
 
 }
+/* =========================================
+   REALISTIC BUILT-IN BROWSER CHROME
+========================================= */
+
+.browser {
+  position: fixed;
+  inset: 4vh 4vw;
+  z-index: 1000;
+  display: none;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  background: #161817;
+  box-shadow:
+    0 28px 80px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(133, 255, 122, 0.04);
+}
+
+.browser.active,
+.browser.open {
+  display: flex;
+  flex-direction: column;
+}
+
+.browserChrome {
+  flex: 0 0 auto;
+  background:
+    linear-gradient(
+      180deg,
+      #252927 0%,
+      #1c201e 100%
+    );
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* TAB ROW */
+
+.browserTabRow {
+  display: flex;
+  align-items: flex-end;
+  min-height: 42px;
+  padding: 8px 10px 0;
+  gap: 8px;
+  background: #171a19;
+}
+
+.browserTab {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 190px;
+  max-width: 280px;
+  height: 34px;
+  padding: 0 9px 0 12px;
+  color: #d9e2dc;
+  background: #252b28;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.browserTab.active {
+  background: #303733;
+}
+
+.browserTabIcon {
+  width: 17px;
+  height: 17px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.browserTabTitle {
+  flex: 1;
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.browserTabClose,
+.newTabButton,
+.browserWindowControls span {
+  display: grid;
+  place-items: center;
+  border: 0;
+  color: #aab5ae;
+  background: transparent;
+}
+
+.browserTabClose {
+  width: 23px;
+  height: 23px;
+  border-radius: 6px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.browserTabClose:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.newTabButton {
+  width: 31px;
+  height: 31px;
+  margin-bottom: 2px;
+  border-radius: 7px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.newTabButton:hover {
+  color: #d6ff9a;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.browserWindowControls {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: auto;
+  padding-bottom: 4px;
+}
+
+.browserWindowControls span {
+  width: 31px;
+  height: 25px;
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+.browserWindowControls span:last-child {
+  font-size: 18px;
+}
+
+.browserWindowControls span:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.11);
+}
+
+/* NAVIGATION ROW */
+
+.browserNavigationRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 53px;
+  padding: 8px 12px;
+}
+
+.browserNavigationButtons,
+.browserExtraButtons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.browserButton {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: #c7d0ca;
+  background: transparent;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.browserButton:hover {
+  color: #ddffa8;
+  background: rgba(255, 255, 255, 0.11);
+}
+
+.browserButton:active {
+  transform: scale(0.9);
+}
+
+.browserAddressBar {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 100px;
+  height: 36px;
+  padding: 0 8px 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  color: #cbd5ce;
+  background: #111412;
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.35),
+    0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.browserLockIcon {
+  margin-right: 10px;
+  color: #9bd46d;
+  font-size: 12px;
+}
+
+.browserAddressInput {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  color: #dce8df;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+}
+
+.browserAddressInput::selection {
+  color: #101510;
+  background: #b9f77a;
+}
+
+.addressActionButton {
+  display: grid;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  border: 0;
+  border-radius: 50%;
+  color: #aebbb1;
+  background: transparent;
+  cursor: pointer;
+}
+
+.addressActionButton:hover {
+  color: #ddffa8;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.browserExtraButtons {
+  flex: 0 0 auto;
+}
+
+/* PAGE CONTENT */
+
+#browserFrame {
+  display: block;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  border: 0;
+  background: #ffffff;
+}
+
+/* CONTROL PANEL ABOVE THE PAGE */
+
+#controlPanel {
+  position: absolute;
+  top: 105px;
+  right: 18px;
+  z-index: 5;
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+  .browser {
+    inset: 0;
+    border-radius: 0;
+  }
+
+  .browserTabRow {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  .browserTab {
+    min-width: 150px;
+  }
+
+  .browserWindowControls {
+    display: none;
+  }
+
+  .browserNavigationRow {
+    gap: 5px;
+    padding: 7px;
+  }
+
+  .browserButton {
+    width: 31px;
+    height: 31px;
+  }
+
+  .browserAddressBar {
+    height: 34px;
+  }
+
+  .browserExtraButtons .browserMenuButton {
+    display: none;
+  }
+}
+
