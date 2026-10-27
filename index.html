@@ -327,7 +327,88 @@
     </div>
   </div>
 
-  
+  <!-- CHAT BUTTON -->
+<button
+class="chatButton"
+id="chatButton"
+type="button"
+aria-label="Open chat"
+title="Chat"
+data-tutorial="chat"
+>
+<i class="fa-solid fa-comments" aria-hidden="true"></i>
+<span class="chatUnreadBadge" id="chatUnreadBadge" hidden>0</span>
+</button>
+
+<!-- CHAT PANEL -->
+<section
+class="chatPanel"
+id="chatPanel"
+aria-labelledby="chatTitle"
+hidden
+>
+<div class="chatHeader">
+  <div>
+    <h2 id="chatTitle">Meld Chat</h2>
+    <p id="chatStatus">Connecting...</p>
+  </div>
+
+  <button
+    class="chatCloseButton"
+    id="chatCloseButton"
+    type="button"
+    aria-label="Close chat"
+    title="Close chat"
+  >
+    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+  </button>
+</div>
+
+<div
+  class="chatMessages"
+  id="chatMessages"
+  aria-live="polite"
+  aria-label="Chat messages"
+>
+  <p class="chatEmptyMessage">No messages yet.</p>
+</div>
+
+<form class="chatForm" id="chatForm">
+  <input
+    class="chatNameInput"
+    id="chatNameInput"
+    type="text"
+    maxlength="24"
+    placeholder="Name"
+    autocomplete="nickname"
+    required
+  >
+
+  <div class="chatMessageRow">
+    <input
+      class="chatMessageInput"
+      id="chatMessageInput"
+      type="text"
+      maxlength="300"
+      placeholder="Write a message..."
+      autocomplete="off"
+      required
+    >
+
+    <button
+      class="chatSendButton"
+      id="chatSendButton"
+      type="submit"
+      aria-label="Send message"
+      title="Send message"
+    >
+      <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+    </button>
+  </div>
+</form>
+</section>
+
+
 <!-- PROFILE AND LEADERBOARD BUTTONS -->
 <div class="topLeftButtons">
   <button class="topNavButton profileNavButton"
@@ -676,6 +757,10 @@
     if (onlineCount) onlineCount.textContent = "—";
   }
   </script>
+
+  <!-- FIREBASE CHAT -->
+<script type="module" src="./chat.js"></script>
+
 
   <!-- MAIN JAVASCRIPT -->
   <script src="./script.js"></script>
