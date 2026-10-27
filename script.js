@@ -1194,7 +1194,7 @@ function getDestination(value) {
         return "https://" + value;
     }
 
-    return "https://duckduckgo.com/?q=" +
+    return "https://www.google.com/search?q=" +
         encodeURIComponent(value);
 }
 
