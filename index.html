@@ -1,14 +1,15 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#101010">
-  <meta name="description" content="Safe Bucket by CiphAnon Studios — a customizable homepage for quick links, games, search, and tools.">
-  <title>CiphAnon Safe Browser</title>
+  <meta name="description" content="Meld by CiphAnon Studios — a customizable homepage for quick links, games, search, and tools.">
+  <title>Meld | CiphAnon Studios</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-<link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
@@ -65,15 +66,15 @@
         </label>
       </div>
 
-      <!-- Hide Me Morph Button -->
+      <!-- MORPH CUSTOMIZATION -->
       <div class="settingsItem movingBlocksSetting">
         <div>
           <strong>Morph Customization</strong>
-          <p>Upload a image of a school site or multiple in a time settings so if its 9am it will show schoology but if its 10am its Infinate Campus. set and press ` to Morph the page and hide your screen.</p>
+          <p>Upload images of school websites and configure scheduled page appearances.</p>
         </div>
 
-        <label class="settingSwitch" for="movingBlocksToggle">
-          <input type="checkbox" id="movingBlocksToggle" aria-label="Enable moving blocks" aria-controls="world">
+        <label class="settingSwitch" for="morphCustomizationToggle">
+          <input type="checkbox" id="morphCustomizationToggle" aria-label="Enable morph customization">
           <span class="settingSwitchTrack"></span>
         </label>
       </div>
@@ -103,7 +104,7 @@
 
       <div class="welcomeTop">
         <div class="welcomeLogo">
-          <img src="Images/MeldLogo.png" alt="Safe Bucket Logo">
+          <img src="Images/MeldLogo.png" alt="Meld Logo">
         </div>
 
         <div class="welcomeTitle">
@@ -114,21 +115,20 @@
 
       <div class="welcomeIntro">
         <h2>Welcome to Meld.</h2>
-        <p>
-          The best Unblocked Gaming Website! 
-        </p>
+        <p>The best Unblocked Gaming Website!</p>
       </div>
 
       <div class="welcomeSections">
         <div class="welcomeSection">
           <div class="welcomeIcon" aria-hidden="true">◉</div>
-          <h3>What Is Meld ?</h3>
-          <p>Meld is a Unblocked Gaming Website Designed For Students To Play Games Watch Movies And Use The Web Freely.</div>
+          <h3>What Is Meld?</h3>
+          <p>Meld is an unblocked gaming website designed for students to play games, watch movies, and use the web.</p>
+        </div>
 
         <div class="welcomeSection">
           <div class="welcomeIcon" aria-hidden="true">◆</div>
           <h3>Made For</h3>
-          <p>Quick Acess, Gaming, unrestricted web search and more.</p>
+          <p>Quick access, gaming, unrestricted web search, and more.</p>
         </div>
       </div>
 
@@ -158,13 +158,11 @@
   <!-- TUTORIAL INVITATION -->
   <div id="tutorialPrompt" class="tutorial-overlay" role="dialog" aria-modal="true" aria-labelledby="tutorialPromptTitle" hidden>
     <div class="tutorial-card tutorial-prompt-card">
-      <img src="Images/Tobnyi.png" alt="Safe Bucket tutorial guide" class="tutorial-character">
+      <img src="Images/Tobnyi.png" alt="Meld tutorial guide" class="tutorial-character">
 
       <p class="tutorial-eyebrow">QUICK TOUR</p>
       <h2 id="tutorialPromptTitle">Would you like a tutorial?</h2>
-      <p>Hi, Im <strong>Tobnyi</strong>, I'll guide you around the page, highlight the main features, and explain what each one does.</p>
-
-      
+      <p>Hi, I'm <strong>Tobnyi</strong>. I'll guide you around the page, highlight the main features, and explain what each one does.</p>
 
       <div class="tutorial-actions">
         <button id="skipTutorialPrompt" type="button">No, thanks</button>
@@ -173,7 +171,8 @@
           Yes, show me
         </button>
       </div>
-<div class="tutorial-checkbox">
+
+      <div class="tutorial-checkbox">
         <input type="checkbox" id="dontShowTutorialAgain">
         <label for="dontShowTutorialAgain">Don't ask me again</label>
       </div>
@@ -192,7 +191,7 @@
         <i class="fa-solid fa-xmark" aria-hidden="true"></i>
       </button>
 
-      <img src="Images/Tobnyi.png" alt="Your Safe Bucket guide" class="tutorial-character">
+      <img src="Images/Tobnyi.png" alt="Meld tutorial guide" class="tutorial-character">
 
       <p id="tutorialStepCount" class="tutorial-eyebrow">STEP 1 OF 7</p>
       <h2 id="tutorialTitle">Welcome to the tour!</h2>
@@ -222,7 +221,7 @@
   <div class="loadingScreen" id="loadingScreen">
     <div class="loadingCard">
       <div class="loadingLogo">
-        <img src="Images/MeldLogo.png" alt="Safe Bucket">
+        <img src="Images/MeldLogo.png" alt="Meld">
       </div>
       <div class="loadingTitle">Loading Meld</div>
       <div class="loadingMessage" id="loadingMessage">Preparing your destination...</div>
@@ -241,12 +240,12 @@
   <!-- MAIN HOMEPAGE -->
   <main class="center" id="mainHomepage">
     <div class="hero" id="heroSection" data-tutorial="hero">
-      <img class="SafeBucketLogo" src="Images/MeldLogo.png" alt="Safe Bucket">
+      <img class="SafeBucketLogo" src="Images/MeldLogo.png" alt="Meld">
       <h1>Meld</h1>
       <p>Keep Unblocked Sites Unblocked With Meld!</p>
     </div>
 
-    <!-- SEARCH BAR -->
+    <!-- MAIN SEARCH BAR -->
     <form class="search" id="searchForm" data-tutorial="search">
       <div class="searchIcon" aria-hidden="true">⌕</div>
 
@@ -255,25 +254,15 @@
         type="text"
         autocomplete="off"
         spellcheck="false"
-        placeholder="Search or enter a website..."
-        aria-label="Search or enter a website"
+        placeholder="Search DuckDuckGo or enter a website..."
+        aria-label="Search DuckDuckGo or enter a website"
       >
 
       <button class="go" id="searchGoButton" type="submit">Go</button>
       <button class="go" id="openAIButton" type="button" aria-label="Open AI">AI</button>
     </form>
   </main>
-<!-- DuckDuckGo  -->
-  <form action="https://duckduckgo.com/"
-    method="GET" target="_blank">
-    <input
-      type="text"
-      name="q"
-      placeholder="Search DuckDuckgo..."
-      required
-      >
-    <button type="submit">Search</button>
-  </form>
+
   <!-- RANDOM AD -->
   <div class="randomAd" id="randomAd">
     <button class="closeRandomAd" id="closeRandomAd" type="button" aria-label="Close advertisement">×</button>
@@ -310,7 +299,7 @@
     <div class="infoPanel" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
       <button class="infoClose" id="infoClose" type="button" aria-label="Close information">✕</button>
 
-      <h2 id="infoTitle">SMeld</h2>
+      <h2 id="infoTitle">About Meld</h2>
       <p>A simple homepage for quick access to games, websites, search, and other tools.</p>
 
       <div class="infoList">
@@ -331,14 +320,14 @@
 
         <div class="infoItem">
           <strong>Search</strong>
-          <span>Type a website or search term into the search bar and press Go.</span>
+          <span>Type a search term or website into the search bar and press Go.</span>
         </div>
       </div>
     </div>
   </div>
 
   <!-- PHYSICS BLOCKS -->
-  <!-- IMPORTANT: Keep this as class="world" so the existing physics JS can control it. -->
+  <!-- Keep class="world" so the existing physics JS can control it. -->
   <div class="world" id="world" aria-label="Quick links" data-tutorial="quick-links">
 
     <div class="block"
@@ -427,7 +416,7 @@
     Quick links · Enable Moving Blocks in Settings for physics animations
   </div>
 
-  <!-- BROWSER -->
+  <!-- BUILT-IN BROWSER -->
   <div class="browser" id="browser">
     <div class="browserBar">
       <button class="browserButton" id="closeBrowser" type="button" aria-label="Close browser">✕</button>
@@ -494,7 +483,13 @@
       </div>
     </div>
 
-    <iframe id="browserFrame" title="CiphAnon Browser" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    <!-- DuckDuckGo and other supported pages load here -->
+    <iframe
+      id="browserFrame"
+      title="Meld Browser"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allow="fullscreen"
+    ></iframe>
   </div>
 
   <!-- ONLINE VISITOR TRACKER -->
