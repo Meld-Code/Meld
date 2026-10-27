@@ -2487,3 +2487,26 @@ setMovingBlocksEnabled(movingBlocksEnabled, false);
 
 objects.forEach(render);
 
+const refreshButton = document.getElementById("refreshButton");
+const homeButton = document.getElementById("homeButton");
+const browserAddress = document.getElementById("browserAddress");
+
+refreshButton?.addEventListener("click", () => {
+  const frame = document.getElementById("browserFrame");
+
+  if (frame?.src) {
+    frame.src = frame.src;
+  }
+});
+
+homeButton?.addEventListener("click", () => {
+  const frame = document.getElementById("browserFrame");
+
+  if (frame) {
+    frame.src = "about:blank";
+  }
+
+  if (browserAddress) {
+    browserAddress.value = "meld://browser";
+  }
+});
