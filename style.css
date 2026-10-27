@@ -2923,3 +2923,29 @@ Existing classes and functionality preserved
     }
     
     }
+
+/* DuckDuckGo */
+
+.ddg-search form {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.ddg-search input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px;
+    border: 1px solid #303030;
+    border-radius: 10px;
+    background: #171717;
+    color: white;
+}
+
+.ddg-search button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    background: #ff6a00;
+    color: white;
+}
