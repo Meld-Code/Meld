@@ -2949,3 +2949,237 @@ Existing classes and functionality preserved
     background: #ff6a00;
     color: white;
 }
+
+
+/* ============================================================
+PROFILE AND LEADERBOARD BUTTONS
+============================================================ */
+.topLeftButtons {
+    position: fixed;
+    top: 21px;
+    left: 18px;
+    z-index: 7600;
+
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+}
+
+/* PROFILE BUTTON */
+.topNavButton {
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    padding: 0 12px;
+
+    border: 1px solid #45533d;
+    border-radius: 11px;
+
+    background: rgba(25, 31, 24, .94);
+    color: var(--text);
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    box-shadow:
+        0 10px 30px #0008,
+        inset 0 1px 0 #ffffff0b;
+
+    cursor: pointer;
+
+    transition:
+        transform .2s ease,
+        color .2s ease,
+        background .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease;
+
+}
+
+.profileNavButton {
+    justify-content: flex-start;
+}
+
+.profileNavPfp {
+    display: block;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+
+    border: 1px solid #52604c;
+    border-radius: 50%;
+
+    background: var(--panel2);
+
+    object-fit: cover;
+    object-position: center;
+
+    transition:
+        border-color .2s ease,
+        transform .2s ease,
+        box-shadow .2s ease;
+
+}
+
+#profileNavName {
+    max-width: 140px;
+    overflow: hidden;
+
+    color: var(--text);
+
+    font-size: 12px;
+    font-weight: 750;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
+
+.profileNavButton:hover {
+    transform: translateY(-2px);
+    color: var(--accent-light);
+    background: #28351b;
+    border-color: var(--accent);
+
+    box-shadow:
+        0 12px 30px #0009,
+        0 0 0 3px #76b90020;
+
+}
+
+.profileNavButton:hover .profileNavPfp {
+    border-color: var(--accent-light);
+    transform: scale(1.05);
+
+    box-shadow: 0 0 0 2px #76b90020;
+
+}
+
+/* LEADERBOARD BUTTON */
+.leaderboardNavButton {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    padding: 0;
+
+}
+
+.leaderboardNavButton i {
+    color: var(--accent-light);
+    font-size: 17px;
+
+    pointer-events: none;
+
+    transition:
+        color .2s ease,
+        transform .2s ease;
+
+}
+
+.leaderboardNavButton:hover {
+    transform: translateY(-2px) scale(1.05);
+    color: var(--accent-light);
+    background: #28351b;
+    border-color: var(--accent);
+
+    box-shadow:
+        0 12px 30px #0009,
+        0 0 0 3px #76b90020;
+
+}
+
+.leaderboardNavButton:hover i {
+    color: var(--accent-light);
+    transform: translateY(-1px);
+
+}
+
+.topNavButton:active {
+    transform: scale(.97);
+
+}
+
+.topNavButton:focus-visible {
+    outline: 2px solid var(--accent-light);
+    outline-offset: 3px;
+
+}
+
+/* ============================================================
+PROFILE AND LEADERBOARD — MOBILE
+============================================================ */
+@media (max-width: 700px) {
+    .topLeftButtons {
+        top: 10px;
+        left: 10px;
+        gap: 7px;
+
+    }
+
+    .topNavButton {
+        height: 38px;
+        border-radius: 10px;
+        font-size: 11px;
+
+    }
+
+    .profileNavPfp {
+        width: 25px;
+        height: 25px;
+
+    }
+
+    #profileNavName {
+        max-width: 95px;
+        font-size: 11px;
+
+    }
+
+    .leaderboardNavButton {
+        width: 38px;
+        height: 38px;
+
+    }
+
+    .leaderboardNavButton i {
+        font-size: 15px;
+
+    }
+
+}
+
+@media (max-width: 380px) {
+    .topLeftButtons {
+        left: 8px;
+        gap: 6px;
+
+    }
+
+    .topNavButton {
+        padding: 0 9px;
+
+    }
+
+    .profileNavButton {
+        gap: 7px;
+
+    }
+
+    #profileNavName {
+        max-width: 75px;
+
+    }
+
+}
