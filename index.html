@@ -258,9 +258,7 @@
       >
 
       <button class="go" id="searchGoButton" type="submit">Go</button>
-      <button class="go" id="openAIButton" type="button" aria-label="Open AI">
-        AI
-      </button>
+      <button class="go" id="openAIButton" type="button" aria-label="Open AI">AI</button>
     </form>
   </main>
 
@@ -328,127 +326,117 @@
   </div>
 
   <!-- CHAT BUTTON -->
-<button
-class="chatButton"
-id="chatButton"
-type="button"
-aria-label="Open chat"
-title="Chat"
-data-tutorial="chat"
->
-<i class="fa-solid fa-comments" aria-hidden="true"></i>
-<span class="chatUnreadBadge" id="chatUnreadBadge" hidden>0</span>
-</button>
-
-<!-- CHAT PANEL -->
-<section
-class="chatPanel"
-id="chatPanel"
-aria-labelledby="chatTitle"
-hidden
->
-<div class="chatHeader">
-  <div>
-    <h2 id="chatTitle">Meld Chat</h2>
-    <p id="chatStatus">Connecting...</p>
-  </div>
-
   <button
-    class="chatCloseButton"
-    id="chatCloseButton"
+    class="chatButton"
+    id="chatButton"
     type="button"
-    aria-label="Close chat"
-    title="Close chat"
+    aria-label="Open chat"
+    title="Chat"
+    data-tutorial="chat"
   >
-    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    <i class="fa-solid fa-comments" aria-hidden="true"></i>
+    <span class="chatUnreadBadge" id="chatUnreadBadge" hidden>0</span>
   </button>
-</div>
 
-<div
-  class="chatMessages"
-  id="chatMessages"
-  aria-live="polite"
-  aria-label="Chat messages"
->
-  <p class="chatEmptyMessage">No messages yet.</p>
-</div>
-
-<form class="chatForm" id="chatForm">
-  <input
-    class="chatNameInput"
-    id="chatNameInput"
-    type="text"
-    maxlength="24"
-    placeholder="Name"
-    autocomplete="nickname"
-    required
+  <!-- CHAT PANEL -->
+  <section
+    class="chatPanel"
+    id="chatPanel"
+    aria-labelledby="chatTitle"
+    hidden
   >
+    <div class="chatHeader">
+      <div>
+        <h2 id="chatTitle">Meld Chat</h2>
+        <p id="chatStatus">Connecting...</p>
+      </div>
 
-  <div class="chatMessageRow">
-    <input
-      class="chatMessageInput"
-      id="chatMessageInput"
-      type="text"
-      maxlength="300"
-      placeholder="Write a message..."
-      autocomplete="off"
-      required
+      <button
+        class="chatCloseButton"
+        id="chatCloseButton"
+        type="button"
+        aria-label="Close chat"
+        title="Close chat"
+      >
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div
+      class="chatMessages"
+      id="chatMessages"
+      aria-live="polite"
+      aria-label="Chat messages"
     >
+      <p class="chatEmptyMessage">No messages yet.</p>
+    </div>
 
+    <form class="chatForm" id="chatForm">
+      <input
+        class="chatNameInput"
+        id="chatNameInput"
+        type="text"
+        maxlength="24"
+        placeholder="Name"
+        autocomplete="nickname"
+        required
+      >
+
+      <div class="chatMessageRow">
+        <input
+          class="chatMessageInput"
+          id="chatMessageInput"
+          type="text"
+          maxlength="300"
+          placeholder="Write a message..."
+          autocomplete="off"
+          required
+        >
+
+        <button
+          class="chatSendButton"
+          id="chatSendButton"
+          type="submit"
+          aria-label="Send message"
+          title="Send message"
+        >
+          <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- PROFILE AND LEADERBOARD BUTTONS -->
+  <div class="topLeftButtons">
     <button
-      class="chatSendButton"
-      id="chatSendButton"
-      type="submit"
-      aria-label="Send message"
-      title="Send message"
+      class="topNavButton profileNavButton"
+      id="profileButton"
+      type="button"
+      onclick="window.location.href='profile.html'"
     >
-      <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+      <img class="profileNavPfp" id="profileNavPfp" src="Images/DefaultPfp.png" alt="Profile">
+      <span id="profileNavName">Username</span>
+    </button>
+
+    <button class="topNavButton leaderboardNavButton" id="leaderboardButton" type="button" aria-label="Leaderboard" title="Leaderboard">
+      <i class="fa-solid fa-trophy" aria-hidden="true"></i>
     </button>
   </div>
-</form>
-</section>
 
-
-<!-- PROFILE AND LEADERBOARD BUTTONS -->
-<div class="topLeftButtons">
-  <button class="topNavButton profileNavButton"
-   id="profileButton" type="button"
-   onclick="window.location.href='profile.html'">
-    <img class="profileNavPfp" id="profileNavPfp" src="Images/DefaultPfp.png" alt="Profile">
-    <span id="profileNavName">Username</span>
-  </button>
-
-  <button class="topNavButton leaderboardNavButton" id="leaderboardButton" type="button" aria-label="Leaderboard" title="Leaderboard">
-    <i class="fa-solid fa-trophy" aria-hidden="true"></i>
-  </button>
-</div>
-
-  
   <!-- PHYSICS BLOCKS -->
-  <!-- Keep class="world" so the existing physics JS can control it. -->
   <div class="world" id="world" aria-label="Quick links" data-tutorial="quick-links">
 
-    <div class="block"
-      data-url="https://meld-code.github.io/Meld/Gpage+.html"
-      data-name="Games"
-      tabindex="0" role="link" aria-label="Open Games">
+    <div class="block" data-url="https://meld-code.github.io/Meld/Gpage+.html" data-name="Games" tabindex="0" role="link" aria-label="Open Games">
       <img src="Images/Controller.png" alt="Games">
       <div class="blockLabel">Games</div>
     </div>
 
-    <div class="block"
-      data-url="https://meld-code.github.io/Meld/ComingSoon.html"
-      data-name="Movies"
-      tabindex="0" role="link" aria-label="Open Movies">
+    <div class="block" data-url="https://meld-code.github.io/Meld/ComingSoon.html" data-name="Movies" tabindex="0" role="link" aria-label="Open Movies">
       <img src="Images/Movie.png" alt="Movies">
       <div class="blockLabel">Movies</div>
     </div>
 
-    <div class="block"
-      data-url="https://angst.clawschools.org/embed.html#https://nowgg.fun/apps/a/19900/b.html"
-      data-name="Roblox"
-      data-background-video="RobloxPage.mp4"
-      tabindex="0" role="link" aria-label="Open Roblox">
+    <div class="block" data-url="https://angst.clawschools.org/embed.html#https://nowgg.fun/apps/a/19900/b.html" data-name="Roblox" data-background-video="RobloxPage.mp4" tabindex="0" role="link" aria-label="Open Roblox">
       <video class="blockVideo" muted loop playsinline preload="metadata">
         <source src="Videos/roblox-preview.mp4" type="video/mp4">
       </video>
@@ -456,27 +444,17 @@ hidden
       <div class="blockLabel">Roblox</div>
     </div>
 
-    <div class="block"
-      data-url="https://ciphanonstudios.github.io/CiphAnonStudios-v12"
-      data-name="Home"
-      tabindex="0" role="link" aria-label="Open Home">
+    <div class="block" data-url="https://ciphanonstudios.github.io/CiphAnonStudios-v12" data-name="Home" tabindex="0" role="link" aria-label="Open Home">
       <img src="Images/CiphAnonStudios.png" alt="Home">
       <div class="blockLabel">Home</div>
     </div>
 
-    <div class="block"
-      data-url="https://meld-code.github.io/Meld/ComingSoon.html"
-      data-name="Anime"
-      tabindex="0" role="link" aria-label="Open Anime">
+    <div class="block" data-url="https://meld-code.github.io/Meld/ComingSoon.html" data-name="Anime" tabindex="0" role="link" aria-label="Open Anime">
       <img src="Images/Anime.png" alt="Anime">
       <div class="blockLabel">Anime</div>
     </div>
 
-    <div class="block"
-      data-url="https://meld-code.github.io/MC/"
-      data-name="Minecraft"
-      data-background-video="Minecraft.mp4"
-      tabindex="0" role="link" aria-label="Open Minecraft">
+    <div class="block" data-url="https://meld-code.github.io/MC/" data-name="Minecraft" data-background-video="Minecraft.mp4" tabindex="0" role="link" aria-label="Open Minecraft">
       <video class="blockVideo" muted loop playsinline preload="metadata">
         <source src="Videos/minecraft-preview.mp4" type="video/mp4">
       </video>
@@ -484,26 +462,17 @@ hidden
       <div class="blockLabel">Minecraft</div>
     </div>
 
-    <div class="block"
-      data-url="https://learningedu.theworkpc.com"
-      data-name="Proxy"
-      tabindex="0" role="link" aria-label="Open Proxy">
+    <div class="block" data-url="https://learningedu.theworkpc.com" data-name="Proxy" tabindex="0" role="link" aria-label="Open Proxy">
       <img src="Images/AltServer.png" alt="Proxy">
       <div class="blockLabel">Proxy</div>
     </div>
 
-    <div class="block"
-      data-url="https://chat.morphic.sh/"
-      data-name="AI"
-      tabindex="0" role="link" aria-label="Open AI">
+    <div class="block" data-url="https://chat.morphic.sh/" data-name="AI" tabindex="0" role="link" aria-label="Open AI">
       <img src="Images/AI.png" alt="AI">
       <div class="blockLabel">AI</div>
     </div>
 
-    <div class="block"
-      data-url="https://meld-code.github.io/Meld/ComingSoon.html"
-      data-name="YouTube"
-      tabindex="0" role="link" aria-label="Open YouTube">
+    <div class="block" data-url="https://meld-code.github.io/Meld/ComingSoon.html" data-name="YouTube" tabindex="0" role="link" aria-label="Open YouTube">
       <img src="Images/YouTube.png" alt="YouTube">
       <div class="blockLabel">YouTube</div>
     </div>
@@ -515,254 +484,242 @@ hidden
   </div>
 
   <!-- BUILT-IN BROWSER -->
-<div class="browser" id="browser">
-  <div class="browserChrome">
+  <div class="browser" id="browser">
+    <div class="browserChrome">
 
-    <!-- TAB ROW -->
-    <div class="browserTabRow">
-      <div class="browserTab active">
-        <img src="Images/MeldLogo.png" alt="" class="browserTabIcon">
-        <span class="browserTabTitle">Meld Browser</span>
-        <button class="browserTabClose" id="closeBrowser" type="button" aria-label="Close browser">×</button>
+      <div class="browserTabRow">
+        <div class="browserTab active">
+          <img src="Images/MeldLogo.png" alt="" class="browserTabIcon">
+          <span class="browserTabTitle">Meld Browser</span>
+          <button class="browserTabClose" id="closeBrowser" type="button" aria-label="Close browser">×</button>
+        </div>
+
+        <button class="newTabButton" type="button" aria-label="New tab">+</button>
       </div>
 
-      <button class="newTabButton" type="button" aria-label="New tab">+</button>
-    </div>
+      <div class="browserNavigationRow">
+        <div class="browserNavigationButtons">
+          <button class="browserButton" id="backButton" type="button" aria-label="Go back" title="Go back">
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+          </button>
 
-    <!-- NAVIGATION ROW -->
-    <div class="browserNavigationRow">
-      <div class="browserNavigationButtons">
-        <button class="browserButton" id="backButton" type="button" aria-label="Go back" title="Go back">
-          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
-        </button>
+          <button class="browserButton" id="forwardButton" type="button" aria-label="Go forward" title="Go forward">
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </button>
 
-        <button class="browserButton" id="forwardButton" type="button" aria-label="Go forward" title="Go forward">
-          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-        </button>
+          <button class="browserButton" id="refreshButton" type="button" aria-label="Refresh page" title="Refresh page">
+            <i class="fa-solid fa-rotate-right" aria-hidden="true"></i>
+          </button>
 
-        <button class="browserButton" id="refreshButton" type="button" aria-label="Refresh page" title="Refresh page">
-          <i class="fa-solid fa-rotate-right" aria-hidden="true"></i>
-        </button>
+          <button class="browserButton" id="homeButton" type="button" aria-label="Home" title="Home">
+            <i class="fa-solid fa-house" aria-hidden="true"></i>
+          </button>
+        </div>
 
-        <button class="browserButton" id="homeButton" type="button" aria-label="Home" title="Home">
-          <i class="fa-solid fa-house" aria-hidden="true"></i>
-        </button>
-      </div>
+        <div class="browserAddressBar">
+          <i class="fa-solid fa-lock browserLockIcon" aria-hidden="true"></i>
 
-      <div class="browserAddressBar">
-        <i class="fa-solid fa-lock browserLockIcon" aria-hidden="true"></i>
+          <input id="browserAddress" class="browserAddressInput" type="text" value="meld://home" autocomplete="off" spellcheck="false" aria-label="Address bar">
 
-        <input
-          id="browserAddress"
-          class="browserAddressInput"
-          type="text"
-          value="meld://home"
-          autocomplete="off"
-          spellcheck="false"
-          aria-label="Address bar"
-        >
+          <button class="addressActionButton" type="button" aria-label="Bookmark page" title="Bookmark page">
+            <i class="fa-regular fa-star" aria-hidden="true"></i>
+          </button>
+        </div>
 
-        <button class="addressActionButton" type="button" aria-label="Bookmark page" title="Bookmark page">
-          <i class="fa-regular fa-star" aria-hidden="true"></i>
-        </button>
-      </div>
+        <div class="browserExtraButtons">
+          <button class="browserButton" id="controlPanelToggle" type="button" title="Open controls" aria-label="Open control panel">
+            <i class="fa-solid fa-skull" aria-hidden="true"></i>
+          </button>
 
-      <div class="browserExtraButtons">
-        <button class="browserButton" id="controlPanelToggle" type="button" title="Open controls" aria-label="Open control panel">
-          <i class="fa-solid fa-skull" aria-hidden="true"></i>
-        </button>
-
-        <button class="browserButton browserMenuButton" type="button" aria-label="Browser menu" title="Browser menu">
-          <i class="fa-solid fa-ellipsis-vertical" aria-hidden="true"></i>
-        </button>
+          <button class="browserButton browserMenuButton" type="button" aria-label="Browser menu" title="Browser menu">
+            <i class="fa-solid fa-ellipsis-vertical" aria-hidden="true"></i>
+          </button>
+        </div>
       </div>
     </div>
+
+    <!-- CONTROL PANEL -->
+    <div id="controlPanel" aria-label="Game controls">
+      <div class="controlHeader">
+        <h3>Control Center</h3>
+        <button id="controlPanelClose" type="button" aria-label="Close controls">✕</button>
+      </div>
+
+      <div class="controlStatus">
+        <span class="controlStatusDot" id="controlStatusDot"></span>
+        <span id="controlStatusText">Controls ready</span>
+      </div>
+
+      <div class="controlSection">
+        <div class="controlSectionTitle">Keyboard</div>
+
+        <div class="controlGrid">
+          <button class="controlKey" data-key="w" type="button">W · Forward</button>
+          <button class="controlKey" data-key="a" type="button">A · Left</button>
+          <button class="controlKey" data-key="d" type="button">D · Right</button>
+          <button class="controlKey" data-key="s" type="button">S · Back</button>
+          <button class="controlKey" data-key=" " type="button">SPACE</button>
+          <button class="controlKey" data-key="Shift" type="button">SHIFT</button>
+          <button class="controlAction controlWide" id="releaseAllKeys" type="button">Release All Keys</button>
+        </div>
+      </div>
+
+      <div class="controlSection">
+        <div class="controlSectionTitle">Auto Clicker</div>
+
+        <div class="controlInputRow">
+          <input id="autoClickInterval" type="number" min="50" max="10000" step="50" value="500" aria-label="Click interval in milliseconds">
+          <button id="autoClickStart" class="controlAction" type="button">Start</button>
+        </div>
+
+        <h1 class="above">Coming Soon</h1>
+        <div class="ctrlBlur"></div>
+
+        <div class="controlStats">
+          <span>Interval: <strong id="controlIntervalLabel">500 ms</strong></span>
+          <span>Clicks: <strong id="controlClickCount">0</strong></span>
+        </div>
+
+        <div class="controlGrid" style="margin-top: 8px">
+          <button id="singleClickButton" class="controlAction controlWide" type="button">Send One Click</button>
+          <button id="resetClickCount" class="controlAction controlWide" type="button">Reset Counter</button>
+        </div>
+      </div>
+
+      <div class="controlNotice">
+        These are best-effort controls for compatible pages. External games may ignore simulated input or block access from the browser.
+      </div>
+
+      <div class="controlShortcuts">
+        <kbd>CTRL</kbd> Open/close this panel<br>
+        <kbd>ESC</kbd> Close the panel or browser
+      </div>
+    </div>
+
+    <!-- PAGE CONTENT -->
+    <iframe id="browserFrame" title="Meld Browser" referrerpolicy="strict-origin-when-cross-origin" allow="fullscreen"></iframe>
   </div>
-
-  <!-- CONTROL PANEL -->
-  <div id="controlPanel" aria-label="Game controls">
-    <div class="controlHeader">
-      <h3>Control Center</h3>
-      <button id="controlPanelClose" type="button" aria-label="Close controls">✕</button>
-    </div>
-
-    <div class="controlStatus">
-      <span class="controlStatusDot" id="controlStatusDot"></span>
-      <span id="controlStatusText">Controls ready</span>
-    </div>
-
-    <div class="controlSection">
-      <div class="controlSectionTitle">Keyboard</div>
-
-      <div class="controlGrid">
-        <button class="controlKey" data-key="w" type="button">W · Forward</button>
-        <button class="controlKey" data-key="a" type="button">A · Left</button>
-        <button class="controlKey" data-key="d" type="button">D · Right</button>
-        <button class="controlKey" data-key="s" type="button">S · Back</button>
-        <button class="controlKey" data-key=" " type="button">SPACE</button>
-        <button class="controlKey" data-key="Shift" type="button">SHIFT</button>
-        <button class="controlAction controlWide" id="releaseAllKeys" type="button">Release All Keys</button>
-      </div>
-    </div>
-
-    <div class="controlSection">
-      <div class="controlSectionTitle">Auto Clicker</div>
-
-      <div class="controlInputRow">
-        <input id="autoClickInterval" type="number" min="50" max="10000" step="50" value="500" aria-label="Click interval in milliseconds">
-        <button id="autoClickStart" class="controlAction" type="button">Start</button>
-      </div>
-
-      <h1 class="above">Coming Soon</h1>
-      <div class="ctrlBlur"></div>
-
-      <div class="controlStats">
-        <span>Interval: <strong id="controlIntervalLabel">500 ms</strong></span>
-        <span>Clicks: <strong id="controlClickCount">0</strong></span>
-      </div>
-
-      <div class="controlGrid" style="margin-top: 8px">
-        <button id="singleClickButton" class="controlAction controlWide" type="button">Send One Click</button>
-        <button id="resetClickCount" class="controlAction controlWide" type="button">Reset Counter</button>
-      </div>
-    </div>
-
-    <div class="controlNotice">
-      These are best-effort controls for compatible pages. External games may ignore simulated input or block access from the browser.
-    </div>
-
-    <div class="controlShortcuts">
-      <kbd>CTRL</kbd> Open/close this panel<br>
-      <kbd>ESC</kbd> Close the panel or browser
-    </div>
-  </div>
-
-  <!-- PAGE CONTENT -->
-  <iframe
-    id="browserFrame"
-    title="Meld Browser"
-    referrerpolicy="strict-origin-when-cross-origin"
-    allow="fullscreen"
-  ></iframe>
-</div>
-
 
   <!-- ONLINE VISITOR TRACKER -->
   <script type="module" src="./tracker.js"></script>
 
   <!-- FIREBASE ONLINE COUNTER -->
   <script type="module">
-  import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+    import {
+      initializeApp,
+      getApps,
+      getApp
+    } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 
-  import {
-    getAuth,
-    onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+    import {
+      getAuth,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
-  import {
-    getDatabase,
-    ref,
-    get,
-    onValue,
-    onDisconnect,
-    set,
-    serverTimestamp
-  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
+    import {
+      getDatabase,
+      ref,
+      get,
+      onValue,
+      onDisconnect,
+      set,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCkJJcpdLfWH8XZBuT8tgOkOKuj6ZtEzcY",
-    authDomain: "safebucketbypass.firebaseapp.com",
-    databaseURL: "https://safebucketbypass-default-rtdb.firebaseio.com",
-    projectId: "safebucketbypass",
-    storageBucket: "safebucketbypass.firebasestorage.app",
-    messagingSenderId: "659506734507",
-    appId: "1:659506734507:web:1e4268f7746380b41bdeee"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyCkJJcpdLfWH8XZBuT8tgOkOKuj6ZtEzcY",
+      authDomain: "safebucketbypass.firebaseapp.com",
+      databaseURL: "https://safebucketbypass-default-rtdb.firebaseio.com",
+      projectId: "safebucketbypass",
+      storageBucket: "safebucketbypass.firebasestorage.app",
+      messagingSenderId: "659506734507",
+      appId: "1:659506734507:web:1e4268f7746380b41bdeee"
+    };
 
-  const onlineCount = document.getElementById("onlineCount");
-  const profileNavName = document.getElementById("profileNavName");
+    const onlineCount = document.getElementById("onlineCount");
+    const profileNavName = document.getElementById("profileNavName");
 
-  try {
-    const app = getApps().length > 0
-    ? getApps()
-    : initializeApp(firebaseConfig);
-    const database = getDatabase(app);
-    const auth = getAuth(app);
+    try {
+      const app = getApps().length > 0
+        ? getApp()
+        : initializeApp(firebaseConfig);
 
-    // LOAD THE LOGGED-IN USERNAME
-    onAuthStateChanged(auth, async (user) => {
-      if (!profileNavName) return;
+      const database = getDatabase(app);
+      const auth = getAuth(app);
 
-      if (!user) {
-        profileNavName.textContent = "Username";
-        return;
-      }
+      // LOAD THE LOGGED-IN USERNAME
+      onAuthStateChanged(auth, async (user) => {
+        if (!profileNavName) return;
 
-      try {
-        const snapshot = await get(ref(database, `users/${user.uid}`));
+        if (!user) {
+          profileNavName.textContent = "Username";
+          return;
+        }
 
-        if (snapshot.exists()) {
-          const profile = snapshot.val();
-          profileNavName.textContent =
-            profile.username || user.displayName || "Member";
-        } else {
+        try {
+          const snapshot = await get(ref(database, `users/${user.uid}`));
+
+          if (snapshot.exists()) {
+            const profile = snapshot.val();
+            profileNavName.textContent =
+              profile.username || user.displayName || "Member";
+          } else {
+            profileNavName.textContent = user.displayName || "Member";
+          }
+        } catch (error) {
+          console.error("Could not load username:", error);
           profileNavName.textContent = user.displayName || "Member";
         }
-      } catch (error) {
-        console.error("Could not load username:", error);
-        profileNavName.textContent = user.displayName || "Member";
+      });
+
+      // EXISTING ONLINE COUNTER
+      if (!onlineCount) {
+        throw new Error('Missing element with id="onlineCount"');
       }
-    });
 
-    // EXISTING ONLINE COUNTER
-    if (!onlineCount) {
-      throw new Error('Missing element with id="onlineCount"');
-    }
+      let visitorId = sessionStorage.getItem("safeBucketVisitorId");
 
-    let visitorId = sessionStorage.getItem("safeBucketVisitorId");
+      if (!visitorId) {
+        visitorId =
+          globalThis.crypto?.randomUUID?.() ||
+          `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
-    if (!visitorId) {
-      visitorId =
-        globalThis.crypto?.randomUUID?.() ||
-        `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+        sessionStorage.setItem("safeBucketVisitorId", visitorId);
+      }
 
-      sessionStorage.setItem("safeBucketVisitorId", visitorId);
-    }
+      const visitorRef = ref(database, `onlineVisitors/${visitorId}`);
+      const visitorsRef = ref(database, "onlineVisitors");
 
-    const visitorRef = ref(database, `onlineVisitors/${visitorId}`);
-    const visitorsRef = ref(database, "onlineVisitors");
+      onDisconnect(visitorRef).remove().catch((error) => {
+        console.error("Disconnect setup failed:", error);
+      });
 
-    onDisconnect(visitorRef).remove().catch((error) => {
-      console.error("Disconnect setup failed:", error);
-    });
-
-    set(visitorRef, {
-      connectedAt: serverTimestamp()
-    }).catch((error) => {
-      console.error("Could not register visitor:", error);
-      onlineCount.textContent = "—";
-    });
-
-    onValue(
-      visitorsRef,
-      (snapshot) => {
-        const visitors = snapshot.val() || {};
-        onlineCount.textContent = Object.keys(visitors).length;
-      },
-      (error) => {
-        console.error("Could not read visitor count:", error);
+      set(visitorRef, {
+        connectedAt: serverTimestamp()
+      }).catch((error) => {
+        console.error("Could not register visitor:", error);
         onlineCount.textContent = "—";
-      }
-    );
-  } catch (error) {
-    console.error("Firebase initialization failed:", error);
-    if (onlineCount) onlineCount.textContent = "—";
-  }
+      });
+
+      onValue(
+        visitorsRef,
+        (snapshot) => {
+          const visitors = snapshot.val() || {};
+          onlineCount.textContent = Object.keys(visitors).length;
+        },
+        (error) => {
+          console.error("Could not read visitor count:", error);
+          onlineCount.textContent = "—";
+        }
+      );
+    } catch (error) {
+      console.error("Firebase initialization failed:", error);
+      if (onlineCount) onlineCount.textContent = "—";
+    }
   </script>
 
   <!-- FIREBASE CHAT -->
-<script type="module" src="./chat.js"></script>
-
+  <script type="module" src="./chat.js"></script>
 
   <!-- MAIN JAVASCRIPT -->
   <script src="./script.js"></script>
