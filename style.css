@@ -3859,4 +3859,22 @@ PROFILE AND LEADERBOARD — MOBILE
       height: min(580px, calc(100vh - 105px));
     }
   }
-  
+  .chatPanel:not([hidden]) {
+  display: flex !important;
+  flex-direction: column;
+  position: fixed;
+  right: 20px;
+  bottom: 80px;
+  width: min(360px, calc(100vw - 30px));
+  height: min(500px, calc(100dvh - 110px));
+  z-index: 999999;
+  background: #171717;
+  color: #fff;
+  border: 1px solid #303030;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.chatPanel[hidden] {
+  display: none !important;
+}
