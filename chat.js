@@ -1,4 +1,3 @@
-
 import { initializeApp, getApps, getApp } from
     "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 
@@ -24,7 +23,7 @@ import {
 
 /* ============================================================
    FIREBASE
-   ============================================================ */
+============================================================ */
 
 const firebaseConfig = {
     apiKey: "AIzaSyCkJJcpdLfWH8XZBuT8tgOkOKuj6ZtEzcY",
@@ -45,7 +44,7 @@ const database = getDatabase(app);
 
 /* ============================================================
    CHAT ELEMENTS
-   ============================================================ */
+============================================================ */
 
 const chatButton = document.getElementById("chatButton");
 const chatPanel = document.getElementById("chatPanel");
@@ -84,7 +83,7 @@ if (requiredElements.some(element => !element)) {
 
 /* ============================================================
    CHAT APPLICATION
-   ============================================================ */
+============================================================ */
 
 function initializeChat() {
     let currentUser = null;
@@ -94,7 +93,6 @@ function initializeChat() {
     let firstMessageLoad = true;
     let stopMessagesListener = null;
     let lastMessageIds = new Set();
-
     let authSessionNumber = 0;
 
     const messagesQuery = query(
@@ -103,6 +101,11 @@ function initializeChat() {
         limitToLast(MAX_MESSAGES)
     );
 
+    chatButton.type = "button";
+    chatButton.setAttribute("aria-label", "Open chat");
+    chatButton.setAttribute("aria-expanded", "false");
+
+    chatPanel.hidden = true;
     chatNameInput.readOnly = true;
     chatNameInput.placeholder = "Your Meld username";
     chatMessageInput.maxLength = MAX_MESSAGE_LENGTH;
@@ -113,23 +116,31 @@ function initializeChat() {
 
     /* --------------------------------------------------------
        OPEN AND CLOSE
-       -------------------------------------------------------- */
+    -------------------------------------------------------- */
 
     function openChat() {
         chatIsOpen = true;
         chatPanel.hidden = false;
 
+        chatButton.setAttribute("aria-label", "Close chat");
+        chatButton.setAttribute("aria-expanded", "true");
+
         unreadCount = 0;
         updateUnreadBadge();
 
         if (currentUser && profile) {
-            chatMessageInput.focus();
+            requestAnimationFrame(() => {
+                chatMessageInput.focus();
+            });
         }
     }
 
     function closeChat() {
         chatIsOpen = false;
         chatPanel.hidden = true;
+
+        chatButton.setAttribute("aria-label", "Open chat");
+        chatButton.setAttribute("aria-expanded", "false");
     }
 
     chatButton.addEventListener("click", () => {
@@ -144,7 +155,7 @@ function initializeChat() {
 
     /* --------------------------------------------------------
        STATUS AND UNREAD BADGE
-       -------------------------------------------------------- */
+    -------------------------------------------------------- */
 
     function setStatus(message) {
         chatStatus.textContent = message;
@@ -156,11 +167,20 @@ function initializeChat() {
         chatUnreadBadge.hidden = unreadCount <= 0;
         chatUnreadBadge.textContent =
             unreadCount > 99 ? "99+" : String(unreadCount);
+
+        chatButton.setAttribute(
+            "aria-label",
+            unreadCount > 0
+                ? `Open chat, ${unreadCount} unread message${unreadCount === 1 ? "" : "s"}`
+                : chatIsOpen
+                    ? "Close chat"
+                    : "Open chat"
+        );
     }
 
     /* --------------------------------------------------------
-       AUTHENTICATION MESSAGES
-       -------------------------------------------------------- */
+       MESSAGE HELPERS
+    -------------------------------------------------------- */
 
     function showMessage(message) {
         chatMessages.replaceChildren();
@@ -183,9 +203,16 @@ function initializeChat() {
         setStatus("Sign in to chat");
     }
 
+    function updateSendButtonState() {
+        chatSendButton.disabled =
+            !currentUser ||
+            !profile ||
+            chatMessageInput.value.trim().length === 0;
+    }
+
     /* --------------------------------------------------------
        TIME FORMATTING
-       -------------------------------------------------------- */
+    -------------------------------------------------------- */
 
     function formatTime(timestamp) {
         if (typeof timestamp !== "number") {
@@ -202,7 +229,7 @@ function initializeChat() {
 
     /* --------------------------------------------------------
        DISPLAY MESSAGES
-       -------------------------------------------------------- */
+    -------------------------------------------------------- */
 
     function renderMessages(snapshot) {
         chatMessages.replaceChildren();
@@ -218,7 +245,6 @@ function initializeChat() {
                 typeof message.createdAt !== "number" ||
                 Date.now() - message.createdAt >= CHAT_LIFETIME
             ) {
-                // Only attempt automatic cleanup of your own expired messages.
                 if (
                     currentUser &&
                     message.userId === currentUser.uid &&
@@ -228,7 +254,10 @@ function initializeChat() {
                     remove(
                         ref(database, `chatMessages/${messageSnapshot.key}`)
                     ).catch(error => {
-                        console.warn("Expired message cleanup failed:", error);
+                        console.warn(
+                            "Expired message cleanup failed:",
+                            error
+                        );
                     });
                 }
 
@@ -261,6 +290,9 @@ function initializeChat() {
             const top = document.createElement("div");
             top.className = "chatMessageTop";
 
+            const identity = document.createElement("div");
+            identity.className = "chatMessageIdentity";
+
             const name = document.createElement("span");
             name.className = "chatMessageName";
             name.textContent = message.name || "Member";
@@ -269,11 +301,13 @@ function initializeChat() {
             rank.className = "chatMessageRank";
             rank.textContent = message.rank || "Member";
 
+            identity.append(name, rank);
+
             const time = document.createElement("time");
             time.className = "chatMessageTime";
             time.textContent = formatTime(message.createdAt);
 
-            top.append(name, rank, time);
+            top.append(identity, time);
 
             const text = document.createElement("p");
             text.className = "chatMessageText";
@@ -281,13 +315,16 @@ function initializeChat() {
 
             article.append(top, text);
 
-            // Only show the delete button for the signed-in sender.
             if (isOwnMessage) {
                 const deleteButton = document.createElement("button");
 
                 deleteButton.type = "button";
                 deleteButton.className = "chatDeleteButton";
                 deleteButton.textContent = "Delete";
+                deleteButton.setAttribute(
+                    "aria-label",
+                    "Delete your message"
+                );
 
                 deleteButton.addEventListener("click", async () => {
                     deleteButton.disabled = true;
@@ -300,7 +337,11 @@ function initializeChat() {
 
                         setStatus("Message deleted");
                     } catch (error) {
-                        console.error("Could not delete message:", error);
+                        console.error(
+                            "Could not delete message:",
+                            error
+                        );
+
                         setStatus("Could not delete message");
                         deleteButton.disabled = false;
                     }
@@ -317,7 +358,7 @@ function initializeChat() {
 
     /* --------------------------------------------------------
        REAL-TIME MESSAGE LISTENER
-       -------------------------------------------------------- */
+    -------------------------------------------------------- */
 
     function stopListening() {
         if (stopMessagesListener) {
@@ -373,15 +414,23 @@ function initializeChat() {
                 setStatus("Connected");
             },
             error => {
-                console.error("Could not load chat messages:", error);
-                setStatus("Chat unavailable. Check Firebase permissions.");
+                console.error(
+                    "Could not load chat messages:",
+                    error
+                );
+
+                setStatus(
+                    "Chat unavailable. Check Firebase permissions."
+                );
             }
         );
     }
 
     /* --------------------------------------------------------
        SEND MESSAGE
-       -------------------------------------------------------- */
+    -------------------------------------------------------- */
+
+    chatMessageInput.addEventListener("input", updateSendButtonState);
 
     chatForm.addEventListener("submit", async event => {
         event.preventDefault();
@@ -403,7 +452,10 @@ function initializeChat() {
             return;
         }
 
-        if (!text) return;
+        if (!text) {
+            updateSendButtonState();
+            return;
+        }
 
         chatSendButton.disabled = true;
         setStatus("Sending...");
@@ -424,21 +476,22 @@ function initializeChat() {
                 chatMessageInput.focus();
             }
         } catch (error) {
-            console.error("Could not send chat message:", error);
+            console.error(
+                "Could not send chat message:",
+                error
+            );
 
-            setStatus("Message failed to send. Check Firebase rules.");
+            setStatus(
+                "Message failed to send. Check Firebase rules."
+            );
         } finally {
-            chatSendButton.disabled =
-                !currentUser || !profile || !chatMessageInput.value.trim() && false;
-
-            // Keep sending available even when the message input is empty.
-            chatSendButton.disabled = !currentUser || !profile;
+            updateSendButtonState();
         }
     });
 
     /* --------------------------------------------------------
        SIGN-IN / SIGN-OUT AND PROFILE LOADING
-       -------------------------------------------------------- */
+    -------------------------------------------------------- */
 
     onAuthStateChanged(auth, async user => {
         const session = ++authSessionNumber;
@@ -465,7 +518,6 @@ function initializeChat() {
                 ref(database, `users/${user.uid}`)
             );
 
-            // Ignore results from an older login session.
             if (
                 session !== authSessionNumber ||
                 auth.currentUser?.uid !== user.uid
@@ -475,7 +527,9 @@ function initializeChat() {
 
             if (!profileSnapshot.exists()) {
                 showLoginPrompt();
-                setStatus("Finish setting up your Meld profile");
+                setStatus(
+                    "Finish setting up your Meld profile"
+                );
                 return;
             }
 
@@ -487,7 +541,9 @@ function initializeChat() {
                 !savedProfile.username.trim()
             ) {
                 showLoginPrompt();
-                setStatus("Your Meld profile needs a username");
+                setStatus(
+                    "Your Meld profile needs a username"
+                );
                 return;
             }
 
@@ -497,12 +553,15 @@ function initializeChat() {
             chatNameInput.disabled = false;
 
             chatMessageInput.disabled = false;
-            chatSendButton.disabled = false;
+            updateSendButtonState();
 
             setStatus("Connecting to chat...");
             startMessagesListener();
         } catch (error) {
-            console.error("Could not load Meld profile:", error);
+            console.error(
+                "Could not load Meld profile:",
+                error
+            );
 
             if (session !== authSessionNumber) return;
 
@@ -513,7 +572,7 @@ function initializeChat() {
 
     /* --------------------------------------------------------
        DRAGGABLE CHAT WINDOW
-       -------------------------------------------------------- */
+    -------------------------------------------------------- */
 
     const dragHandle = chatPanel.querySelector(".chatHeader");
 
@@ -566,12 +625,18 @@ function initializeChat() {
 
             const left = Math.min(
                 maxLeft,
-                Math.max(0, startLeft + event.clientX - startX)
+                Math.max(
+                    0,
+                    startLeft + event.clientX - startX
+                )
             );
 
             const top = Math.min(
                 maxTop,
-                Math.max(0, startTop + event.clientY - startY)
+                Math.max(
+                    0,
+                    startTop + event.clientY - startY
+                )
             );
 
             chatPanel.style.left = `${left}px`;
@@ -585,7 +650,10 @@ function initializeChat() {
 
         dragHandle.addEventListener("pointerup", stopDragging);
         dragHandle.addEventListener("pointercancel", stopDragging);
-        dragHandle.addEventListener("lostpointercapture", stopDragging);
+        dragHandle.addEventListener(
+            "lostpointercapture",
+            stopDragging
+        );
     }
 
     console.log("Meld Chat initialized.");
