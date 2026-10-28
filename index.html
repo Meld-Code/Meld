@@ -683,7 +683,7 @@ hidden
   const profileNavName = document.getElementById("profileNavName");
 
   try {
-    const app = getApps().length
+    const app = getApps().length > 0
     ? getApps()
     : initializeApp(firebaseConfig);
     const database = getDatabase(app);
