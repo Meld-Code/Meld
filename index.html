@@ -652,7 +652,7 @@ hidden
 
   <!-- FIREBASE ONLINE COUNTER -->
   <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+  import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 
   import {
     getAuth,
@@ -683,7 +683,9 @@ hidden
   const profileNavName = document.getElementById("profileNavName");
 
   try {
-    const app = initializeApp(firebaseConfig);
+    const app = getApps().length
+    ? getApps()
+    : initializeApp(firebaseConfig);
     const database = getDatabase(app);
     const auth = getAuth(app);
 
