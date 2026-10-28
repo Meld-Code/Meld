@@ -26,4 +26,8 @@ For the games page a button that takes u to a random game if bored
 
 A total site visits thing with milestones and u add smth new every milestone
 
+note pad saved with local storage
 
+my own version of roblox
+
+customiazable profile with different skins you can get and some are rare or limited and stuff
