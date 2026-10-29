@@ -10,14 +10,10 @@
 /* ========================= ANALYTICS ========================= */
 
 function trackEvent(eventName, eventData = {}) {
-    if (
-        window.firebaseAnalytics &&
-        typeof window.firebaseLogEvent === "function"
-    ) {
+    if (window.firebaseAnalytics &&
+        typeof window.firebaseLogEvent === "function") {
         window.firebaseLogEvent(
-            window.firebaseAnalytics,
-            eventName,
-            eventData
+            window.firebaseAnalytics, eventName, eventData
         );
     }
 }
@@ -88,9 +84,7 @@ const movingBlocksToggle = document.getElementById("movingBlocksToggle");
 function openBrowser(url) {
     if (!url || !browser || !browserFrame) return;
 
-    trackEvent("open_site", {
-        site_name: url
-    });
+    trackEvent("open_site", { site_name: url });
 
     browserFrame.src = url;
     browser.classList.add("open");
@@ -174,10 +168,7 @@ function normalize(v) {
     const length = vectorLength(v);
 
     if (length < 0.000001) {
-        return {
-            x: 1,
-            y: 0
-        };
+        return { x: 1, y: 0 };
     }
 
     return {
@@ -209,11 +200,7 @@ function getRadius(el) {
 
     const size = getSize(el);
 
-    return Math.min(
-        radius,
-        size.width / 2,
-        size.height / 2
-    );
+    return Math.min(radius, size.width / 2, size.height / 2);
 }
 
 function clamp(value, min, max) {
@@ -326,11 +313,7 @@ function applyCompactLayout() {
     for (const obj of objects) {
         const el = obj.el;
 
-        el.classList.remove(
-            "moving-block-active",
-            "dragging"
-        );
-
+        el.classList.remove("moving-block-active", "dragging");
         el.classList.add("moving-block-compact");
 
         Object.assign(el.style, {
@@ -383,6 +366,10 @@ function applyMovingLayout() {
         });
     }
 
+    /*
+     * Restore original block dimensions before measuring.
+     */
+
     for (const obj of objects) {
         const el = obj.el;
         const original = originalBlockStyles.get(el);
@@ -408,6 +395,7 @@ function applyMovingLayout() {
         }
     }
 
+    // Force the browser to calculate the restored layout.
     if (world) {
         void world.offsetHeight;
     }
@@ -448,6 +436,7 @@ function applyMovingLayout() {
         obj.previousY = obj.y;
     }
 
+    // Alternate boundary correction and collision resolution.
     for (let pass = 0; pass < 16; pass++) {
         for (const obj of objects) {
             keepInside(obj);
@@ -468,10 +457,7 @@ function setMovingBlocksEnabled(enabled, save = true) {
     movingBlocksEnabled = Boolean(enabled);
 
     if (save) {
-        writeStorage(
-            MOVING_BLOCKS_KEY,
-            movingBlocksEnabled
-        );
+        writeStorage(MOVING_BLOCKS_KEY, movingBlocksEnabled);
     }
 
     if (movingBlocksToggle) {
@@ -505,11 +491,21 @@ function setMovingBlocksEnabled(enabled, save = true) {
     });
 }
 
+/*
+ * UPDATED CHECKBOX BEHAVIOR:
+ * 1. Save and immediately apply the selected layout.
+ * 2. Reload only the browser iframe if it has a loaded URL.
+ * 3. Do not reload the main Safe Bucket page.
+ */
+
 movingBlocksToggle?.addEventListener("change", () => {
     const enabled = movingBlocksToggle.checked;
 
+    // Apply the new layout and save the preference.
+    // If storage is unavailable, the layout still changes.
     setMovingBlocksEnabled(enabled);
 
+    // Reload only the iframe, not the entire page.
     if (browserFrame) {
         const currentURL = browserFrame.src;
 
@@ -528,37 +524,18 @@ movingBlocksToggle?.addEventListener("change", () => {
 function roundedPolygon(obj) {
     const w = obj.width;
     const h = obj.height;
-    const r = Math.min(
-        obj.radius,
-        w / 2,
-        h / 2
-    );
+    const r = Math.min(obj.radius, w / 2, h / 2);
 
     if (r <= 0) {
         const corners = [
-            {
-                x: -w / 2,
-                y: -h / 2
-            },
-            {
-                x: w / 2,
-                y: -h / 2
-            },
-            {
-                x: w / 2,
-                y: h / 2
-            },
-            {
-                x: -w / 2,
-                y: h / 2
-            }
+            { x: -w / 2, y: -h / 2 },
+            { x: w / 2, y: -h / 2 },
+            { x: w / 2, y: h / 2 },
+            { x: -w / 2, y: h / 2 }
         ];
 
         return corners.map(point => {
-            const rotated = rotatePoint(
-                point,
-                obj.angle
-            );
+            const rotated = rotatePoint(point, obj.angle);
 
             return {
                 x: obj.x + rotated.x,
@@ -593,25 +570,17 @@ function roundedPolygon(obj) {
     ];
 
     for (const corner of corners) {
-        for (
-            let i = 0;
-            i <= PHYSICS.cornerSteps;
-            i++
-        ) {
+        for (let i = 0; i <= PHYSICS.cornerSteps; i++) {
             const angle =
                 corner.start +
-                (i / PHYSICS.cornerSteps) *
-                Math.PI / 2;
+                (i / PHYSICS.cornerSteps) * Math.PI / 2;
 
             const local = {
                 x: corner.cx + Math.cos(angle) * r,
                 y: corner.cy + Math.sin(angle) * r
             };
 
-            const rotated = rotatePoint(
-                local,
-                obj.angle
-            );
+            const rotated = rotatePoint(local, obj.angle);
 
             points.push({
                 x: obj.x + rotated.x,
@@ -650,10 +619,7 @@ function project(polygon, axis) {
         max = Math.max(max, value);
     }
 
-    return {
-        min,
-        max
-    };
+    return { min, max };
 }
 
 function polygonCollision(polyA, polyB) {
@@ -689,7 +655,7 @@ function polygonCollision(polyA, polyB) {
     };
 }
 
-/* ========================= COLLISION RESOLUTION =============== */
+/* ========================= COLLISION RESOLUTION ================ */
 
 function resolveCollision(a, b, collision) {
     if (!collision) return;
@@ -697,14 +663,8 @@ function resolveCollision(a, b, collision) {
     let normal = collision.axis;
 
     const direction = sub(
-        {
-            x: b.x,
-            y: b.y
-        },
-        {
-            x: a.x,
-            y: a.y
-        }
+        { x: b.x, y: b.y },
+        { x: a.x, y: a.y }
     );
 
     if (dot(direction, normal) < 0) {
@@ -714,31 +674,21 @@ function resolveCollision(a, b, collision) {
     const totalMass = a.mass + b.mass;
 
     const correctionDepth = Math.max(
-        (collision.depth - 0.001) *
-        PHYSICS.positionPercent,
+        (collision.depth - 0.001) * PHYSICS.positionPercent,
         0
     );
 
+    // Separate overlapping blocks.
     if (correctionDepth > 0) {
         if (!a.dragging && !b.dragging) {
             const shareA = b.mass / totalMass;
             const shareB = a.mass / totalMass;
 
-            a.x -= normal.x *
-                correctionDepth *
-                shareA;
+            a.x -= normal.x * correctionDepth * shareA;
+            a.y -= normal.y * correctionDepth * shareA;
 
-            a.y -= normal.y *
-                correctionDepth *
-                shareA;
-
-            b.x += normal.x *
-                correctionDepth *
-                shareB;
-
-            b.y += normal.y *
-                correctionDepth *
-                shareB;
+            b.x += normal.x * correctionDepth * shareB;
+            b.y += normal.y * correctionDepth * shareB;
         } else if (!a.dragging) {
             a.x -= normal.x * correctionDepth;
             a.y -= normal.y * correctionDepth;
@@ -758,12 +708,14 @@ function resolveCollision(a, b, collision) {
         normal
     );
 
+    // If the blocks are already separating, positional correction
+    // is enough.
     if (velocityAlongNormal >= 0) return;
 
     const invMassA = a.dragging ? 0 : 1 / a.mass;
     const invMassB = b.dragging ? 0 : 1 / b.mass;
-    const inverseMassTotal =
-        invMassA + invMassB;
+
+    const inverseMassTotal = invMassA + invMassB;
 
     if (inverseMassTotal === 0) return;
 
@@ -772,10 +724,7 @@ function resolveCollision(a, b, collision) {
         velocityAlongNormal /
         inverseMassTotal;
 
-    const impulse = mul(
-        normal,
-        impulseMagnitude
-    );
+    const impulse = mul(normal, impulseMagnitude);
 
     if (!a.dragging) {
         a.vx -= impulse.x * invMassA;
@@ -787,16 +736,13 @@ function resolveCollision(a, b, collision) {
         b.vy += impulse.y * invMassB;
     }
 
+    // Tangential friction.
     const tangent = {
         x: -normal.y,
         y: normal.x
     };
 
-    const tangentSpeed = dot(
-        relativeVelocity,
-        tangent
-    );
-
+    const tangentSpeed = dot(relativeVelocity, tangent);
     const frictionMagnitude =
         tangentSpeed * PHYSICS.friction;
 
@@ -824,11 +770,7 @@ function solveAllCollisions() {
         for (let i = 0; i < objects.length; i++) {
             const a = objects[i];
 
-            for (
-                let j = i + 1;
-                j < objects.length;
-                j++
-            ) {
+            for (let j = i + 1; j < objects.length; j++) {
                 const b = objects[j];
 
                 const collision = polygonCollision(
@@ -869,16 +811,15 @@ function keepInside(obj) {
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
 
+    // Handle blocks larger than the viewport.
     if (maxX - minX >= screenWidth) {
-        obj.x += screenWidth / 2 -
-            (minX + maxX) / 2;
+        obj.x += screenWidth / 2 - (minX + maxX) / 2;
     } else {
         if (minX < 0) {
             obj.x -= minX;
 
             if (!obj.dragging && obj.vx < 0) {
-                obj.vx = -obj.vx *
-                    PHYSICS.restitution;
+                obj.vx = -obj.vx * PHYSICS.restitution;
             }
         }
 
@@ -886,22 +827,19 @@ function keepInside(obj) {
             obj.x -= maxX - screenWidth;
 
             if (!obj.dragging && obj.vx > 0) {
-                obj.vx = -obj.vx *
-                    PHYSICS.restitution;
+                obj.vx = -obj.vx * PHYSICS.restitution;
             }
         }
     }
 
     if (maxY - minY >= screenHeight) {
-        obj.y += screenHeight / 2 -
-            (minY + maxY) / 2;
+        obj.y += screenHeight / 2 - (minY + maxY) / 2;
     } else {
         if (minY < 0) {
             obj.y -= minY;
 
             if (!obj.dragging && obj.vy < 0) {
-                obj.vy = -obj.vy *
-                    PHYSICS.restitution;
+                obj.vy = -obj.vy * PHYSICS.restitution;
             }
         }
 
@@ -909,8 +847,7 @@ function keepInside(obj) {
             obj.y -= maxY - screenHeight;
 
             if (!obj.dragging && obj.vy > 0) {
-                obj.vy = -obj.vy *
-                    PHYSICS.restitution;
+                obj.vy = -obj.vy * PHYSICS.restitution;
             }
         }
     }
@@ -922,17 +859,13 @@ function limitVelocity(obj) {
     const speed = Math.hypot(obj.vx, obj.vy);
 
     if (speed > PHYSICS.maxSpeed) {
-        const scale =
-            PHYSICS.maxSpeed / speed;
+        const scale = PHYSICS.maxSpeed / speed;
 
         obj.vx *= scale;
         obj.vy *= scale;
     }
 
-    if (
-        Math.abs(obj.angularVelocity) >
-        PHYSICS.maxAngular
-    ) {
+    if (Math.abs(obj.angularVelocity) > PHYSICS.maxAngular) {
         obj.angularVelocity =
             Math.sign(obj.angularVelocity) *
             PHYSICS.maxAngular;
@@ -940,33 +873,19 @@ function limitVelocity(obj) {
 }
 
 function keepFloating(obj, time) {
-    if (!movingBlocksEnabled || obj.dragging) {
-        return;
-    }
+    if (!movingBlocksEnabled || obj.dragging) return;
 
-    obj.vx += Math.sin(
-        time * 0.00025 +
-        obj.x * 0.002
-    ) * 0.0015;
+    obj.vx +=
+        Math.sin(time * 0.00025 + obj.x * 0.002) * 0.0015;
 
-    obj.vy += Math.cos(
-        time * 0.00021 +
-        obj.y * 0.002
-    ) * 0.0015;
+    obj.vy +=
+        Math.cos(time * 0.00021 + obj.y * 0.002) * 0.0015;
 
-    if (
-        Math.hypot(obj.vx, obj.vy) <
-        PHYSICS.minimumSpeed
-    ) {
-        const angle =
-            Math.atan2(obj.y, obj.x) +
-            Math.PI / 2;
+    if (Math.hypot(obj.vx, obj.vy) < PHYSICS.minimumSpeed) {
+        const angle = Math.atan2(obj.y, obj.x) + Math.PI / 2;
 
-        obj.vx += Math.cos(angle) *
-            PHYSICS.minimumSpeed;
-
-        obj.vy += Math.sin(angle) *
-            PHYSICS.minimumSpeed;
+        obj.vx += Math.cos(angle) * PHYSICS.minimumSpeed;
+        obj.vy += Math.sin(angle) * PHYSICS.minimumSpeed;
     }
 }
 
@@ -991,10 +910,7 @@ function setupDragging(obj) {
     el.addEventListener("pointerdown", event => {
         if (!movingBlocksEnabled) return;
 
-        if (
-            event.button !== undefined &&
-            event.button !== 0
-        ) {
+        if (event.button !== undefined && event.button !== 0) {
             return;
         }
 
@@ -1035,13 +951,11 @@ function setupDragging(obj) {
         const dx = event.clientX - downX;
         const dy = event.clientY - downY;
 
-        if (
-            Math.abs(dx) > 4 ||
-            Math.abs(dy) > 4
-        ) {
+        if (Math.abs(dx) > 4 || Math.abs(dy) > 4) {
             obj.moved = true;
         }
 
+        // Track the previous position for release velocity.
         obj.previousX = obj.x;
         obj.previousY = obj.y;
 
@@ -1068,6 +982,7 @@ function setupDragging(obj) {
 
         el.classList.remove("dragging");
 
+        // Give the block a small, bounded throw when released.
         obj.vx = clamp(
             (obj.x - obj.previousX) * 0.22,
             -PHYSICS.maxSpeed,
@@ -1101,10 +1016,7 @@ function setupDragging(obj) {
 
     el.addEventListener("click", event => {
         if (movingBlocksEnabled) return;
-
-        if (event.target.closest("button, a")) {
-            return;
-        }
+        if (event.target.closest("button, a")) return;
 
         openShortcut(el);
     });
@@ -1117,8 +1029,7 @@ function openShortcut(el) {
 
     trackEvent("shortcut_click", {
         shortcut_name:
-            el.dataset.name ||
-            el.textContent.trim()
+            el.dataset.name || el.textContent.trim()
     });
 
     openBrowser(url);
@@ -1127,23 +1038,16 @@ function openShortcut(el) {
 /* ========================= RENDERING ========================== */
 
 function normalizeAngle(angle) {
-    return Math.atan2(
-        Math.sin(angle),
-        Math.cos(angle)
-    );
+    return Math.atan2(Math.sin(angle), Math.cos(angle));
 }
 
 function updateHoverRotation(obj, dt) {
     if (!obj.hovered || obj.dragging) return;
 
-    const difference = normalizeAngle(
-        obj.uprightTarget - obj.angle
-    );
+    const difference =
+        normalizeAngle(obj.uprightTarget - obj.angle);
 
-    obj.angle += difference *
-        0.02 *
-        dt;
-
+    obj.angle += difference * 0.02 * dt;
     obj.angularVelocity *= 0.72;
 
     if (Math.abs(difference) < 0.01) {
@@ -1159,16 +1063,12 @@ function render(obj) {
     }
 
     const scale =
-        obj.hovered && !obj.dragging
-            ? 1.06
-            : 1;
+        obj.hovered && !obj.dragging ? 1.06 : 1;
 
     obj.el.style.transform =
-        `translate3d(` +
-        `${obj.x - obj.width / 2}px, ` +
+        `translate3d(${obj.x - obj.width / 2}px, ` +
         `${obj.y - obj.height / 2}px, 0) ` +
-        `rotate(${obj.angle}rad) ` +
-        `scale(${scale})`;
+        `rotate(${obj.angle}rad) scale(${scale})`;
 }
 
 /* ========================= MAIN PHYSICS LOOP ================== */
@@ -1193,38 +1093,20 @@ function physicsLoop(time) {
 
             obj.vy += PHYSICS.gravity * dt;
 
-            obj.vx *= Math.pow(
-                PHYSICS.air,
-                dt
-            );
+            obj.vx *= Math.pow(PHYSICS.air, dt);
+            obj.vy *= Math.pow(PHYSICS.air, dt);
 
-            obj.vy *= Math.pow(
-                PHYSICS.air,
-                dt
-            );
+            obj.angularVelocity *=
+                Math.pow(PHYSICS.angularAir, dt);
 
-            obj.angularVelocity *= Math.pow(
-                PHYSICS.angularAir,
-                dt
-            );
-
-            const steps = Math.max(
-                1,
-                Math.ceil(dt / 0.5)
-            );
-
+            const steps = Math.max(1, Math.ceil(dt / 0.5));
             const stepDt = dt / steps;
 
-            for (
-                let step = 0;
-                step < steps;
-                step++
-            ) {
+            for (let step = 0; step < steps; step++) {
                 obj.x += obj.vx * stepDt;
                 obj.y += obj.vy * stepDt;
-                obj.angle +=
-                    obj.angularVelocity *
-                    stepDt;
+
+                obj.angle += obj.angularVelocity * stepDt;
 
                 keepInside(obj);
             }
@@ -1234,6 +1116,7 @@ function physicsLoop(time) {
             limitVelocity(obj);
         }
 
+        // Resolve collisions and correct boundaries repeatedly.
         for (let pass = 0; pass < 8; pass++) {
             solveAllCollisions();
 
@@ -1299,11 +1182,7 @@ function getDestination(value) {
         "index.html"
     ];
 
-    if (
-        localPages.includes(
-            value.toLowerCase()
-        )
-    ) {
+    if (localPages.includes(value.toLowerCase())) {
         return value;
     }
 
@@ -1311,9 +1190,7 @@ function getDestination(value) {
         return value;
     }
 
-    if (
-        /^[a-z0-9.-]+\.[a-z]{2,}(\/.*)?$/i.test(value)
-    ) {
+    if (/^[a-z0-9.-]+\.[a-z]{2,}(\/.*)?$/i.test(value)) {
         return "https://" + value;
     }
 
@@ -1325,8 +1202,7 @@ if (searchForm && searchInput) {
     searchForm.addEventListener("submit", event => {
         event.preventDefault();
 
-        const destination =
-            getDestination(searchInput.value);
+        const destination = getDestination(searchInput.value);
 
         if (destination) {
             trackEvent("search_used");
@@ -1374,59 +1250,23 @@ const infoButton = document.getElementById("infoButton");
 const infoOverlay = document.getElementById("infoOverlay");
 const infoClose = document.getElementById("infoClose");
 
-function openInfoPanel() {
-    if (!infoOverlay) return;
-
-    infoOverlay.hidden = false;
-
-    requestAnimationFrame(() => {
-        infoOverlay.classList.add("open");
-    });
-
-    document.body.classList.add("info-is-open");
-
-    trackEvent("information_opened");
-}
-
-function closeInfoPanel() {
-    if (!infoOverlay) return;
-
-    infoOverlay.classList.remove("open");
-    document.body.classList.remove("info-is-open");
-
-    window.setTimeout(() => {
-        if (!infoOverlay.classList.contains("open")) {
-            infoOverlay.hidden = true;
-        }
-    }, 300);
-}
-
-infoButton?.addEventListener("click", event => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    openInfoPanel();
+infoButton?.addEventListener("click", () => {
+    infoOverlay?.classList.add("open");
 });
 
-infoClose?.addEventListener("click", event => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    closeInfoPanel();
+infoClose?.addEventListener("click", () => {
+    infoOverlay?.classList.remove("open");
 });
 
 infoOverlay?.addEventListener("click", event => {
     if (event.target === infoOverlay) {
-        closeInfoPanel();
+        infoOverlay.classList.remove("open");
     }
 });
 
 document.addEventListener("keydown", event => {
-    if (
-        event.key === "Escape" &&
-        infoOverlay?.classList.contains("open")
-    ) {
-        closeInfoPanel();
+    if (event.key === "Escape") {
+        infoOverlay?.classList.remove("open");
     }
 });
 
@@ -1440,31 +1280,28 @@ function updateDateTime() {
     const now = new Date();
 
     if (currentTime) {
-        currentTime.textContent =
-            now.toLocaleTimeString(undefined, {
-                hour: "numeric",
-                minute: "2-digit",
-                second: "2-digit"
-            });
+        currentTime.textContent = now.toLocaleTimeString(undefined, {
+            hour: "numeric",
+            minute: "2-digit",
+            second: "2-digit"
+        });
     }
 
     if (currentDate) {
-        currentDate.textContent =
-            now.toLocaleDateString(undefined, {
-                month: "long",
-                day: "numeric",
-                year: "numeric"
-            });
+        currentDate.textContent = now.toLocaleDateString(undefined, {
+            month: "long",
+            day: "numeric",
+            year: "numeric"
+        });
     }
 
     if (dateTime) {
-        dateTime.textContent =
-            now.toLocaleString(undefined, {
-                month: "short",
-                day: "numeric",
-                hour: "numeric",
-                minute: "2-digit"
-            });
+        dateTime.textContent = now.toLocaleString(undefined, {
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "2-digit"
+        });
     }
 }
 
@@ -1521,13 +1358,8 @@ function getRandomAd() {
     let index;
 
     do {
-        index = Math.floor(
-            Math.random() * adList.length
-        );
-    } while (
-        adList.length > 1 &&
-        index === lastAdIndex
-    );
+        index = Math.floor(Math.random() * adList.length);
+    } while (adList.length > 1 && index === lastAdIndex);
 
     lastAdIndex = index;
 
@@ -1565,10 +1397,7 @@ function showRandomAd() {
         clearTimeout(adHideTimer);
     }
 
-    adHideTimer = window.setTimeout(
-        hideRandomAd,
-        12000
-    );
+    adHideTimer = window.setTimeout(hideRandomAd, 12000);
 }
 
 function scheduleRandomAd() {
@@ -1637,10 +1466,7 @@ scheduleRandomAd();
             statusText.textContent = message;
         }
 
-        statusDot?.classList.toggle(
-            "active",
-            active
-        );
+        statusDot?.classList.toggle("active", active);
     }
 
     function getTargetWindow() {
@@ -1703,30 +1529,21 @@ scheduleRandomAd();
                 keyCode: 0
             };
 
-            const event = new target.KeyboardEvent(
-                type,
-                {
-                    key: info.key,
-                    code: info.code,
-                    bubbles: true,
-                    cancelable: true
-                }
-            );
+            const event = new target.KeyboardEvent(type, {
+                key: info.key,
+                code: info.code,
+                bubbles: true,
+                cancelable: true
+            });
 
             target.document.dispatchEvent(event);
             target.document.activeElement?.dispatchEvent(event);
 
-            setStatus(
-                "Input sent; game support varies",
-                true
-            );
+            setStatus("Input sent; game support varies", true);
 
             return true;
         } catch (_) {
-            setStatus(
-                "Could not send keyboard input"
-            );
-
+            setStatus("Could not send keyboard input");
             return false;
         }
     }
@@ -1751,6 +1568,7 @@ scheduleRandomAd();
         }
 
         heldKeys.clear();
+
         setStatus("Keys released");
     }
 
@@ -1769,10 +1587,7 @@ scheduleRandomAd();
     function setPanelOpen(open) {
         panel.classList.toggle("visible", open);
 
-        toggle.setAttribute(
-            "aria-expanded",
-            String(open)
-        );
+        toggle.setAttribute("aria-expanded", String(open));
 
         if (!open) {
             stopAutoClicker();
@@ -1786,6 +1601,7 @@ scheduleRandomAd();
         if (!target) {
             stopAutoClicker();
             setStatus("Page blocks click access");
+
             return false;
         }
 
@@ -1799,6 +1615,7 @@ scheduleRandomAd();
                 element === doc.documentElement
             ) {
                 setStatus("Tap inside the page first");
+
                 return false;
             }
 
@@ -1820,40 +1637,33 @@ scheduleRandomAd();
             clickCount++;
 
             if (clickCountLabel) {
-                clickCountLabel.textContent =
-                    String(clickCount);
+                clickCountLabel.textContent = String(clickCount);
             }
 
-            setStatus(
-                "Click event sent",
-                true
-            );
+            setStatus("Click event sent", true);
 
             return true;
         } catch (_) {
             setStatus("Could not send click");
+
             return false;
         }
     }
 
     function startAutoClicker() {
-        const interval =
-            Number(intervalInput.value);
+        const interval = Number(intervalInput.value);
 
         if (
             !Number.isFinite(interval) ||
             interval < 50 ||
             interval > 10000
         ) {
-            setStatus(
-                "Choose 50–10000 milliseconds"
-            );
+            setStatus("Choose 50–10000 milliseconds");
 
             intervalInput.value = "500";
 
             if (intervalLabel) {
-                intervalLabel.textContent =
-                    "500 ms";
+                intervalLabel.textContent = "500 ms";
             }
 
             return;
@@ -1862,8 +1672,7 @@ scheduleRandomAd();
         stopAutoClicker();
 
         if (intervalLabel) {
-            intervalLabel.textContent =
-                `${interval} ms`;
+            intervalLabel.textContent = `${interval} ms`;
         }
 
         running = true;
@@ -1871,10 +1680,7 @@ scheduleRandomAd();
         startButton.textContent = "Stop";
         startButton.classList.add("running");
 
-        setStatus(
-            "Auto clicker running",
-            true
-        );
+        setStatus("Auto clicker running", true);
 
         clickTimer = window.setInterval(() => {
             if (!sendClick()) {
@@ -1884,49 +1690,29 @@ scheduleRandomAd();
     }
 
     toggle.addEventListener("click", () => {
-        setPanelOpen(
-            !panel.classList.contains("visible")
-        );
+        setPanelOpen(!panel.classList.contains("visible"));
     });
 
     closeButton.addEventListener("click", () => {
         setPanelOpen(false);
     });
 
-    panel.querySelectorAll("[data-key]")
-        .forEach(button => {
-            const key = button.dataset.key;
+    panel.querySelectorAll("[data-key]").forEach(button => {
+        const key = button.dataset.key;
 
-            button.addEventListener(
-                "pointerdown",
-                event => {
-                    event.preventDefault();
-                    pressKey(key);
-                }
-            );
-
-            const release = () => releaseKey(key);
-
-            button.addEventListener(
-                "pointerup",
-                release
-            );
-
-            button.addEventListener(
-                "pointercancel",
-                release
-            );
-
-            button.addEventListener(
-                "lostpointercapture",
-                release
-            );
+        button.addEventListener("pointerdown", event => {
+            event.preventDefault();
+            pressKey(key);
         });
 
-    releaseButton?.addEventListener(
-        "click",
-        releaseAllKeys
-    );
+        const release = () => releaseKey(key);
+
+        button.addEventListener("pointerup", release);
+        button.addEventListener("pointercancel", release);
+        button.addEventListener("lostpointercapture", release);
+    });
+
+    releaseButton?.addEventListener("click", releaseAllKeys);
 
     startButton.addEventListener("click", () => {
         if (running) {
@@ -1938,8 +1724,7 @@ scheduleRandomAd();
     });
 
     intervalInput.addEventListener("input", () => {
-        const value =
-            Number(intervalInput.value);
+        const value = Number(intervalInput.value);
 
         if (intervalLabel) {
             intervalLabel.textContent =
@@ -1950,16 +1735,11 @@ scheduleRandomAd();
 
         if (running) {
             stopAutoClicker();
-            setStatus(
-                "Interval changed; press Start again"
-            );
+            setStatus("Interval changed; press Start again");
         }
     });
 
-    singleClickButton?.addEventListener(
-        "click",
-        sendClick
-    );
+    singleClickButton?.addEventListener("click", sendClick);
 
     resetButton?.addEventListener("click", () => {
         clickCount = 0;
@@ -1971,96 +1751,68 @@ scheduleRandomAd();
         setStatus("Click counter reset");
     });
 
-    document.addEventListener(
-        "keydown",
-        event => {
-            if (
-                event.key.toLowerCase() === "control" &&
-                !event.repeat
-            ) {
-                const tag =
-                    event.target?.tagName;
+    document.addEventListener("keydown", event => {
+        if (
+            event.key.toLowerCase() === "control" &&
+            !event.repeat
+        ) {
+            const tag = event.target?.tagName;
 
-                if (
-                    tag === "INPUT" ||
-                    tag === "TEXTAREA"
-                ) {
-                    return;
-                }
-
-                event.preventDefault();
-
-                setPanelOpen(
-                    !panel.classList.contains("visible")
-                );
+            if (tag === "INPUT" || tag === "TEXTAREA") {
+                return;
             }
 
-            if (
-                event.key === "Escape" &&
-                panel.classList.contains("visible")
-            ) {
-                event.stopPropagation();
-                setPanelOpen(false);
-            }
-        },
-        true
-    );
+            event.preventDefault();
 
-    window.addEventListener(
-        "blur",
-        releaseAllKeys
-    );
+            setPanelOpen(!panel.classList.contains("visible"));
+        }
+
+        if (
+            event.key === "Escape" &&
+            panel.classList.contains("visible")
+        ) {
+            event.stopPropagation();
+            setPanelOpen(false);
+        }
+    }, true);
+
+    window.addEventListener("blur", releaseAllKeys);
 
     frame.addEventListener("load", () => {
         stopAutoClicker();
         releaseAllKeys();
+
         setStatus("Page loaded; controls ready");
     });
 
-    window.addEventListener(
-        "pagehide",
-        () => {
-            stopAutoClicker();
-            releaseAllKeys();
-        }
-    );
+    window.addEventListener("pagehide", () => {
+        stopAutoClicker();
+        releaseAllKeys();
+    });
 
     setStatus("Controls ready");
 })();
 
 /* ========================= CUSTOM CURSOR ====================== */
 
-const cursor = document.getElementById(
-    "custom-cursor"
-);
+const cursor = document.getElementById("custom-cursor");
 
 if (cursor) {
-    document.addEventListener(
-        "mousemove",
-        event => {
-            cursor.style.left =
-                `${event.clientX}px`;
-
-            cursor.style.top =
-                `${event.clientY}px`;
-        }
-    );
+    document.addEventListener("mousemove", event => {
+        cursor.style.left = `${event.clientX}px`;
+        cursor.style.top = `${event.clientY}px`;
+    });
 }
 
 /* ========================= HOVER VIDEOS ======================= */
 
-const backgroundVideo = document.getElementById(
-    "backgroundVideo"
-);
+const backgroundVideo = document.getElementById("backgroundVideo");
 
 let backgroundVideoTimer = null;
 
 blocks.forEach(block => {
-    const blockVideo =
-        block.querySelector(".blockVideo");
-
-    const backgroundSource =
-        block.dataset.backgroundVideo;
+    const blockVideo = block.querySelector(".blockVideo");
+    const backgroundSource = block.dataset.backgroundVideo;
 
     block.addEventListener("mouseenter", () => {
         clearTimeout(backgroundVideoTimer);
@@ -2070,25 +1822,13 @@ blocks.forEach(block => {
             blockVideo.play().catch(() => {});
         }
 
-        if (
-            !backgroundSource ||
-            !backgroundVideo
-        ) {
-            return;
-        }
+        if (!backgroundSource || !backgroundVideo) return;
 
         const fullSource =
-            new URL(
-                backgroundSource,
-                document.baseURI
-            ).href;
+            new URL(backgroundSource, document.baseURI).href;
 
-        if (
-            backgroundVideo.src !== fullSource
-        ) {
-            backgroundVideo.src =
-                backgroundSource;
-
+        if (backgroundVideo.src !== fullSource) {
+            backgroundVideo.src = backgroundSource;
             backgroundVideo.load();
         }
 
@@ -2104,109 +1844,65 @@ blocks.forEach(block => {
             blockVideo.currentTime = 0;
         }
 
-        if (
-            !backgroundSource ||
-            !backgroundVideo
-        ) {
-            return;
-        }
+        if (!backgroundSource || !backgroundVideo) return;
 
-        backgroundVideoTimer =
-            window.setTimeout(() => {
-                backgroundVideo.pause();
-                backgroundVideo.classList.remove(
-                    "active"
-                );
-            }, 150);
+        backgroundVideoTimer = window.setTimeout(() => {
+            backgroundVideo.pause();
+            backgroundVideo.classList.remove("active");
+        }, 150);
     });
 });
 
 /* ========================= SETTINGS PANEL ===================== */
 
 (() => {
-    const settingsBtn =
-        document.getElementById("settingsBtn");
+    const settingsBtn = document.getElementById("settingsBtn");
+    const settingsPanel = document.getElementById("settingsPanel");
+    const closeSettings = document.getElementById("closeSettings");
 
-    const settingsPanel =
-        document.getElementById("settingsPanel");
-
-    const closeSettings =
-        document.getElementById("closeSettings");
-
-    if (!settingsBtn || !settingsPanel) {
-        return;
-    }
+    if (!settingsBtn || !settingsPanel) return;
 
     function openSettings() {
         settingsPanel.hidden = false;
         settingsPanel.style.display = "block";
 
-        settingsPanel.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-        settingsBtn.setAttribute(
-            "aria-expanded",
-            "true"
-        );
+        settingsPanel.setAttribute("aria-hidden", "false");
+        settingsBtn.setAttribute("aria-expanded", "true");
     }
 
     function hideSettings() {
         settingsPanel.hidden = true;
         settingsPanel.style.display = "none";
 
-        settingsPanel.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-
-        settingsBtn.setAttribute(
-            "aria-expanded",
-            "false"
-        );
+        settingsPanel.setAttribute("aria-hidden", "true");
+        settingsBtn.setAttribute("aria-expanded", "false");
     }
 
     hideSettings();
 
-    settingsBtn.addEventListener(
-        "click",
-        event => {
-            event.preventDefault();
+    settingsBtn.addEventListener("click", event => {
+        event.preventDefault();
 
-            if (settingsPanel.hidden) {
-                openSettings();
-            } else {
-                hideSettings();
-            }
-        }
-    );
-
-    closeSettings?.addEventListener(
-        "click",
-        event => {
-            event.preventDefault();
+        if (settingsPanel.hidden) {
+            openSettings();
+        } else {
             hideSettings();
         }
-    );
+    });
 
-    document.addEventListener(
-        "keydown",
-        event => {
-            if (
-                event.key === "Escape" &&
-                !settingsPanel.hidden
-            ) {
-                hideSettings();
-            }
+    closeSettings?.addEventListener("click", event => {
+        event.preventDefault();
+        hideSettings();
+    });
+
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && !settingsPanel.hidden) {
+            hideSettings();
         }
-    );
+    });
 
-    window.openSafeBucketSettings =
-        openSettings;
-
-    window.closeSafeBucketSettings =
-        hideSettings;
+    window.openSafeBucketSettings = openSettings;
+    window.closeSafeBucketSettings = hideSettings;
 })();
 
 /* ========================= TUTORIAL =========================== */
@@ -2224,91 +1920,39 @@ function tutorialIsOpen() {
 let renderTutorialStep = function () {};
 
 (() => {
-    const prompt =
-        document.getElementById("tutorialPrompt");
-
-    const tutorial =
-        document.getElementById("tutorialOverlay");
-
+    const prompt = document.getElementById("tutorialPrompt");
+    const tutorial = document.getElementById("tutorialOverlay");
     const spotlightLayer =
-        document.getElementById(
-            "tutorialSpotlightLayer"
-        );
-
+        document.getElementById("tutorialSpotlightLayer");
     const spotlight =
-        document.getElementById(
-            "tutorialSpotlight"
-        );
+        document.getElementById("tutorialSpotlight");
 
     const dontShowAgain =
-        document.getElementById(
-            "dontShowTutorialAgain"
-        );
+        document.getElementById("dontShowTutorialAgain");
 
-    const startButton =
-        document.getElementById(
-            "startTutorial"
-        );
-
+    const startButton = document.getElementById("startTutorial");
     const skipPromptButton =
-        document.getElementById(
-            "skipTutorialPrompt"
-        );
+        document.getElementById("skipTutorialPrompt");
 
-    const closeButton =
-        document.getElementById(
-            "closeTutorial"
-        );
+    const closeButton = document.getElementById("closeTutorial");
+    const backButton = document.getElementById("tutorialBack");
+    const nextButton = document.getElementById("tutorialNext");
+    const skipButton = document.getElementById("tutorialSkip");
 
-    const backButton =
-        document.getElementById(
-            "tutorialBack"
-        );
-
-    const nextButton =
-        document.getElementById(
-            "tutorialNext"
-        );
-
-    const skipButton =
-        document.getElementById(
-            "tutorialSkip"
-        );
-
-    const stepCount =
-        document.getElementById(
-            "tutorialStepCount"
-        );
-
-    const title =
-        document.getElementById(
-            "tutorialTitle"
-        );
-
+    const stepCount = document.getElementById("tutorialStepCount");
+    const title = document.getElementById("tutorialTitle");
     const description =
-        document.getElementById(
-            "tutorialDescription"
-        );
+        document.getElementById("tutorialDescription");
 
     const progressBar =
-        document.getElementById(
-            "tutorialProgressBar"
-        );
+        document.getElementById("tutorialProgressBar");
 
-    const progress =
-        document.getElementById(
-            "tutorialProgress"
-        );
+    const progress = document.getElementById("tutorialProgress");
 
     const replayButton =
-        document.getElementById(
-            "replayTutorialButton"
-        );
+        document.getElementById("replayTutorialButton");
 
-    const settingsPanel =
-        document.getElementById(
-            "settingsPanel"
-        );
+    const settingsPanel = document.getElementById("settingsPanel");
 
     if (
         !prompt ||
@@ -2333,10 +1977,10 @@ let renderTutorialStep = function () {};
 
     const steps = [
         {
-            title: "Welcome to Meld!",
+            title: "Welcome to Safe Bucket!",
             description:
                 "This quick tour shows you the main features. " +
-                "The green border highlights the feature being explained.",
+                "The orange border highlights the feature being explained.",
             target: "#searchForm",
             fallback: "#world"
         },
@@ -2362,7 +2006,7 @@ let renderTutorialStep = function () {};
             description:
                 "Tap a shortcut or search for a website to open it. " +
                 "Some websites block embedded browsers and may not load " +
-                "inside Meld.",
+                "inside Safe Bucket.",
             target: "#browser",
             fallback: "#searchForm"
         },
@@ -2388,7 +2032,7 @@ let renderTutorialStep = function () {};
             title: "Settings and Information",
             description:
                 "Use the gear button to open Settings and replay this " +
-                "tutorial. The information button opens the Meld " +
+                "tutorial. The information button opens the Safe Bucket " +
                 "information panel.",
             target: "#settingsBtn",
             fallback: "#infoButton"
@@ -2396,8 +2040,8 @@ let renderTutorialStep = function () {};
         {
             title: "You're Ready!",
             description:
-                "That's the tour! Explore Meld and return to Settings " +
-                "whenever you want to replay it.",
+                "That's the tour! Explore Safe Bucket and return to " +
+                "Settings whenever you want to replay it.",
             target: "#settingsBtn",
             fallback: "#world"
         }
@@ -2405,23 +2049,19 @@ let renderTutorialStep = function () {};
 
     let tutorialCard =
         tutorial.querySelector(
-            ".tutorial-card, .tutorial-panel, " +
-            ".tutorial-content, .tutorial-dialog, " +
-            "[data-tutorial-card]"
-        ) ||
-        tutorial.firstElementChild ||
-        tutorial;
+            ".tutorial-card, .tutorial-panel, .tutorial-content, " +
+            ".tutorial-dialog, [data-tutorial-card]"
+        ) || tutorial.firstElementChild || tutorial;
 
     let highlightedTarget = null;
+
     let savedTargetOutline = "";
     let savedTargetOutlineOffset = "";
 
     function clearTargetHighlight() {
         if (!highlightedTarget) return;
 
-        highlightedTarget.style.outline =
-            savedTargetOutline;
-
+        highlightedTarget.style.outline = savedTargetOutline;
         highlightedTarget.style.outlineOffset =
             savedTargetOutlineOffset;
 
@@ -2435,9 +2075,7 @@ let renderTutorialStep = function () {};
     }
 
     function highlightTarget(target) {
-        if (target === highlightedTarget) {
-            return;
-        }
+        if (target === highlightedTarget) return;
 
         clearTargetHighlight();
 
@@ -2445,19 +2083,12 @@ let renderTutorialStep = function () {};
 
         highlightedTarget = target;
 
-        savedTargetOutline =
-            target.style.outline;
+        savedTargetOutline = target.style.outline;
+        savedTargetOutlineOffset = target.style.outlineOffset;
 
-        savedTargetOutlineOffset =
-            target.style.outlineOffset;
+        target.classList.add("tutorial-highlight-target");
 
-        target.classList.add(
-            "tutorial-highlight-target"
-        );
-
-        target.style.outline =
-            "3px solid #a3e635";
-
+        target.style.outline = "3px solid #ff6a00";
         target.style.outlineOffset = "4px";
     }
 
@@ -2467,26 +2098,20 @@ let renderTutorialStep = function () {};
             : null;
 
         if (
-            (!target ||
-                !target.getClientRects().length) &&
+            (!target || !target.getClientRects().length) &&
             step.fallback
         ) {
-            target = document.querySelector(
-                step.fallback
-            );
+            target = document.querySelector(step.fallback);
         }
 
-        return target &&
-            target.getClientRects().length
+        return target && target.getClientRects().length
             ? target
             : null;
     }
 
     function showTutorialPrompt() {
         if (
-            readStorage(
-                "safeBucketTutorialDisabled"
-            ) === "true" ||
+            readStorage("safeBucketTutorialDisabled") === "true" ||
             tutorialState.promptDismissedThisSession
         ) {
             return;
@@ -2502,48 +2127,31 @@ let renderTutorialStep = function () {};
         if (tutorialState.isOpen) return;
 
         prompt.hidden = false;
-        prompt.setAttribute(
-            "aria-hidden",
-            "false"
-        );
+        prompt.setAttribute("aria-hidden", "false");
     }
 
     function closePrompt() {
         prompt.hidden = true;
-        prompt.setAttribute(
-            "aria-hidden",
-            "true"
-        );
+        prompt.setAttribute("aria-hidden", "true");
 
-        tutorialState.promptDismissedThisSession =
-            true;
+        tutorialState.promptDismissedThisSession = true;
     }
 
     function positionSpotlight(target) {
-        if (!spotlight || !spotlightLayer) {
-            return;
-        }
+        if (!spotlight || !spotlightLayer) return;
 
         if (!target) {
-            spotlightLayer.style.display =
-                "none";
-
+            spotlightLayer.style.display = "none";
             spotlight.style.display = "none";
+
             return;
         }
 
         const rect = target.getBoundingClientRect();
         const padding = 7;
 
-        const left = Math.max(
-            0,
-            rect.left - padding
-        );
-
-        const top = Math.max(
-            0,
-            rect.top - padding
-        );
+        const left = Math.max(0, rect.left - padding);
+        const top = Math.max(0, rect.top - padding);
 
         const width = Math.min(
             innerWidth - left,
@@ -2555,40 +2163,34 @@ let renderTutorialStep = function () {};
             rect.height + padding * 2
         );
 
-        Object.assign(
-            spotlightLayer.style,
-            {
-                display: "block",
-                position: "fixed",
-                inset: "0",
-                pointerEvents: "none",
-                zIndex: "9997"
-            }
-        );
+        Object.assign(spotlightLayer.style, {
+            display: "block",
+            position: "fixed",
+            inset: "0",
+            pointerEvents: "none",
+            zIndex: "9997"
+        });
 
-        Object.assign(
-            spotlight.style,
-            {
-                display: "block",
-                position: "fixed",
-                left: `${left}px`,
-                top: `${top}px`,
-                width: `${Math.max(0, width)}px`,
-                height: `${Math.max(0, height)}px`,
-                boxSizing: "border-box",
-                border: "3px solid #a3e635",
-                borderRadius: "12px",
-                boxShadow:
-                    "0 0 0 9999px rgba(0,0,0,.62), " +
-                    "0 0 22px rgba(163,230,53,.8)",
-                background: "transparent",
-                pointerEvents: "none",
-                zIndex: "9998",
-                transition:
-                    "left 180ms ease, top 180ms ease, " +
-                    "width 180ms ease, height 180ms ease"
-            }
-        );
+        Object.assign(spotlight.style, {
+            display: "block",
+            position: "fixed",
+            left: `${left}px`,
+            top: `${top}px`,
+            width: `${Math.max(0, width)}px`,
+            height: `${Math.max(0, height)}px`,
+            boxSizing: "border-box",
+            border: "3px solid #ff6a00",
+            borderRadius: "12px",
+            boxShadow:
+                "0 0 0 9999px rgba(0,0,0,.62), " +
+                "0 0 22px rgba(255,106,0,.8)",
+            background: "transparent",
+            pointerEvents: "none",
+            zIndex: "9998",
+            transition:
+                "left 180ms ease, top 180ms ease, " +
+                "width 180ms ease, height 180ms ease"
+        });
     }
 
     function positionTutorialCard(target) {
@@ -2597,28 +2199,22 @@ let renderTutorialStep = function () {};
         const margin = 16;
         const gap = 18;
 
-        Object.assign(
-            tutorialCard.style,
-            {
-                position: "fixed",
-                transform: "none",
-                margin: "0",
-                maxWidth:
-                    "min(420px, calc(100vw - 32px))",
-                maxHeight:
-                    "calc(100vh - 32px)",
-                overflowY: "auto",
-                zIndex: "10000",
-                pointerEvents: "auto",
-                left: `${margin}px`,
-                top: `${margin}px`,
-                right: "auto",
-                bottom: "auto"
-            }
-        );
+        Object.assign(tutorialCard.style, {
+            position: "fixed",
+            transform: "none",
+            margin: "0",
+            maxWidth: "min(420px, calc(100vw - 32px))",
+            maxHeight: "calc(100vh - 32px)",
+            overflowY: "auto",
+            zIndex: "10000",
+            pointerEvents: "auto",
+            left: `${margin}px`,
+            top: `${margin}px`,
+            right: "auto",
+            bottom: "auto"
+        });
 
-        const cardRect =
-            tutorialCard.getBoundingClientRect();
+        const cardRect = tutorialCard.getBoundingClientRect();
 
         const cardWidth = Math.min(
             cardRect.width || 360,
@@ -2630,15 +2226,11 @@ let renderTutorialStep = function () {};
             innerHeight - margin * 2
         );
 
-        let left =
-            (innerWidth - cardWidth) / 2;
-
-        let top =
-            (innerHeight - cardHeight) / 2;
+        let left = (innerWidth - cardWidth) / 2;
+        let top = (innerHeight - cardHeight) / 2;
 
         if (target) {
-            const rect =
-                target.getBoundingClientRect();
+            const rect = target.getBoundingClientRect();
 
             const positions = [
                 {
@@ -2646,9 +2238,7 @@ let renderTutorialStep = function () {};
                     top: rect.top
                 },
                 {
-                    left: rect.left -
-                        cardWidth -
-                        gap,
+                    left: rect.left - cardWidth - gap,
                     top: rect.top
                 },
                 {
@@ -2657,123 +2247,76 @@ let renderTutorialStep = function () {};
                 },
                 {
                     left: rect.left,
-                    top: rect.top -
-                        cardHeight -
-                        gap
+                    top: rect.top - cardHeight - gap
                 }
             ];
 
-            const fits = positions.find(
-                position =>
-                    position.left >= margin &&
-                    position.top >= margin &&
-                    position.left +
-                        cardWidth <=
-                        innerWidth - margin &&
-                    position.top +
-                        cardHeight <=
-                        innerHeight - margin
+            const fits = positions.find(p =>
+                p.left >= margin &&
+                p.top >= margin &&
+                p.left + cardWidth <= innerWidth - margin &&
+                p.top + cardHeight <= innerHeight - margin
             );
 
             if (fits) {
                 left = fits.left;
                 top = fits.top;
             } else {
-                left =
-                    rect.left < innerWidth / 2
-                        ? innerWidth -
-                            cardWidth -
-                            margin
-                        : margin;
+                left = rect.left < innerWidth / 2
+                    ? innerWidth - cardWidth - margin
+                    : margin;
 
-                top =
-                    rect.top < innerHeight / 2
-                        ? innerHeight -
-                            cardHeight -
-                            margin
-                        : margin;
+                top = rect.top < innerHeight / 2
+                    ? innerHeight - cardHeight - margin
+                    : margin;
             }
         }
 
         tutorialCard.style.left =
-            `${clamp(
-                left,
-                margin,
-                innerWidth -
-                    cardWidth -
-                    margin
-            )}px`;
+            `${clamp(left, margin, innerWidth - cardWidth - margin)}px`;
 
         tutorialCard.style.top =
-            `${clamp(
-                top,
-                margin,
-                innerHeight -
-                    cardHeight -
-                    margin
-            )}px`;
+            `${clamp(top, margin, innerHeight - cardHeight - margin)}px`;
     }
 
     renderTutorialStep = function () {
-        if (!tutorialState.isOpen) {
-            return;
-        }
+        if (!tutorialState.isOpen) return;
 
-        const step =
-            steps[tutorialState.currentStep];
+        const step = steps[tutorialState.currentStep];
 
         if (!step) return;
 
         title.textContent = step.title;
-        description.textContent =
-            step.description;
+        description.textContent = step.description;
 
         stepCount.textContent =
-            `Step ${tutorialState.currentStep + 1} ` +
-            `of ${steps.length}`;
+            `Step ${tutorialState.currentStep + 1} of ${steps.length}`;
 
         const percentage =
-            ((tutorialState.currentStep + 1) /
-                steps.length) *
-            100;
+            ((tutorialState.currentStep + 1) / steps.length) * 100;
 
-        progressBar.style.width =
-            `${percentage}%`;
+        progressBar.style.width = `${percentage}%`;
 
         progressBar.setAttribute(
             "aria-valuenow",
-            String(
-                tutorialState.currentStep + 1
-            )
+            String(tutorialState.currentStep + 1)
         );
 
-        progressBar.setAttribute(
-            "aria-valuemin",
-            "1"
-        );
-
+        progressBar.setAttribute("aria-valuemin", "1");
         progressBar.setAttribute(
             "aria-valuemax",
             String(steps.length)
         );
 
         if (progress) {
-            progress.setAttribute(
-                "role",
-                "progressbar"
-            );
+            progress.setAttribute("role", "progressbar");
 
             progress.setAttribute(
                 "aria-valuenow",
-                String(
-                    tutorialState.currentStep + 1
-                )
+                String(tutorialState.currentStep + 1)
             );
 
-            progress.setAttribute(
-                "aria-valuemin",
-                "1"
-            );
+            progress.setAttribute("aria-valuemin", "1");
 
             progress.setAttribute(
                 "aria-valuemax",
@@ -2786,21 +2329,16 @@ let renderTutorialStep = function () {};
             );
         }
 
-        backButton.disabled =
-            tutorialState.currentStep === 0;
+        backButton.disabled = tutorialState.currentStep === 0;
 
         const last =
-            tutorialState.currentStep ===
-            steps.length - 1;
+            tutorialState.currentStep === steps.length - 1;
 
-        nextButton.textContent =
-            last ? "Finish" : "Next";
+        nextButton.textContent = last ? "Finish" : "Next";
 
         nextButton.setAttribute(
             "aria-label",
-            last
-                ? "Finish tutorial"
-                : "Next tutorial step"
+            last ? "Finish tutorial" : "Next tutorial step"
         );
 
         const target = findTarget(step);
@@ -2817,10 +2355,7 @@ let renderTutorialStep = function () {};
             settingsPanel.hidden = true;
             settingsPanel.style.display = "none";
 
-            settingsPanel.setAttribute(
-                "aria-hidden",
-                "true"
-            );
+            settingsPanel.setAttribute("aria-hidden", "true");
         }
 
         if (
@@ -2834,21 +2369,15 @@ let renderTutorialStep = function () {};
         tutorialState.isOpen = true;
 
         tutorial.hidden = false;
-        tutorial.setAttribute(
-            "aria-hidden",
-            "false"
-        );
+        tutorial.setAttribute("aria-hidden", "false");
 
-        Object.assign(
-            tutorial.style,
-            {
-                position: "fixed",
-                inset: "0",
-                background: "transparent",
-                pointerEvents: "none",
-                zIndex: "9999"
-            }
-        );
+        Object.assign(tutorial.style, {
+            position: "fixed",
+            inset: "0",
+            background: "transparent",
+            pointerEvents: "none",
+            zIndex: "9999"
+        });
 
         renderTutorialStep();
         closeButton.focus();
@@ -2860,14 +2389,10 @@ let renderTutorialStep = function () {};
         clearTargetHighlight();
 
         tutorial.hidden = true;
-        tutorial.setAttribute(
-            "aria-hidden",
-            "true"
-        );
+        tutorial.setAttribute("aria-hidden", "true");
 
         if (spotlightLayer) {
-            spotlightLayer.style.display =
-                "none";
+            spotlightLayer.style.display = "none";
         }
 
         if (spotlight) {
@@ -2899,151 +2424,89 @@ let renderTutorialStep = function () {};
 
     function saveDontShowPreference() {
         if (dontShowAgain?.checked) {
-            writeStorage(
-                "safeBucketTutorialDisabled",
-                true
-            );
+            writeStorage("safeBucketTutorialDisabled", true);
         }
     }
 
-    startButton.addEventListener(
-        "click",
-        () => {
-            saveDontShowPreference();
-            startTutorial();
-        }
-    );
+    startButton.addEventListener("click", () => {
+        saveDontShowPreference();
+        startTutorial();
+    });
 
-    skipPromptButton.addEventListener(
-        "click",
-        () => {
-            saveDontShowPreference();
+    skipPromptButton.addEventListener("click", () => {
+        saveDontShowPreference();
+        closePrompt();
+    });
+
+    closeButton.addEventListener("click", endTutorial);
+    skipButton.addEventListener("click", endTutorial);
+
+    backButton.addEventListener("click", () => {
+        if (tutorialState.currentStep > 0) {
+            tutorialState.currentStep--;
+            renderTutorialStep();
+        }
+    });
+
+    nextButton.addEventListener("click", () => {
+        if (tutorialState.currentStep < steps.length - 1) {
+            tutorialState.currentStep++;
+            renderTutorialStep();
+        } else {
+            endTutorial();
+        }
+    });
+
+    replayButton?.addEventListener("click", startTutorial);
+
+    document.addEventListener("keydown", event => {
+        if (event.key !== "Escape") return;
+
+        if (tutorialState.isOpen) {
+            endTutorial();
+        } else if (!prompt.hidden) {
             closePrompt();
         }
-    );
+    });
 
-    closeButton.addEventListener(
-        "click",
-        endTutorial
-    );
+    window.showTutorialPrompt = showTutorialPrompt;
+    window.watchSafeBucketTutorial = startTutorial;
+    window.startSafeBucketTutorial = startTutorial;
+    window.closeSafeBucketTutorial = endTutorial;
 
-    skipButton.addEventListener(
-        "click",
-        endTutorial
-    );
-
-    backButton.addEventListener(
-        "click",
-        () => {
-            if (tutorialState.currentStep > 0) {
-                tutorialState.currentStep--;
-                renderTutorialStep();
-            }
-        }
-    );
-
-    nextButton.addEventListener(
-        "click",
-        () => {
-            if (
-                tutorialState.currentStep <
-                steps.length - 1
-            ) {
-                tutorialState.currentStep++;
-                renderTutorialStep();
-            } else {
-                endTutorial();
-            }
-        }
-    );
-
-    replayButton?.addEventListener(
-        "click",
-        startTutorial
-    );
-
-    document.addEventListener(
-        "keydown",
-        event => {
-            if (event.key !== "Escape") {
-                return;
-            }
-
-            if (tutorialState.isOpen) {
-                endTutorial();
-            } else if (!prompt.hidden) {
-                closePrompt();
-            }
-        }
-    );
-
-    window.showTutorialPrompt =
-        showTutorialPrompt;
-
-    window.watchSafeBucketTutorial =
-        startTutorial;
-
-    window.startSafeBucketTutorial =
-        startTutorial;
-
-    window.closeSafeBucketTutorial =
-        endTutorial;
-
-    if (
-        !welcome ||
-        welcome.classList.contains("hidden")
-    ) {
+    if (!welcome || welcome.classList.contains("hidden")) {
         showTutorialPrompt();
     }
 })();
 
 /* ========================= INITIALIZE ========================= */
 
-setMovingBlocksEnabled(
-    movingBlocksEnabled,
-    false
-);
+// Read the saved setting and apply the correct layout on page load.
+
+setMovingBlocksEnabled(movingBlocksEnabled, false);
 
 objects.forEach(render);
 
-const refreshButton =
-    document.getElementById("refreshButton");
+const refreshButton = document.getElementById("refreshButton");
+const homeButton = document.getElementById("homeButton");
+const browserAddress = document.getElementById("browserAddress");
 
-const homeButton =
-    document.getElementById("homeButton");
+refreshButton?.addEventListener("click", () => {
+  const frame = document.getElementById("browserFrame");
 
-const browserAddress =
-    document.getElementById("browserAddress");
+  if (frame?.src) {
+    frame.src = frame.src;
+  }
+});
 
-refreshButton?.addEventListener(
-    "click",
-    () => {
-        const frame =
-            document.getElementById(
-                "browserFrame"
-            );
+homeButton?.addEventListener("click", () => {
+  const frame = document.getElementById("browserFrame");
 
-        if (frame?.src) {
-            frame.src = frame.src;
-        }
-    }
-);
+  if (frame) {
+    frame.src = "about:blank";
+  }
 
-homeButton?.addEventListener(
-    "click",
-    () => {
-        const frame =
-            document.getElementById(
-                "browserFrame"
-            );
-
-        if (frame) {
-            frame.src = "about:blank";
-        }
-
-        if (browserAddress) {
-            browserAddress.value =
-                "meld://browser";
-        }
-    }
-);
+  if (browserAddress) {
+    browserAddress.value = "meld://browser";
+  }
+});
