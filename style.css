@@ -1425,21 +1425,97 @@ Existing classes and functionality preserved
     
     }
     
-    /* ============================================================
-   MELD INFORMATION PANEL — MELD × CIPHANON STUDIOS
-   Add after the existing INFORMATION PANEL styles
+   /* ============================================================
+   INFORMATION PANEL — MELD × CIPHANON STUDIOS
 ============================================================ */
 
+.infoButton {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 9999;
+
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid #45533d;
+    border-radius: 11px;
+
+    background: rgba(25, 31, 24, .94);
+    color: var(--muted);
+
+    font-size: 18px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    box-shadow:
+        0 10px 30px #0008,
+        inset 0 1px 0 #ffffff0b;
+
+    transition:
+        transform .2s ease,
+        color .2s ease,
+        background .2s ease,
+        border-color .2s ease;
+}
+
+.infoButton:hover {
+    border-color: var(--accent);
+    background: #28351b;
+    color: var(--accent-light);
+    transform: translateY(-2px) scale(1.05);
+}
+
 .infoOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 8000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     padding: 24px;
+
     background:
         radial-gradient(circle at 50% 50%, #76b90012, transparent 45%),
         rgba(2, 5, 2, .82);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity .25s ease,
+        visibility .25s ease;
+}
+
+.infoOverlay[hidden] {
+    display: none !important;
+}
+
+.infoOverlay.open {
+    display: flex;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .infoPanel {
+    position: relative;
     width: min(900px, 100%);
     max-height: min(760px, calc(100vh - 36px));
+
     padding: 0;
     overflow: hidden;
     isolation: isolate;
@@ -1458,6 +1534,9 @@ Existing classes and functionality preserved
         inset 0 1px 0 #ffffff16;
 
     transform: scale(.94) translateY(18px);
+
+    transition:
+        transform .3s cubic-bezier(.2, .8, .2, 1);
 }
 
 .infoOverlay.open .infoPanel {
@@ -1478,8 +1557,6 @@ Existing classes and functionality preserved
             transparent 0 8px,
             #ffffff03 9px 10px
         );
-
-    opacity: .8;
 }
 
 .infoPanel::after {
@@ -1487,9 +1564,11 @@ Existing classes and functionality preserved
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 5;
+
     width: 7px;
     height: 100%;
-    z-index: 5;
+
     pointer-events: none;
 
     background: linear-gradient(
@@ -1507,6 +1586,7 @@ Existing classes and functionality preserved
 /* CLOSE BUTTON */
 
 .infoClose {
+    position: absolute;
     top: 18px;
     right: 18px;
     z-index: 20;
@@ -1514,14 +1594,25 @@ Existing classes and functionality preserved
     width: 38px;
     height: 38px;
 
-    border-color: #63775a;
+    display: grid;
+    place-items: center;
+
+    border: 1px solid #63775a;
     border-radius: 11px;
 
     background: #111711cc;
     color: #afbcaa;
 
+    cursor: pointer;
+
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+
+    transition:
+        transform .2s ease,
+        color .2s ease,
+        background .2s ease,
+        border-color .2s ease;
 }
 
 .infoClose:hover {
@@ -1531,7 +1622,7 @@ Existing classes and functionality preserved
     transform: rotate(4deg) scale(1.05);
 }
 
-/* FIRE SIDE */
+/* FIRE GIF */
 
 .infoBurnLayer {
     position: absolute;
@@ -1570,13 +1661,12 @@ Existing classes and functionality preserved
     inset: 0;
     z-index: 2;
 
-    background:
-        linear-gradient(
-            90deg,
-            transparent 0%,
-            #0b1009aa 55%,
-            #070907e8 100%
-        );
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        #0b1009aa 55%,
+        #070907e8 100%
+    );
 }
 
 .infoBurnLayer::after {
@@ -1599,10 +1689,13 @@ Existing classes and functionality preserved
 
     filter: blur(9px);
     opacity: .8;
+
     animation: infoFireEdge 2.8s ease-in-out infinite alternate;
 }
 
 .infoBurnLayer img {
+    display: block;
+
     width: 100%;
     height: 100%;
 
@@ -1612,8 +1705,7 @@ Existing classes and functionality preserved
     filter:
         saturate(1.45)
         contrast(1.15)
-        brightness(.7)
-        blur(.15px);
+        brightness(.7);
 
     opacity: .78;
     transform: scale(1.18);
@@ -1653,16 +1745,13 @@ Existing classes and functionality preserved
     overflow-y: auto;
 
     padding: 48px 54px 30px;
+
     scrollbar-width: thin;
     scrollbar-color: var(--accent-dark) transparent;
 }
 
 .infoContent::-webkit-scrollbar {
     width: 7px;
-}
-
-.infoContent::-webkit-scrollbar-track {
-    background: transparent;
 }
 
 .infoContent::-webkit-scrollbar-thumb {
@@ -1688,17 +1777,17 @@ Existing classes and functionality preserved
 .infoLogoCard {
     width: 82px;
     height: 82px;
+
     display: grid;
     place-items: center;
-    padding: 11px;
 
+    padding: 11px;
     overflow: hidden;
 
     border: 1px solid #657b57;
     border-radius: 19px;
 
-    background:
-        linear-gradient(145deg, #34452a, #131a13);
+    background: linear-gradient(145deg, #34452a, #131a13);
 
     box-shadow:
         0 14px 35px #0009,
@@ -1713,6 +1802,7 @@ Existing classes and functionality preserved
 .infoLogoCard:hover {
     border-color: var(--accent-light);
     transform: translateY(-5px) rotate(-2deg);
+
     box-shadow:
         0 20px 42px #000b,
         0 0 0 3px #76b90024,
@@ -1726,13 +1816,13 @@ Existing classes and functionality preserved
 }
 
 .studioBrand {
-    background:
-        linear-gradient(145deg, #242d25, #0e120e);
+    background: linear-gradient(145deg, #242d25, #0e120e);
 }
 
 .infoBrandDivider {
     width: 34px;
     height: 34px;
+
     display: grid;
     place-items: center;
 
@@ -1744,6 +1834,7 @@ Existing classes and functionality preserved
 
     font-size: 20px;
     font-weight: 300;
+
     box-shadow: 0 8px 20px #0008;
 }
 
@@ -1797,12 +1888,14 @@ Existing classes and functionality preserved
     width: 3px;
     flex: 0 0 3px;
     border-radius: 10px;
+
     background: linear-gradient(
         180deg,
         var(--accent-light),
         var(--accent),
         transparent
     );
+
     box-shadow: 0 0 16px #a3e63566;
 }
 
@@ -1823,26 +1916,31 @@ Existing classes and functionality preserved
     line-height: 1.65;
 }
 
-/* FEATURES */
+/* FEATURE LIST */
 
-.infoFeatureGrid {
+.infoList {
+    position: relative;
+    z-index: 10;
+
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
+
     max-width: 650px;
 }
 
-.infoFeature {
-    min-height: 125px;
+.infoItem {
     display: flex;
+    align-items: flex-start;
     gap: 13px;
+
+    min-height: 125px;
     padding: 16px;
 
     border: 1px solid #354334;
     border-radius: 14px;
 
     background: #111711c9;
-
     box-shadow: inset 0 1px 0 #ffffff08;
 
     transition:
@@ -1852,10 +1950,11 @@ Existing classes and functionality preserved
         box-shadow .24s ease;
 }
 
-.infoFeature:hover {
+.infoItem:hover {
     border-color: #779d4d;
     background: #1c2919e8;
     transform: translateY(-4px);
+
     box-shadow:
         0 14px 30px #0008,
         0 0 0 2px #76b9001c;
@@ -1865,6 +1964,7 @@ Existing classes and functionality preserved
     width: 36px;
     height: 36px;
     flex: 0 0 36px;
+
     display: grid;
     place-items: center;
 
@@ -1877,8 +1977,9 @@ Existing classes and functionality preserved
     font-size: 15px;
 }
 
-.infoFeature h3 {
-    margin: 0 0 7px;
+.infoItem strong {
+    display: block;
+    margin-bottom: 7px;
 
     color: var(--text);
     font-size: 12px;
@@ -1887,7 +1988,9 @@ Existing classes and functionality preserved
     text-transform: uppercase;
 }
 
-.infoFeature p {
+.infoItem span {
+    display: block;
+
     color: var(--muted);
     font-size: 10px;
     line-height: 1.6;
@@ -1897,20 +2000,24 @@ Existing classes and functionality preserved
 
 .infoCredits {
     max-width: 650px;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
+
     margin-top: 25px;
     padding: 17px 18px;
 
     border: 1px solid #52604c;
     border-radius: 14px;
 
-    background:
-        linear-gradient(110deg, #283b20, #172117 55%, #111711);
-
-    box-shadow: inset 0 1px 0 #ffffff0c;
+    background: linear-gradient(
+        110deg,
+        #283b20,
+        #172117 55%,
+        #111711
+    );
 }
 
 .infoCreditsText span,
@@ -1975,10 +2082,9 @@ Existing classes and functionality preserved
     }
 
     .infoBurnLayer {
+        top: auto;
         width: 100%;
         height: 40%;
-        top: auto;
-
         opacity: .42;
 
         -webkit-mask-image: linear-gradient(
@@ -2035,11 +2141,11 @@ Existing classes and functionality preserved
         font-size: 23px;
     }
 
-    .infoFeatureGrid {
+    .infoList {
         grid-template-columns: 1fr;
     }
 
-    .infoFeature {
+    .infoItem {
         min-height: auto;
     }
 
@@ -4373,3 +4479,4 @@ PROFILE AND LEADERBOARD — MOBILE
 .chatPanel[hidden] {
   display: none !important;
 }
+
