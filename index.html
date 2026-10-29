@@ -293,8 +293,7 @@
   <!-- INFO BUTTON -->
   <button class="infoButton" id="infoButton" type="button" aria-label="Information" title="Information" data-tutorial="info">ⓘ</button>
 
-  <!-- INFO PANEL -->
-    <!-- INFO PANEL -->
+     <!-- INFO PANEL -->
   <div class="infoOverlay" id="infoOverlay" hidden>
     <div class="infoPanel" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
   <button class="infoClose" id="infoClose" type="button" aria-label="Close information">
@@ -306,16 +305,13 @@
   </div>
 
   <div class="infoContent">
-
     <div class="infoBranding">
       <div class="infoLogoGroup">
         <div class="infoLogoCard meldBrand">
           <img src="Images/MeldLogo.png" alt="Meld logo">
         </div>
 
-        <div class="infoBrandDivider" aria-hidden="true">
-          <span>×</span>
-        </div>
+        <div class="infoBrandDivider" aria-hidden="true">×</div>
 
         <div class="infoLogoCard studioBrand">
           <img src="Images/CiphAnonStudios.png" alt="CiphAnon Studios logo">
@@ -341,58 +337,59 @@
       </div>
     </div>
 
-    <div class="infoFeatureGrid">
-      <article class="infoFeature">
+    <!-- Keep the original class names for script.js compatibility -->
+    <div class="infoList">
+      <div class="infoItem">
         <div class="infoFeatureIcon" aria-hidden="true">
           <i class="fa-solid fa-cubes"></i>
         </div>
         <div>
-          <h3>Physics Blocks</h3>
-          <p>
+          <strong>Physics Blocks</strong>
+          <span>
             Enable Moving Blocks to make your shortcuts bounce, collide,
             rotate, and respond to gravity.
-          </p>
+          </span>
         </div>
-      </article>
+      </div>
 
-      <article class="infoFeature">
+      <div class="infoItem">
         <div class="infoFeatureIcon" aria-hidden="true">
           <i class="fa-solid fa-compass"></i>
         </div>
         <div>
-          <h3>Open Sites</h3>
-          <p>
+          <strong>Open Sites</strong>
+          <span>
             Select any shortcut block to quickly open its assigned game,
             website, tool, or destination.
-          </p>
+          </span>
         </div>
-      </article>
+      </div>
 
-      <article class="infoFeature">
+      <div class="infoItem">
         <div class="infoFeatureIcon" aria-hidden="true">
           <i class="fa-solid fa-magnifying-glass"></i>
         </div>
         <div>
-          <h3>Search Anywhere</h3>
-          <p>
+          <strong>Search Anywhere</strong>
+          <span>
             Enter a search term or website in the search bar and press Go
             to start browsing.
-          </p>
+          </span>
         </div>
-      </article>
+      </div>
 
-      <article class="infoFeature">
+      <div class="infoItem">
         <div class="infoFeatureIcon" aria-hidden="true">
           <i class="fa-solid fa-rotate"></i>
         </div>
         <div>
-          <h3>Reset Rotation</h3>
-          <p>
+          <strong>Reset Rotation</strong>
+          <span>
             Press and hold a block for 2.5 seconds without dragging it to
             return it to its upright position.
-          </p>
+          </span>
         </div>
-      </article>
+      </div>
     </div>
 
     <div class="infoCredits">
@@ -412,7 +409,6 @@
       <span class="infoFooterDot" aria-hidden="true">•</span>
       <span>Made for the Meld community</span>
     </div>
-
   </div>
 </div>
 
