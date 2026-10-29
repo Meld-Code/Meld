@@ -4373,11 +4373,3 @@ PROFILE AND LEADERBOARD — MOBILE
 .chatPanel[hidden] {
   display: none !important;
 }
-
-#myGif {
-  position: absolute;
-  top: 50px;
-  left: 50px;
-  width: 500px;
-  height: auto;
-}
