@@ -2510,3 +2510,51 @@ homeButton?.addEventListener("click", () => {
     browserAddress.value = "meld://browser";
   }
 });
+
+/* ============================================================
+   INFORMATION PANEL
+============================================================ */
+
+const infoButton = document.getElementById("infoButton");
+const infoOverlay = document.getElementById("infoOverlay");
+const infoClose = document.getElementById("infoClose");
+
+function openInfoPanel() {
+    if (!infoOverlay) return;
+
+    infoOverlay.hidden = false;
+
+    requestAnimationFrame(() => {
+        infoOverlay.classList.add("open");
+    });
+
+    document.body.classList.add("info-is-open");
+}
+
+function closeInfoPanel() {
+    if (!infoOverlay) return;
+
+    infoOverlay.classList.remove("open");
+    document.body.classList.remove("info-is-open");
+
+    setTimeout(() => {
+        if (!infoOverlay.classList.contains("open")) {
+            infoOverlay.hidden = true;
+        }
+    }, 300);
+}
+
+infoButton?.addEventListener("click", openInfoPanel);
+infoClose?.addEventListener("click", closeInfoPanel);
+
+infoOverlay?.addEventListener("click", (event) => {
+    if (event.target === infoOverlay) {
+        closeInfoPanel();
+    }
+});
+
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && infoOverlay?.classList.contains("open")) {
+        closeInfoPanel();
+    }
+});
