@@ -3878,3 +3878,11 @@ PROFILE AND LEADERBOARD — MOBILE
 .chatPanel[hidden] {
   display: none !important;
 }
+
+#myGif {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 300px;
+  height: auto;
+}
