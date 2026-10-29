@@ -1426,52 +1426,8 @@ Existing classes and functionality preserved
     }
     
    /* ============================================================
-   INFORMATION PANEL — MELD × CIPHANON STUDIOS
+   MELD INFO PANEL — STATIC ORANGE FIRE DESIGN
 ============================================================ */
-
-.infoButton {
-    position: fixed;
-    right: 18px;
-    bottom: 18px;
-    z-index: 9999;
-
-    width: 42px;
-    height: 42px;
-
-    display: grid;
-    place-items: center;
-
-    border: 1px solid #45533d;
-    border-radius: 11px;
-
-    background: rgba(25, 31, 24, .94);
-    color: var(--muted);
-
-    font-size: 18px;
-    font-weight: 700;
-
-    cursor: pointer;
-
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-
-    box-shadow:
-        0 10px 30px #0008,
-        inset 0 1px 0 #ffffff0b;
-
-    transition:
-        transform .2s ease,
-        color .2s ease,
-        background .2s ease,
-        border-color .2s ease;
-}
-
-.infoButton:hover {
-    border-color: var(--accent);
-    background: #28351b;
-    color: var(--accent-light);
-    transform: translateY(-2px) scale(1.05);
-}
 
 .infoOverlay {
     position: fixed;
@@ -1484,12 +1440,9 @@ Existing classes and functionality preserved
 
     padding: 24px;
 
-    background:
-        radial-gradient(circle at 50% 50%, #76b90012, transparent 45%),
-        rgba(2, 5, 2, .82);
-
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(5, 3, 1, .86);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 
     opacity: 0;
     visibility: hidden;
@@ -1513,50 +1466,64 @@ Existing classes and functionality preserved
 
 .infoPanel {
     position: relative;
-    width: min(900px, 100%);
-    max-height: min(760px, calc(100vh - 36px));
+    width: min(980px, 100%);
+    max-height: min(820px, calc(100vh - 36px));
 
-    padding: 0;
     overflow: hidden;
-    isolation: isolate;
 
-    border: 1px solid #5f7d48;
-    border-radius: 24px;
+    border: 1px solid #9d5720;
+    border-radius: 22px;
 
     background:
-        radial-gradient(circle at 18% 8%, #76b90018, transparent 30%),
-        radial-gradient(circle at 100% 100%, #182a12, transparent 42%),
-        linear-gradient(135deg, #1d261d 0%, #101510 55%, #0a0d0a 100%);
+        radial-gradient(
+            circle at 76% 20%,
+            #ff761c18,
+            transparent 26%
+        ),
+        linear-gradient(
+            110deg,
+            #151a15 0%,
+            #101410 57%,
+            #21140d 100%
+        );
 
     box-shadow:
-        0 45px 130px #000e,
-        0 0 0 1px #a3e6350d,
-        inset 0 1px 0 #ffffff16;
+        0 40px 130px #000e,
+        inset 0 1px 0 #ffffff12;
 
-    transform: scale(.94) translateY(18px);
+    transform: translateY(18px) scale(.96);
 
     transition:
         transform .3s cubic-bezier(.2, .8, .2, 1);
 }
 
 .infoOverlay.open .infoPanel {
-    transform: scale(1) translateY(0);
+    transform: translateY(0) scale(1);
 }
+
+/* Orange fire-side lighting */
 
 .infoPanel::before {
     content: "";
     position: absolute;
-    inset: 0;
-    z-index: -2;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    width: 47%;
+    z-index: 0;
     pointer-events: none;
 
     background:
-        linear-gradient(115deg, transparent 0 45%, #a3e63508 58%, transparent 72%),
-        repeating-linear-gradient(
-            135deg,
-            transparent 0 8px,
-            #ffffff03 9px 10px
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            #ff741c0a 20%,
+            #ff741c24 72%,
+            #ff4d122e 100%
         );
+
+    border-left: 1px solid #ff762c32;
 }
 
 .infoPanel::after {
@@ -1564,84 +1531,45 @@ Existing classes and functionality preserved
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 5;
+    bottom: 0;
 
-    width: 7px;
-    height: 100%;
-
+    width: 5px;
+    z-index: 15;
     pointer-events: none;
 
     background: linear-gradient(
         180deg,
-        var(--accent-light),
-        var(--accent),
-        #304800
+        #ffb347,
+        #ff761c,
+        #d44613
     );
 
     box-shadow:
-        0 0 22px #a3e63566,
-        5px 0 35px #76b9002e;
+        0 0 22px #ff761c99,
+        0 0 55px #ff4d123d;
 }
 
-/* CLOSE BUTTON */
-
-.infoClose {
-    position: absolute;
-    top: 18px;
-    right: 18px;
-    z-index: 20;
-
-    width: 38px;
-    height: 38px;
-
-    display: grid;
-    place-items: center;
-
-    border: 1px solid #63775a;
-    border-radius: 11px;
-
-    background: #111711cc;
-    color: #afbcaa;
-
-    cursor: pointer;
-
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-
-    transition:
-        transform .2s ease,
-        color .2s ease,
-        background .2s ease,
-        border-color .2s ease;
-}
-
-.infoClose:hover {
-    border-color: var(--accent-light);
-    background: #30461f;
-    color: var(--accent-light);
-    transform: rotate(4deg) scale(1.05);
-}
-
-/* FIRE GIF */
+/* Static GIF layer */
 
 .infoBurnLayer {
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
+    top: -16%;
+    right: -2%;
+    bottom: -16%;
 
     width: 43%;
+    z-index: 1;
+
     overflow: hidden;
     pointer-events: none;
 
-    opacity: .92;
+    opacity: .96;
     mix-blend-mode: screen;
 
     -webkit-mask-image: linear-gradient(
         90deg,
         transparent 0%,
-        rgba(0, 0, 0, .28) 20%,
+        rgba(0, 0, 0, .55) 25%,
         #000 58%,
         #000 100%
     );
@@ -1649,7 +1577,7 @@ Existing classes and functionality preserved
     mask-image: linear-gradient(
         90deg,
         transparent 0%,
-        rgba(0, 0, 0, .28) 20%,
+        rgba(0, 0, 0, .55) 25%,
         #000 58%,
         #000 100%
     );
@@ -1660,12 +1588,13 @@ Existing classes and functionality preserved
     position: absolute;
     inset: 0;
     z-index: 2;
+    pointer-events: none;
 
     background: linear-gradient(
         90deg,
         transparent 0%,
-        #0b1009aa 55%,
-        #070907e8 100%
+        #23120922 42%,
+        #12090470 100%
     );
 }
 
@@ -1673,24 +1602,15 @@ Existing classes and functionality preserved
     content: "";
     position: absolute;
     top: 0;
+    left: 0;
     bottom: 0;
-    left: -15px;
+
+    width: 25px;
     z-index: 3;
+    pointer-events: none;
 
-    width: 40px;
-
-    background: linear-gradient(
-        90deg,
-        transparent,
-        #ff9d2eaa 45%,
-        #ff531f44 70%,
-        transparent
-    );
-
-    filter: blur(9px);
-    opacity: .8;
-
-    animation: infoFireEdge 2.8s ease-in-out infinite alternate;
+    background: #ff6b1c66;
+    filter: blur(14px);
 }
 
 .infoBurnLayer img {
@@ -1702,185 +1622,193 @@ Existing classes and functionality preserved
     object-fit: cover;
     object-position: center;
 
+    opacity: .9;
+
     filter:
-        saturate(1.45)
-        contrast(1.15)
-        brightness(.7);
+        saturate(1.8)
+        contrast(1.25)
+        brightness(.86);
 
-    opacity: .78;
-    transform: scale(1.18);
-
-    animation: infoFireMotion 4s ease-in-out infinite alternate;
+    /*
+     * No CSS pulse, scale animation, or movement.
+     * The GIF itself may still animate frame-by-frame.
+     */
+    animation: none !important;
+    transform: none;
 }
 
-@keyframes infoFireMotion {
-    from {
-        transform: scale(1.16) translate3d(-2%, 0, 0);
-    }
+/* Close button */
 
-    to {
-        transform: scale(1.27) translate3d(2%, -1%, 0);
-    }
+.infoClose {
+    position: absolute;
+    top: 17px;
+    right: 17px;
+    z-index: 20;
+
+    width: 39px;
+    height: 39px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid #a05d29;
+    border-radius: 10px;
+
+    background: #15100ccc;
+    color: #e2b27d;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        transform .2s ease;
 }
 
-@keyframes infoFireEdge {
-    from {
-        transform: translateX(-5px) scaleY(.94);
-        opacity: .55;
-    }
-
-    to {
-        transform: translateX(16px) scaleY(1.08);
-        opacity: .95;
-    }
+.infoClose:hover {
+    border-color: #ff9a45;
+    background: #713211;
+    color: #ffd2a6;
+    transform: scale(1.05);
 }
 
-/* CONTENT */
+/* Content layer */
 
 .infoContent {
     position: relative;
     z-index: 10;
 
-    max-height: min(760px, calc(100vh - 36px));
+    max-height: min(820px, calc(100vh - 36px));
     overflow-y: auto;
 
-    padding: 48px 54px 30px;
+    padding: 48px 58px 32px;
 
     scrollbar-width: thin;
-    scrollbar-color: var(--accent-dark) transparent;
+    scrollbar-color: #b95b20 transparent;
 }
 
-.infoContent::-webkit-scrollbar {
-    width: 7px;
-}
-
-.infoContent::-webkit-scrollbar-thumb {
-    border-radius: 20px;
-    background: var(--accent-dark);
-}
-
-/* BRANDING */
+/* Logo identity */
 
 .infoBranding {
-    position: relative;
-    max-width: 570px;
-    padding-right: 45px;
+    max-width: 620px;
+    padding-right: 70px;
 }
 
 .infoLogoGroup {
     display: flex;
     align-items: center;
-    gap: 14px;
-    margin-bottom: 22px;
+    gap: 19px;
+    margin-bottom: 24px;
 }
 
 .infoLogoCard {
-    width: 82px;
-    height: 82px;
+    width: 108px;
+    height: 108px;
 
     display: grid;
     place-items: center;
 
-    padding: 11px;
-    overflow: hidden;
+    padding: 0;
+    overflow: visible;
 
-    border: 1px solid #657b57;
-    border-radius: 19px;
-
-    background: linear-gradient(145deg, #34452a, #131a13);
-
-    box-shadow:
-        0 14px 35px #0009,
-        inset 0 1px 0 #ffffff18;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
 
     transition:
         transform .25s ease,
-        border-color .25s ease,
-        box-shadow .25s ease;
+        filter .25s ease;
 }
 
 .infoLogoCard:hover {
-    border-color: var(--accent-light);
+    border: 0;
+    background: transparent;
+    box-shadow: none;
     transform: translateY(-5px) rotate(-2deg);
-
-    box-shadow:
-        0 20px 42px #000b,
-        0 0 0 3px #76b90024,
-        0 0 25px #76b9002b;
+    filter: drop-shadow(0 0 18px #ff8a3d66);
 }
 
 .infoLogoCard img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-}
 
-.studioBrand {
-    background: linear-gradient(145deg, #242d25, #0e120e);
+    object-fit: contain;
+    filter: drop-shadow(0 12px 18px #000b);
 }
 
 .infoBrandDivider {
-    width: 34px;
-    height: 34px;
+    width: auto;
+    height: auto;
 
-    display: grid;
-    place-items: center;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
 
-    border: 1px solid #52604c;
-    border-radius: 50%;
-
-    background: #111711cc;
-    color: var(--accent-light);
-
-    font-size: 20px;
+    color: #ff8a3d;
+    font-size: 34px;
     font-weight: 300;
-
-    box-shadow: 0 8px 20px #0008;
+    line-height: 1;
 }
+
+/* Unboxed headings */
 
 .infoEyebrow,
 .infoKicker {
-    margin: 0 0 10px;
+    margin: 0 0 11px;
 
-    color: var(--accent-light);
+    color: #ff9a4a;
     font-size: 10px;
     font-weight: 850;
-    letter-spacing: 2.4px;
+    letter-spacing: 2.5px;
     text-transform: uppercase;
 }
 
 .infoBranding h2 {
-    margin: 0 0 12px;
+    margin: 0 0 13px;
 
-    color: var(--text);
-    font-size: clamp(34px, 5vw, 58px);
+    color: #f4f7f1;
+    font-size: clamp(37px, 6vw, 66px);
     font-weight: 900;
-    letter-spacing: -3px;
-    line-height: .95;
+    letter-spacing: -4px;
+    line-height: .9;
 }
 
 .infoLead {
-    max-width: 470px;
-    color: #bdc9b9;
+    max-width: 500px;
+
+    color: #c4cec0;
     font-size: 14px;
-    line-height: 1.7;
+    line-height: 1.75;
 }
 
-/* HERO MESSAGE */
+/* Boxed feature introduction */
 
 .infoHeroMessage {
     display: flex;
-    gap: 17px;
-    max-width: 570px;
-    margin: 36px 0 27px;
-    padding: 19px 20px;
+    gap: 18px;
 
-    border: 1px solid #52604c;
-    border-radius: 15px;
+    max-width: 635px;
+    margin: 40px 0 28px;
+    padding: 21px 22px;
 
-    background: linear-gradient(135deg, #26351fca, #111711d9);
+    border: 1px solid #75451f;
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            120deg,
+            #2b261bde,
+            #171b16e8
+        );
+
     box-shadow:
-        0 16px 35px #0006,
+        0 18px 38px #0008,
         inset 0 1px 0 #ffffff0b;
 }
 
@@ -1891,32 +1819,33 @@ Existing classes and functionality preserved
 
     background: linear-gradient(
         180deg,
-        var(--accent-light),
-        var(--accent),
+        #ffc078,
+        #ff741c,
         transparent
     );
 
-    box-shadow: 0 0 16px #a3e63566;
+    box-shadow: 0 0 18px #ff741c88;
 }
 
 .infoHeroMessage h3 {
     margin: 0 0 9px;
 
-    color: var(--text);
-    font-size: clamp(21px, 3vw, 30px);
+    color: #f7f8f3;
+    font-size: clamp(22px, 3vw, 32px);
     font-weight: 850;
-    letter-spacing: -1.3px;
-    line-height: 1.08;
+    letter-spacing: -1.5px;
+    line-height: 1.05;
 }
 
 .infoHeroMessage p:last-child {
-    max-width: 480px;
-    color: var(--muted);
+    max-width: 510px;
+
+    color: #aeb9aa;
     font-size: 12px;
-    line-height: 1.65;
+    line-height: 1.7;
 }
 
-/* FEATURE LIST */
+/* Boxed information cards */
 
 .infoList {
     position: relative;
@@ -1924,9 +1853,9 @@ Existing classes and functionality preserved
 
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
+    gap: 11px;
 
-    max-width: 650px;
+    max-width: 700px;
 }
 
 .infoItem {
@@ -1934,30 +1863,29 @@ Existing classes and functionality preserved
     align-items: flex-start;
     gap: 13px;
 
-    min-height: 125px;
-    padding: 16px;
+    min-height: 126px;
+    padding: 17px;
 
-    border: 1px solid #354334;
-    border-radius: 14px;
+    border: 1px solid #384938;
+    border-radius: 13px;
 
-    background: #111711c9;
-    box-shadow: inset 0 1px 0 #ffffff08;
+    background: #101610d9;
 
     transition:
-        transform .24s ease,
-        border-color .24s ease,
-        background .24s ease,
-        box-shadow .24s ease;
+        transform .22s ease,
+        background .22s ease,
+        border-color .22s ease,
+        box-shadow .22s ease;
 }
 
 .infoItem:hover {
-    border-color: #779d4d;
-    background: #1c2919e8;
-    transform: translateY(-4px);
+    border-color: #a85c24;
+    background: #1d1b14e8;
+    transform: translateY(-3px);
 
     box-shadow:
-        0 14px 30px #0008,
-        0 0 0 2px #76b9001c;
+        0 14px 30px #0009,
+        0 0 0 2px #ff741c16;
 }
 
 .infoFeatureIcon {
@@ -1968,11 +1896,11 @@ Existing classes and functionality preserved
     display: grid;
     place-items: center;
 
-    border: 1px solid #526d43;
+    border: 1px solid #6d532f;
     border-radius: 10px;
 
-    background: #2a3d20;
-    color: var(--accent-light);
+    background: #342817;
+    color: #ffae61;
 
     font-size: 15px;
 }
@@ -1981,43 +1909,40 @@ Existing classes and functionality preserved
     display: block;
     margin-bottom: 7px;
 
-    color: var(--text);
-    font-size: 12px;
+    color: #f0f4ed;
+    font-size: 11px;
     font-weight: 800;
-    letter-spacing: .8px;
+    letter-spacing: .9px;
     text-transform: uppercase;
 }
 
 .infoItem span {
     display: block;
 
-    color: var(--muted);
+    color: #9ca99a;
     font-size: 10px;
-    line-height: 1.6;
+    line-height: 1.65;
 }
 
-/* CREDITS */
+/* Unboxed text section */
 
 .infoCredits {
-    max-width: 650px;
+    max-width: 700px;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
 
-    margin-top: 25px;
-    padding: 17px 18px;
+    margin-top: 30px;
+    padding: 18px 0 0;
 
-    border: 1px solid #52604c;
-    border-radius: 14px;
+    border: 0;
+    border-top: 1px solid #75451f88;
+    border-radius: 0;
 
-    background: linear-gradient(
-        110deg,
-        #283b20,
-        #172117 55%,
-        #111711
-    );
+    background: transparent;
+    box-shadow: none;
 }
 
 .infoCreditsText span,
@@ -2025,16 +1950,16 @@ Existing classes and functionality preserved
     display: block;
     margin-bottom: 5px;
 
-    color: #8c9d87;
+    color: #9b8068;
     font-size: 8px;
     font-weight: 800;
-    letter-spacing: 1.5px;
+    letter-spacing: 1.6px;
     text-transform: uppercase;
 }
 
 .infoCreditsText strong {
-    color: var(--accent-light);
-    font-size: 14px;
+    color: #ffab5c;
+    font-size: 15px;
 }
 
 .infoVersion {
@@ -2042,29 +1967,30 @@ Existing classes and functionality preserved
 }
 
 .infoVersion strong {
-    color: var(--text);
+    color: #e2e9df;
     font-size: 13px;
-    letter-spacing: 1.5px;
+    letter-spacing: 1.7px;
 }
 
-/* FOOTER */
+/* Footer text */
 
 .infoFooter {
     display: flex;
     align-items: center;
     gap: 9px;
-    margin-top: 17px;
 
-    color: #687767;
+    margin-top: 20px;
+
+    color: #7e887c;
     font-size: 9px;
     letter-spacing: .5px;
 }
 
 .infoFooterDot {
-    color: var(--accent);
+    color: #ff761c;
 }
 
-/* MOBILE */
+/* Mobile */
 
 @media (max-width: 700px) {
     .infoOverlay {
@@ -2073,59 +1999,42 @@ Existing classes and functionality preserved
 
     .infoPanel {
         max-height: calc(100dvh - 24px);
-        border-radius: 19px;
+        border-radius: 18px;
     }
 
     .infoContent {
         max-height: calc(100dvh - 24px);
-        padding: 35px 22px 24px;
+        padding: 36px 22px 25px;
     }
 
     .infoBurnLayer {
-        top: auto;
-        width: 100%;
-        height: 40%;
-        opacity: .42;
-
-        -webkit-mask-image: linear-gradient(
-            180deg,
-            transparent 0%,
-            #000 55%,
-            #000 100%
-        );
-
-        mask-image: linear-gradient(
-            180deg,
-            transparent 0%,
-            #000 55%,
-            #000 100%
-        );
-    }
-
-    .infoBurnLayer img {
-        object-position: center bottom;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 54%;
+        opacity: .72;
     }
 
     .infoBranding {
-        padding-right: 35px;
+        padding-right: 42px;
+    }
+
+    .infoLogoGroup {
+        gap: 10px;
     }
 
     .infoLogoCard {
-        width: 62px;
-        height: 62px;
-        padding: 8px;
-        border-radius: 15px;
+        width: 68px;
+        height: 68px;
     }
 
     .infoBrandDivider {
-        width: 28px;
-        height: 28px;
-        font-size: 16px;
+        font-size: 24px;
     }
 
     .infoBranding h2 {
-        font-size: 39px;
-        letter-spacing: -2px;
+        font-size: 42px;
+        letter-spacing: -2.5px;
     }
 
     .infoLead {
@@ -2133,12 +2042,12 @@ Existing classes and functionality preserved
     }
 
     .infoHeroMessage {
-        margin-top: 27px;
-        padding: 15px;
+        margin-top: 29px;
+        padding: 16px;
     }
 
     .infoHeroMessage h3 {
-        font-size: 23px;
+        font-size: 24px;
     }
 
     .infoList {
@@ -2166,17 +2075,13 @@ Existing classes and functionality preserved
         padding-left: 17px;
     }
 
-    .infoLogoGroup {
-        gap: 9px;
-    }
-
     .infoLogoCard {
-        width: 54px;
-        height: 54px;
+        width: 57px;
+        height: 57px;
     }
 
     .infoBranding h2 {
-        font-size: 34px;
+        font-size: 36px;
     }
 
     .infoFooter {
@@ -2187,13 +2092,6 @@ Existing classes and functionality preserved
 
     .infoFooterDot {
         display: none;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .infoBurnLayer img,
-    .infoBurnLayer::after {
-        animation: none;
     }
 }
 
