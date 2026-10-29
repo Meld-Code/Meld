@@ -1424,10 +1424,69 @@ Existing classes and functionality preserved
     }
     
     }
-    
-   /* ============================================================
-   MELD INFO PANEL — STATIC ORANGE FIRE DESIGN
+
+/* ============================================================
+   MELD INFO PANEL — COMPLETE WORKING VERSION
 ============================================================ */
+
+/* Information button */
+
+.infoButton {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 9999;
+
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid #9d5720;
+    border-radius: 11px;
+
+    background: rgba(25, 20, 15, .94);
+    color: #ff9a4a;
+
+    font-size: 18px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    box-shadow:
+        0 10px 30px #0008,
+        0 0 14px #ff761c22;
+
+    transition:
+        transform .2s ease,
+        color .2s ease,
+        background .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+.infoButton:hover {
+    border-color: #ffb06b;
+    background: #542914;
+    color: #ffd0a3;
+
+    transform: translateY(-2px) scale(1.05);
+
+    box-shadow:
+        0 14px 32px #000a,
+        0 0 0 3px #ff761c22,
+        0 0 20px #ff761c33;
+}
+
+.infoButton:active {
+    transform: scale(.96);
+}
+
+/* Overlay */
 
 .infoOverlay {
     position: fixed;
@@ -1440,7 +1499,14 @@ Existing classes and functionality preserved
 
     padding: 24px;
 
-    background: rgba(5, 3, 1, .86);
+    background:
+        radial-gradient(
+            circle at 70% 50%,
+            #ff761c18,
+            transparent 38%
+        ),
+        rgba(5, 3, 1, .86);
+
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 
@@ -1464,12 +1530,16 @@ Existing classes and functionality preserved
     pointer-events: auto;
 }
 
+/* Main panel */
+
 .infoPanel {
     position: relative;
+
     width: min(980px, 100%);
     max-height: min(820px, calc(100vh - 36px));
 
     overflow: hidden;
+    isolation: isolate;
 
     border: 1px solid #9d5720;
     border-radius: 22px;
@@ -1489,6 +1559,7 @@ Existing classes and functionality preserved
 
     box-shadow:
         0 40px 130px #000e,
+        0 0 0 1px #ff761c14,
         inset 0 1px 0 #ffffff12;
 
     transform: translateY(18px) scale(.96);
@@ -1501,45 +1572,51 @@ Existing classes and functionality preserved
     transform: translateY(0) scale(1);
 }
 
-/* Orange fire-side lighting */
+/* Orange light on the fire side */
 
 .infoPanel::before {
     content: "";
+
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
 
-    width: 47%;
+    width: 48%;
     z-index: 0;
+
     pointer-events: none;
 
     background:
         linear-gradient(
             90deg,
             transparent 0%,
-            #ff741c0a 20%,
-            #ff741c24 72%,
-            #ff4d122e 100%
+            #ff741c0b 22%,
+            #ff741c20 70%,
+            #ff4d1232 100%
         );
 
     border-left: 1px solid #ff762c32;
 }
 
+/* Orange edge accent */
+
 .infoPanel::after {
     content: "";
+
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
 
     width: 5px;
-    z-index: 15;
+    z-index: 20;
+
     pointer-events: none;
 
     background: linear-gradient(
         180deg,
-        #ffb347,
+        #ffcf91,
         #ff761c,
         #d44613
     );
@@ -1549,15 +1626,15 @@ Existing classes and functionality preserved
         0 0 55px #ff4d123d;
 }
 
-/* Static GIF layer */
+/* Fire GIF */
 
 .infoBurnLayer {
     position: absolute;
-    top: -16%;
-    right: -2%;
-    bottom: -16%;
+    top: -9%;
+    right: -1%;
+    bottom: -9%;
 
-    width: 43%;
+    width: 46%;
     z-index: 1;
 
     overflow: hidden;
@@ -1569,49 +1646,59 @@ Existing classes and functionality preserved
     -webkit-mask-image: linear-gradient(
         90deg,
         transparent 0%,
-        rgba(0, 0, 0, .55) 25%,
-        #000 58%,
+        rgba(0, 0, 0, .45) 24%,
+        #000 54%,
         #000 100%
     );
 
     mask-image: linear-gradient(
         90deg,
         transparent 0%,
-        rgba(0, 0, 0, .55) 25%,
-        #000 58%,
+        rgba(0, 0, 0, .45) 24%,
+        #000 54%,
         #000 100%
     );
 }
 
 .infoBurnLayer::before {
     content: "";
+
     position: absolute;
     inset: 0;
     z-index: 2;
+
     pointer-events: none;
 
-    background: linear-gradient(
-        90deg,
-        transparent 0%,
-        #23120922 42%,
-        #12090470 100%
-    );
+    background:
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            #23120918 42%,
+            #12090478 100%
+        );
 }
 
 .infoBurnLayer::after {
     content: "";
+
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
 
-    width: 25px;
+    width: 28px;
     z-index: 3;
+
     pointer-events: none;
 
-    background: #ff6b1c66;
+    background: #ff6b1c72;
     filter: blur(14px);
 }
+
+/*
+   No CSS pulse or movement.
+   The GIF itself may still animate its own frames.
+*/
 
 .infoBurnLayer img {
     display: block;
@@ -1622,17 +1709,13 @@ Existing classes and functionality preserved
     object-fit: cover;
     object-position: center;
 
-    opacity: .9;
+    opacity: .92;
 
     filter:
         saturate(1.8)
         contrast(1.25)
         brightness(.86);
 
-    /*
-     * No CSS pulse, scale animation, or movement.
-     * The GIF itself may still animate frame-by-frame.
-     */
     animation: none !important;
     transform: none;
 }
@@ -1643,7 +1726,7 @@ Existing classes and functionality preserved
     position: absolute;
     top: 17px;
     right: 17px;
-    z-index: 20;
+    z-index: 30;
 
     width: 39px;
     height: 39px;
@@ -1657,6 +1740,7 @@ Existing classes and functionality preserved
     background: #15100ccc;
     color: #e2b27d;
 
+    font-size: 15px;
     cursor: pointer;
 
     backdrop-filter: blur(10px);
@@ -1670,13 +1754,13 @@ Existing classes and functionality preserved
 }
 
 .infoClose:hover {
-    border-color: #ff9a45;
+    border-color: #ffb06b;
     background: #713211;
     color: #ffd2a6;
     transform: scale(1.05);
 }
 
-/* Content layer */
+/* Content */
 
 .infoContent {
     position: relative;
@@ -1691,9 +1775,24 @@ Existing classes and functionality preserved
     scrollbar-color: #b95b20 transparent;
 }
 
-/* Logo identity */
+.infoContent::-webkit-scrollbar {
+    width: 7px;
+}
+
+.infoContent::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.infoContent::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background: #b95b20;
+}
+
+/* Logos */
 
 .infoBranding {
+    position: relative;
+
     max-width: 620px;
     padding-right: 70px;
 }
@@ -1702,6 +1801,7 @@ Existing classes and functionality preserved
     display: flex;
     align-items: center;
     gap: 19px;
+
     margin-bottom: 24px;
 }
 
@@ -1717,6 +1817,7 @@ Existing classes and functionality preserved
 
     border: 0;
     border-radius: 0;
+
     background: transparent;
     box-shadow: none;
 
@@ -1729,11 +1830,15 @@ Existing classes and functionality preserved
     border: 0;
     background: transparent;
     box-shadow: none;
+
     transform: translateY(-5px) rotate(-2deg);
+
     filter: drop-shadow(0 0 18px #ff8a3d66);
 }
 
 .infoLogoCard img {
+    display: block;
+
     width: 100%;
     height: 100%;
 
@@ -1747,22 +1852,25 @@ Existing classes and functionality preserved
 
     border: 0;
     border-radius: 0;
+
     background: transparent;
     box-shadow: none;
 
     color: #ff8a3d;
+
     font-size: 34px;
     font-weight: 300;
     line-height: 1;
 }
 
-/* Unboxed headings */
+/* Unboxed text */
 
 .infoEyebrow,
 .infoKicker {
     margin: 0 0 11px;
 
     color: #ff9a4a;
+
     font-size: 10px;
     font-weight: 850;
     letter-spacing: 2.5px;
@@ -1773,6 +1881,7 @@ Existing classes and functionality preserved
     margin: 0 0 13px;
 
     color: #f4f7f1;
+
     font-size: clamp(37px, 6vw, 66px);
     font-weight: 900;
     letter-spacing: -4px;
@@ -1787,7 +1896,7 @@ Existing classes and functionality preserved
     line-height: 1.75;
 }
 
-/* Boxed feature introduction */
+/* Boxed introduction */
 
 .infoHeroMessage {
     display: flex;
@@ -1815,6 +1924,7 @@ Existing classes and functionality preserved
 .infoAccentLine {
     width: 3px;
     flex: 0 0 3px;
+
     border-radius: 10px;
 
     background: linear-gradient(
@@ -1831,6 +1941,7 @@ Existing classes and functionality preserved
     margin: 0 0 9px;
 
     color: #f7f8f3;
+
     font-size: clamp(22px, 3vw, 32px);
     font-weight: 850;
     letter-spacing: -1.5px;
@@ -1881,6 +1992,7 @@ Existing classes and functionality preserved
 .infoItem:hover {
     border-color: #a85c24;
     background: #1d1b14e8;
+
     transform: translateY(-3px);
 
     box-shadow:
@@ -1910,6 +2022,7 @@ Existing classes and functionality preserved
     margin-bottom: 7px;
 
     color: #f0f4ed;
+
     font-size: 11px;
     font-weight: 800;
     letter-spacing: .9px;
@@ -1924,7 +2037,7 @@ Existing classes and functionality preserved
     line-height: 1.65;
 }
 
-/* Unboxed text section */
+/* Unboxed credits */
 
 .infoCredits {
     max-width: 700px;
@@ -1951,6 +2064,7 @@ Existing classes and functionality preserved
     margin-bottom: 5px;
 
     color: #9b8068;
+
     font-size: 8px;
     font-weight: 800;
     letter-spacing: 1.6px;
@@ -1972,7 +2086,7 @@ Existing classes and functionality preserved
     letter-spacing: 1.7px;
 }
 
-/* Footer text */
+/* Footer */
 
 .infoFooter {
     display: flex;
@@ -1993,6 +2107,11 @@ Existing classes and functionality preserved
 /* Mobile */
 
 @media (max-width: 700px) {
+    .infoButton {
+        right: 10px;
+        bottom: 10px;
+    }
+
     .infoOverlay {
         padding: 12px;
     }
@@ -2008,9 +2127,9 @@ Existing classes and functionality preserved
     }
 
     .infoBurnLayer {
-        top: 0;
+        top: -4%;
         right: 0;
-        bottom: 0;
+        bottom: -4%;
         width: 54%;
         opacity: .72;
     }
@@ -2095,6 +2214,7 @@ Existing classes and functionality preserved
     }
 }
 
+   
     /* ============================================================
     DATE AND TIME
     ============================================================ */
