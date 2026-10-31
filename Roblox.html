@@ -48,7 +48,8 @@ body {
 <script type="importmap">
 {
   "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
   }
 }
 </script>
@@ -71,6 +72,7 @@ body {
 
 <script type="module">
 import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 // ======================================
 // SCENE
@@ -121,7 +123,7 @@ scene.add(grid);
 
 // ======================================
 // R6 CHARACTER
-// Scale: 1 unit = 28 cm
+// 1 unit = 28 cm
 // ======================================
 
 function createCharacter(isGhost = false) {
@@ -140,42 +142,49 @@ function createCharacter(isGhost = false) {
   // Invisible HumanoidRootPart representation
   root.userData.rootPartSize = new THREE.Vector3(2, 2, 1);
 
+  // Slightly beveled body parts
   function box(name, size, position, parent = model) {
-    const mesh = new THREE.Mesh(
-      new THREE.BoxGeometry(...size),
-      material
+    const bevel = 0.035;
+
+    const geometry = new RoundedBoxGeometry(
+      size[0],
+      size[1],
+      size[2],
+      2,
+      bevel
     );
 
+    const mesh = new THREE.Mesh(geometry, material);
     mesh.name = name;
     mesh.position.set(...position);
     mesh.castShadow = !isGhost;
     mesh.receiveShadow = !isGhost;
+
     parent.add(mesh);
     return mesh;
   }
 
-  // Cylindrical head: 2 x 1 x 1.
-  // The cylinder's long axis is X to match these dimensions.
+  // Upright cylindrical head: 56 cm tall, 28 cm diameter
   const head = new THREE.Mesh(
     new THREE.CylinderGeometry(0.5, 0.5, 2, 24),
     material
   );
 
   head.name = 'Head';
-  head.rotation.z = Math.PI / 2;
-  head.position.set(0, 4.5, 0);
+  head.position.set(0, 5, 0);
   head.castShadow = !isGhost;
   head.receiveShadow = !isGhost;
   model.add(head);
 
-  // Torso: 2 x 2 x 1
+  // Torso: 56 x 56 x 28 cm
   box('Torso', [2, 2, 1], [0, 3, 0]);
 
-  // Arms: 1 x 2 x 1
+  // Arms: 28 x 56 x 28 cm
   function makeArm(name, x) {
     const pivot = new THREE.Group();
     pivot.position.set(x, 4, 0);
     model.add(pivot);
+
     box(name, [1, 2, 1], [0, -1, 0], pivot);
     return pivot;
   }
@@ -183,11 +192,12 @@ function createCharacter(isGhost = false) {
   const leftArm = makeArm('Left Arm', -1.5);
   const rightArm = makeArm('Right Arm', 1.5);
 
-  // Legs: 1 x 2 x 1
+  // Legs: 28 x 56 x 28 cm
   function makeLeg(name, x) {
     const pivot = new THREE.Group();
     pivot.position.set(x, 2, 0);
     model.add(pivot);
+
     box(name, [1, 2, 1], [0, -1, 0], pivot);
     return pivot;
   }
@@ -206,7 +216,6 @@ function createCharacter(isGhost = false) {
 
 const player = createCharacter(false);
 const ghost = createCharacter(true);
-
 scene.add(player, ghost);
 
 // ======================================
@@ -226,7 +235,7 @@ addEventListener('keydown', e => {
     e.preventDefault();
 
     if (grounded) {
-      verticalVelocity = 8;
+      verticalVelocity = 8.5;
       grounded = false;
     }
   }
@@ -241,10 +250,9 @@ addEventListener('blur', () => {
 });
 
 // ======================================
-// ORBIT CAMERA: MOUSE LOOK + ZOOM
+// MOUSE CAMERA + ZOOM
 // ======================================
 
-// Camera yaw is independent of character rotation.
 let cameraYaw = 0;
 let cameraPitch = 0.18;
 
@@ -259,7 +267,6 @@ renderer.domElement.addEventListener('pointerdown', e => {
   dragging = true;
   lastX = e.clientX;
   lastY = e.clientY;
-
   renderer.domElement.setPointerCapture(e.pointerId);
 });
 
@@ -285,7 +292,6 @@ renderer.domElement.addEventListener('pointermove', e => {
   lastY = e.clientY;
 });
 
-// Mouse wheel zoom
 renderer.domElement.addEventListener('wheel', e => {
   e.preventDefault();
 
@@ -310,7 +316,7 @@ slider.addEventListener('input', () => {
 });
 
 // ======================================
-// HISTORY FOR DELAYED GHOST
+// HISTORY FOR ORANGE GHOST
 // ======================================
 
 const history = [];
@@ -346,23 +352,24 @@ function updateGhost(now) {
 
   const span = b.time - a.time;
   const t = span > 0
-    ? THREE.MathUtils.clamp((targetTime - a.time) / span, 0, 1)
+    ? THREE.MathUtils.clamp(
+        (targetTime - a.time) / span, 0, 1
+      )
     : 0;
 
   ghost.position.lerpVectors(a.position, b.position, t);
 
-  // During jumps, the ghost can trail below the player,
-  // but will never be positioned higher than the player.
+  // Prevent the ghost root from rising above the player's root.
   ghost.position.y = Math.min(
     ghost.position.y, player.position.y
   );
 
-  const angleDifference = Math.atan2(
+  const angle = Math.atan2(
     Math.sin(b.rotation - a.rotation),
     Math.cos(b.rotation - a.rotation)
   );
 
-  ghost.rotation.y = a.rotation + angleDifference * t;
+  ghost.rotation.y = a.rotation + angle * t;
 
   ghost.userData.limbs.forEach((limb, index) => {
     limb.rotation.x = THREE.MathUtils.lerp(
@@ -372,7 +379,7 @@ function updateGhost(now) {
 }
 
 // ======================================
-// MOVEMENT AND SMOOTH TURNING
+// MOVEMENT + SMOOTH TURNING
 // ======================================
 
 const direction = new THREE.Vector3();
@@ -382,8 +389,8 @@ const right = new THREE.Vector3();
 const cameraTarget = new THREE.Vector3();
 const lookTarget = new THREE.Vector3();
 
-const MOVE_SPEED = 6;
-const TURN_SPEED = 9;
+const MOVE_SPEED = 8;
+const TURN_SPEED = 14;
 
 function smoothAngle(current, target, amount) {
   const difference = Math.atan2(
@@ -400,7 +407,6 @@ function animate() {
   const dt = Math.min(clock.getDelta(), 0.05);
   const now = performance.now();
 
-  // Movement is relative to camera direction.
   forward.set(
     -Math.sin(cameraYaw), 0, -Math.cos(cameraYaw)
   );
@@ -413,8 +419,8 @@ function animate() {
 
   if (keys.KeyW) direction.add(forward);
   if (keys.KeyS) direction.sub(forward);
-  if (keys.KeyD) direction.add(right);
   if (keys.KeyA) direction.sub(right);
+  if (keys.KeyD) direction.add(right);
 
   const moving = direction.lengthSq() > 0;
 
@@ -423,7 +429,6 @@ function animate() {
 
     player.position.addScaledVector(direction, MOVE_SPEED * dt);
 
-    // Gradually turn instead of snapping to a new direction.
     const desiredRotation = Math.atan2(
       -direction.x, -direction.z
     );
@@ -434,24 +439,23 @@ function animate() {
       1 - Math.exp(-TURN_SPEED * dt)
     );
 
-    // Walking animation
-    walkTime += dt * 9;
+    walkTime += dt * 11;
 
     player.userData.legs[0].rotation.x =
-      Math.sin(walkTime) * 0.6;
+      Math.sin(walkTime) * 0.65;
 
     player.userData.legs[1].rotation.x =
-      -Math.sin(walkTime) * 0.6;
+      -Math.sin(walkTime) * 0.65;
 
     player.userData.arms[0].rotation.x =
-      -Math.sin(walkTime) * 0.4;
+      -Math.sin(walkTime) * 0.45;
 
     player.userData.arms[1].rotation.x =
-      Math.sin(walkTime) * 0.4;
+      Math.sin(walkTime) * 0.45;
   } else {
     player.userData.limbs.forEach(limb => {
       limb.rotation.x = THREE.MathUtils.damp(
-        limb.rotation.x, 0, 10, dt
+        limb.rotation.x, 0, 12, dt
       );
     });
   }
@@ -466,7 +470,7 @@ function animate() {
     grounded = true;
   }
 
-  // Record and replay past character states.
+  // Store the current state and replay the delayed state.
   history.push(saveState(now));
   updateGhost(now);
 
@@ -482,9 +486,9 @@ function animate() {
     currentZoom, targetZoom, 10, dt
   );
 
-  // Orbit camera around the player
-  const horizontalDistance = currentZoom *
-    Math.cos(cameraPitch);
+  // Orbit camera
+  const horizontalDistance =
+    currentZoom * Math.cos(cameraPitch);
 
   cameraTarget.set(
     player.position.x +
