@@ -2,11 +2,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Roblox Latency Simulator</title>
 
   <style>
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
       overflow: hidden;
@@ -18,171 +20,241 @@
       position: fixed;
       top: 16px;
       left: 16px;
-      color: white;
-      background: #111b;
-      padding: 14px;
-      border-radius: 10px;
       z-index: 2;
-      line-height: 1.6;
+      padding: 14px;
+      width: 230px;
+      color: white;
+      background: rgba(15, 15, 20, 0.82);
+      border: 1px solid #ffffff25;
+      border-radius: 12px;
+      line-height: 1.8;
+      backdrop-filter: blur(8px);
     }
 
-    #hud strong { color: #ff962e; }
+    #hud strong { color: #ff922e; }
+
+    #latency {
+      width: 100%;
+      accent-color: #ff922e;
+    }
 
     #help {
       position: fixed;
-      bottom: 16px;
       left: 16px;
-      color: white;
-      background: #111b;
-      padding: 10px;
-      border-radius: 8px;
+      bottom: 16px;
       z-index: 2;
+      padding: 10px 14px;
+      color: white;
+      background: rgba(15, 15, 20, 0.75);
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    #crosshair {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #ffffffaa;
+      pointer-events: none;
     }
   </style>
-</head>
-<body>
-  <div id="hud">
-    <strong>LATENCY SIMULATOR</strong><br>
-    Ping: <span id="ping">150</span> ms<br>
-    Ghost delay: <span id="delay">150</span> ms<br>
-    <label>
-      Latency
-      <input id="latency" type="range"
-             min="50" max="1000" value="150">
-    </label><br>
-    <span style="color:#ff962e">■</span> Delayed position
-  </div>
-
-  <div id="help">
-    WASD: Move · Space: Jump · Mouse: Rotate camera
-  </div>
 
   <script type="importmap">
   {
     "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
     }
   }
   </script>
+</head>
+
+<body>
+  <div id="hud">
+    <strong>LATENCY SIMULATOR</strong><br />
+    Simulated ping: <span id="ping">150</span> ms<br />
+    Ghost delay: <span id="delay">150</span> ms
+
+    <label for="latency">Latency amount</label>
+    <input id="latency" type="range"
+           min="50" max="1000" step="10" value="150" />
+
+    <div>
+      <span style="color:#ff922e">■</span>
+      Orange = delayed position
+    </div>
+  </div>
+
+  <div id="help">
+    WASD: Move · Space: Jump · Drag mouse: Rotate camera
+  </div>
+  <div id="crosshair"></div>
 
   <script type="module">
     import * as THREE from 'three';
+    import { RoundedBoxGeometry } from
+      'three/addons/geometries/RoundedBoxGeometry.js';
 
-    // ---------------- SCENE ----------------
+    // ==========================================
+    // SCENE AND RENDERER
+    // ==========================================
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x87ceeb);
-    scene.fog = new THREE.Fog(0x87ceeb, 35, 100);
+    scene.background = new THREE.Color(0xdedede);
+    scene.fog = new THREE.Fog(0xdedede, 45, 120);
 
     const camera = new THREE.PerspectiveCamera(
-      70, innerWidth / innerHeight, 0.1, 500
+      65, innerWidth / innerHeight, 0.1, 500
     );
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true
+    });
+
     renderer.setSize(innerWidth, innerHeight);
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+
     document.body.appendChild(renderer.domElement);
 
-    scene.add(new THREE.HemisphereLight(0xffffff, 0x667755, 2));
+    // ==========================================
+    // LIGHTING
+    // ==========================================
 
-    const sunlight = new THREE.DirectionalLight(0xffffff, 2);
-    sunlight.position.set(8, 15, 8);
-    sunlight.castShadow = true;
-    scene.add(sunlight);
+    scene.add(new THREE.HemisphereLight(
+      0xffffff, 0x777777, 2.1
+    ));
 
-    // ---------------- WORLD ----------------
+    const sun = new THREE.DirectionalLight(0xffffff, 2.2);
+    sun.position.set(8, 15, 10);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(1024, 1024);
+    scene.add(sun);
+
+    // ==========================================
+    // GROUND
+    // ==========================================
 
     const ground = new THREE.Mesh(
-      new THREE.PlaneGeometry(200, 200),
-      new THREE.MeshStandardMaterial({ color: 0x62a94e })
+      new THREE.PlaneGeometry(300, 300),
+      new THREE.MeshStandardMaterial({
+        color: 0xb4b4b4,
+        roughness: 1
+      })
     );
 
     ground.rotation.x = -Math.PI / 2;
     ground.receiveShadow = true;
     scene.add(ground);
 
-    const grid = new THREE.GridHelper(200, 100, 0x4d8d43, 0x599448);
-    grid.position.y = 0.015;
+    const grid = new THREE.GridHelper(
+      300, 100, 0x999999, 0xc8c8c8
+    );
+
+    grid.position.y = 0.012;
     scene.add(grid);
 
-    // ---------------- ROBLOX-STYLE AVATAR ----------------
+    // ==========================================
+    // CLASSIC GRAY ROBLOX-STYLE CHARACTER
+    // ==========================================
 
-    function makeCharacter(ghost = false) {
+    function makeCharacter(isGhost = false) {
       const root = new THREE.Group();
       const body = new THREE.Group();
       root.add(body);
 
-      const material = (color) => new THREE.MeshStandardMaterial({
-        color,
-        transparent: ghost,
-        opacity: ghost ? 0.42 : 1,
-        depthWrite: !ghost,
-        roughness: 0.75
+      const material = new THREE.MeshStandardMaterial({
+        color: isGhost ? 0xff7900 : 0x999999,
+        transparent: isGhost,
+        opacity: isGhost ? 0.42 : 1,
+        depthWrite: !isGhost,
+        roughness: 0.85,
+        metalness: 0
       });
 
-      const orange = material(0xff7a00);
-
-      function block(parent, size, position, mat, name) {
-        const mesh = new THREE.Mesh(
-          new THREE.BoxGeometry(...size), mat
+      function block(size, position, parent = body, radius = 0.055) {
+        const geometry = new RoundedBoxGeometry(
+          size[0], size[1], size[2], 3, radius
         );
 
+        const mesh = new THREE.Mesh(geometry, material);
         mesh.position.set(...position);
-        mesh.castShadow = !ghost;
-        mesh.receiveShadow = !ghost;
-        mesh.name = name || '';
+        mesh.castShadow = !isGhost;
+        mesh.receiveShadow = !isGhost;
         parent.add(mesh);
+
         return mesh;
       }
 
-      // Body, head and classic block-shaped limbs
-      block(body, [1.15, 1.25, 0.55], [0, 1.65, 0],
-        ghost ? orange : material(0x1769df), 'Torso');
+      // Featureless rounded head
+      block(
+        [0.86, 0.86, 0.86],
+        [0, 2.83, 0],
+        body,
+        0.16
+      );
 
-      const head = block(body, [0.85, 0.85, 0.85],
-        [0, 2.75, 0],
-        ghost ? orange : material(0xffcc99), 'Head');
+      // Broad rectangular torso
+      block(
+        [1.35, 1.45, 0.62],
+        [0, 1.68, 0],
+        body,
+        0.055
+      );
 
-      if (!ghost) {
-        // Simple face on the front of the head (-Z)
-        const face = new THREE.Group();
-        face.position.set(0, 2.75, -0.431);
-        body.add(face);
+      // Shoulder pivots and arms
+      const leftArm = new THREE.Group();
+      leftArm.position.set(-0.88, 2.25, 0);
+      body.add(leftArm);
 
-        const eyeMat = material(0x222222);
-        block(face, [0.09, 0.09, 0.025],
-          [-0.19, 0.08, 0], eyeMat);
-        block(face, [0.09, 0.09, 0.025],
-          [0.19, 0.08, 0], eyeMat);
-        block(face, [0.23, 0.045, 0.025],
-          [0, -0.14, 0], eyeMat);
-      }
+      block(
+        [0.52, 1.38, 0.58],
+        [0, -0.52, 0],
+        leftArm
+      );
 
-      const limbs = [];
+      const rightArm = new THREE.Group();
+      rightArm.position.set(0.88, 2.25, 0);
+      body.add(rightArm);
 
-      function limb(name, x, y, z, color) {
-        const pivot = new THREE.Group();
-        pivot.position.set(x, y, z);
-        body.add(pivot);
+      block(
+        [0.52, 1.38, 0.58],
+        [0, -0.52, 0],
+        rightArm
+      );
 
-        block(pivot, [0.4, 0.95, 0.45],
-          [0, -0.475, 0],
-          ghost ? orange : material(color), name);
+      // Leg pivots
+      const leftLeg = new THREE.Group();
+      leftLeg.position.set(-0.34, 0.96, 0);
+      body.add(leftLeg);
 
-        limbs.push(pivot);
-        return pivot;
-      }
+      block(
+        [0.62, 1.35, 0.62],
+        [0, -0.48, 0],
+        leftLeg
+      );
 
-      const leftArm  = limb('Left Arm', -0.78, 2.15, 0, 0xffcc99);
-      const rightArm = limb('Right Arm', 0.78, 2.15, 0, 0xffcc99);
-      const leftLeg  = limb('Left Leg', -0.31, 1.02, 0, 0x333b55);
-      const rightLeg = limb('Right Leg', 0.31, 1.02, 0, 0x333b55);
+      const rightLeg = new THREE.Group();
+      rightLeg.position.set(0.34, 0.96, 0);
+      body.add(rightLeg);
+
+      block(
+        [0.62, 1.35, 0.62],
+        [0, -0.48, 0],
+        rightLeg
+      );
 
       root.userData.body = body;
-      root.userData.limbs = limbs;
-      root.userData.legs = [leftLeg, rightLeg];
       root.userData.arms = [leftArm, rightArm];
+      root.userData.legs = [leftLeg, rightLeg];
+      root.userData.limbs = [
+        leftArm, rightArm, leftLeg, rightLeg
+      ];
 
       return root;
     }
@@ -193,20 +265,24 @@
     const ghost = makeCharacter(true);
     scene.add(ghost);
 
-    // ---------------- INPUT ----------------
+    // ==========================================
+    // CONTROLS
+    // ==========================================
 
-    const keys = {};
+    const keys = Object.create(null);
+
     let yaw = 0;
-    let cameraPitch = 0.18;
+    let cameraPitch = 0.12;
     let verticalVelocity = 0;
     let grounded = true;
     let walkTime = 0;
 
-    addEventListener('keydown', e => {
-      keys[e.code] = true;
+    addEventListener('keydown', (event) => {
+      keys[event.code] = true;
 
-      if (e.code === 'Space') {
-        e.preventDefault();
+      if (event.code === 'Space') {
+        event.preventDefault();
+
         if (grounded) {
           verticalVelocity = 8;
           grounded = false;
@@ -214,69 +290,140 @@
       }
     });
 
-    addEventListener('keyup', e => keys[e.code] = false);
+    addEventListener('keyup', (event) => {
+      keys[event.code] = false;
+    });
 
-    // Click and drag to rotate the camera
+    addEventListener('blur', () => {
+      for (const key in keys) keys[key] = false;
+    });
+
+    // Mouse drag camera
     let dragging = false;
     let lastX = 0;
     let lastY = 0;
 
-    renderer.domElement.addEventListener('pointerdown', e => {
+    renderer.domElement.addEventListener('pointerdown', (event) => {
       dragging = true;
-      lastX = e.clientX;
-      lastY = e.clientY;
-      renderer.domElement.setPointerCapture(e.pointerId);
+      lastX = event.clientX;
+      lastY = event.clientY;
+
+      renderer.domElement.setPointerCapture(event.pointerId);
     });
 
     renderer.domElement.addEventListener('pointerup', () => {
       dragging = false;
     });
 
-    renderer.domElement.addEventListener('pointermove', e => {
-      if (!dragging) return;
-
-      yaw -= (e.clientX - lastX) * 0.006;
-      cameraPitch += (e.clientY - lastY) * 0.004;
-      cameraPitch = THREE.MathUtils.clamp(cameraPitch, -0.3, 0.8);
-
-      lastX = e.clientX;
-      lastY = e.clientY;
+    renderer.domElement.addEventListener('pointercancel', () => {
+      dragging = false;
     });
 
-    // ---------------- LATENCY HISTORY ----------------
+    renderer.domElement.addEventListener('pointermove', (event) => {
+      if (!dragging) return;
+
+      yaw -= (event.clientX - lastX) * 0.006;
+      cameraPitch += (event.clientY - lastY) * 0.004;
+
+      cameraPitch = THREE.MathUtils.clamp(
+        cameraPitch, -0.25, 0.75
+      );
+
+      lastX = event.clientX;
+      lastY = event.clientY;
+    });
+
+    // ==========================================
+    // LATENCY SLIDER
+    // ==========================================
 
     const slider = document.getElementById('latency');
     const pingLabel = document.getElementById('ping');
     const delayLabel = document.getElementById('delay');
 
     let latency = Number(slider.value);
+
     slider.addEventListener('input', () => {
       latency = Number(slider.value);
       pingLabel.textContent = latency;
       delayLabel.textContent = latency;
     });
 
-    // Save historical transforms so the ghost can replay them later.
+    // ==========================================
+    // DELAYED MOVEMENT HISTORY
+    // ==========================================
+
     const history = [];
     const clock = new THREE.Clock();
 
-    function getSnapshot(time) {
+    function snapshot(time) {
       return {
         time,
         position: player.position.clone(),
         rotation: player.rotation.y,
+
         limbRotations: player.userData.limbs.map(
           limb => limb.rotation.x
         )
       };
     }
 
-    // ---------------- GAME LOOP ----------------
+    function updateGhost(now) {
+      const targetTime = now - latency;
+
+      if (history.length < 2) return;
+
+      // Find the two historical frames surrounding the target time.
+      let index = 0;
+
+      while (
+        index < history.length - 2 &&
+        history[index + 1].time < targetTime
+      ) {
+        index++;
+      }
+
+      const a = history[index];
+      const b = history[Math.min(index + 1, history.length - 1)];
+
+      const span = b.time - a.time;
+
+      const t = span > 0
+        ? THREE.MathUtils.clamp(
+            (targetTime - a.time) / span, 0, 1
+          )
+        : 0;
+
+      ghost.position.lerpVectors(
+        a.position, b.position, t
+      );
+
+      // Interpolate rotation along the shortest angle.
+      const angleDifference = Math.atan2(
+        Math.sin(b.rotation - a.rotation),
+        Math.cos(b.rotation - a.rotation)
+      );
+
+      ghost.rotation.y = a.rotation + angleDifference * t;
+
+      ghost.userData.limbs.forEach((limb, i) => {
+        limb.rotation.x = THREE.MathUtils.lerp(
+          a.limbRotations[i],
+          b.limbRotations[i],
+          t
+        );
+      });
+    }
+
+    // ==========================================
+    // MAIN GAME LOOP
+    // ==========================================
 
     const direction = new THREE.Vector3();
     const forward = new THREE.Vector3();
     const right = new THREE.Vector3();
-    const targetCamera = new THREE.Vector3();
+    const cameraTarget = new THREE.Vector3();
+    const lookTarget = new THREE.Vector3();
 
     function animate() {
       requestAnimationFrame(animate);
@@ -284,9 +431,14 @@
       const dt = Math.min(clock.getDelta(), 0.05);
       const now = performance.now();
 
-      // Movement relative to camera direction
-      forward.set(-Math.sin(yaw), 0, -Math.cos(yaw));
-      right.set(Math.cos(yaw), 0, -Math.sin(yaw));
+      // Camera-relative movement
+      forward.set(
+        -Math.sin(yaw), 0, -Math.cos(yaw)
+      );
+
+      right.set(
+        Math.cos(yaw), 0, -Math.sin(yaw)
+      );
 
       direction.set(0, 0, 0);
 
@@ -299,24 +451,28 @@
 
       if (moving) {
         direction.normalize();
-        player.position.addScaledVector(direction, 6 * dt);
 
-        // Face the direction of movement
+        player.position.addScaledVector(
+          direction, 6 * dt
+        );
+
         player.rotation.y = Math.atan2(
           -direction.x, -direction.z
         );
 
-        walkTime += dt * 10;
+        walkTime += dt * 9;
 
         player.userData.legs[0].rotation.x =
           Math.sin(walkTime) * 0.65;
+
         player.userData.legs[1].rotation.x =
           -Math.sin(walkTime) * 0.65;
 
         player.userData.arms[0].rotation.x =
-          -Math.sin(walkTime) * 0.5;
+          -Math.sin(walkTime) * 0.45;
+
         player.userData.arms[1].rotation.x =
-          Math.sin(walkTime) * 0.5;
+          Math.sin(walkTime) * 0.45;
       } else {
         player.userData.limbs.forEach(limb => {
           limb.rotation.x = THREE.MathUtils.damp(
@@ -325,7 +481,7 @@
         });
       }
 
-      // Jump physics
+      // Jump and gravity
       verticalVelocity -= 22 * dt;
       player.position.y += verticalVelocity * dt;
 
@@ -335,70 +491,48 @@
         grounded = true;
       }
 
-      // Keep a record of past player transforms
-      history.push(getSnapshot(now));
+      // Record current player state
+      history.push(snapshot(now));
 
-      // Replay the player state from the configured delay ago
-      const targetTime = now - latency;
+      // Update the orange delayed copy
+      updateGhost(now);
 
-      while (history.length > 2 &&
-             history[1].time <= targetTime) {
+      // Keep up to 1.2 seconds of history
+      while (
+        history.length > 2 &&
+        history[1].time < now - 1200
+      ) {
         history.shift();
-      }
-
-      if (history.length > 0) {
-        let a = history[0];
-        let b = history[1] || a;
-
-        const span = b.time - a.time;
-        const t = span > 0
-          ? THREE.MathUtils.clamp(
-              (targetTime - a.time) / span, 0, 1
-            )
-          : 0;
-
-        ghost.position.lerpVectors(a.position, b.position, t);
-
-        // Interpolate facing direction smoothly
-        ghost.rotation.y = a.rotation +
-          THREE.MathUtils.euclideanModulo(
-            b.rotation - a.rotation + Math.PI,
-            Math.PI * 2
-          ) * t - Math.PI;
-
-        ghost.userData.limbs.forEach((limb, i) => {
-          limb.rotation.x = THREE.MathUtils.lerp(
-            a.limbRotations[i],
-            b.limbRotations[i], t
-          );
-        });
       }
 
       // Third-person follow camera
-      targetCamera.set(
+      cameraTarget.set(
         player.position.x + Math.sin(yaw) * 8,
-        player.position.y + 5 + cameraPitch * 3,
+        player.position.y + 4.5 + cameraPitch * 3,
         player.position.z + Math.cos(yaw) * 8
       );
 
-      camera.position.lerp(targetCamera, 1 - Math.exp(-5 * dt));
+      camera.position.lerp(
+        cameraTarget,
+        1 - Math.exp(-5 * dt)
+      );
 
-      const lookAt = player.position.clone();
-      lookAt.y += 1.5;
-      camera.lookAt(lookAt);
+      lookTarget.copy(player.position);
+      lookTarget.y += 1.5;
 
-      // Keep enough history for the maximum configured delay
-      while (history.length > 2 &&
-             history[1].time < now - 1200) {
-        history.shift();
-      }
+      camera.lookAt(lookTarget);
 
       renderer.render(scene, camera);
     }
 
+    // ==========================================
+    // RESIZE
+    // ==========================================
+
     addEventListener('resize', () => {
       camera.aspect = innerWidth / innerHeight;
       camera.updateProjectionMatrix();
+
       renderer.setSize(innerWidth, innerHeight);
     });
 
