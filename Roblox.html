@@ -1,11 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>R6 Latency Simulator</title>
-
 <style>
 * { box-sizing: border-box; }
 
@@ -44,7 +42,6 @@ body {
   font-size: 13px;
 }
 </style>
-
 <script type="importmap">
 {
   "imports": {
@@ -55,7 +52,6 @@ body {
 </script>
 </head>
 <body>
-
 <div id="hud">
   <strong>ROBLOX R6 LATENCY</strong><br>
   Simulated ping: <span id="ping">150</span> ms<br>
@@ -65,11 +61,9 @@ body {
          min="50" max="1000" step="10" value="150">
   <span style="color:#ff8a22">■</span> Delayed character
 </div>
-
 <div id="help">
   WASD: Move · Space: Jump · Drag: Look · Wheel: Zoom
 </div>
-
 <script type="module">
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
@@ -142,15 +136,16 @@ function createCharacter(isGhost = false) {
   // Invisible HumanoidRootPart representation
   root.userData.rootPartSize = new THREE.Vector3(2, 2, 1);
 
-  // Slightly beveled body parts
+  // Rounded block-shaped body parts
   function box(name, size, position, parent = model) {
-    const bevel = 0.035;
+    const bevel = 0.12;
+    const bevelSegments = 4;
 
     const geometry = new RoundedBoxGeometry(
       size[0],
       size[1],
       size[2],
-      2,
+      bevelSegments,
       bevel
     );
 
@@ -164,22 +159,22 @@ function createCharacter(isGhost = false) {
     return mesh;
   }
 
-  // Upright cylindrical head: 56 cm tall, 28 cm diameter
+  // Shorter cylindrical head
   const head = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.5, 0.5, 2, 24),
+    new THREE.CylinderGeometry(0.5, 0.5, 1.4, 24),
     material
   );
 
   head.name = 'Head';
-  head.position.set(0, 5, 0);
+  head.position.set(0, 4.7, 0);
   head.castShadow = !isGhost;
   head.receiveShadow = !isGhost;
   model.add(head);
 
-  // Torso: 56 x 56 x 28 cm
+  // Torso
   box('Torso', [2, 2, 1], [0, 3, 0]);
 
-  // Arms: 28 x 56 x 28 cm
+  // Arms
   function makeArm(name, x) {
     const pivot = new THREE.Group();
     pivot.position.set(x, 4, 0);
@@ -192,7 +187,7 @@ function createCharacter(isGhost = false) {
   const leftArm = makeArm('Left Arm', -1.5);
   const rightArm = makeArm('Right Arm', 1.5);
 
-  // Legs: 28 x 56 x 28 cm
+  // Legs
   function makeLeg(name, x) {
     const pivot = new THREE.Group();
     pivot.position.set(x, 2, 0);
