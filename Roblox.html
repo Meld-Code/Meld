@@ -135,9 +135,9 @@ function createCharacter(isGhost = false) {
 
   root.userData.rootPartSize = new THREE.Vector3(2, 2, 1);
 
-  // Bevel settings for torso, arms, and legs
-  const BODY_BEVEL = 0.12;
-  const BODY_BEVEL_SEGMENTS = 4;
+  // Subtle bevel for torso, arms, and legs
+  const BODY_BEVEL = 0.035;
+  const BODY_BEVEL_SEGMENTS = 2;
 
   function box(name, size, position, parent = model) {
     const geometry = new RoundedBoxGeometry(
@@ -158,13 +158,12 @@ function createCharacter(isGhost = false) {
     return mesh;
   }
 
-  // Head dimensions and bevel settings.
-  // Increase HEAD_BEVEL for rounder edges; reduce it for sharper edges.
+  // Taller head with a small bevel of its own
   const HEAD_WIDTH = 1;
-  const HEAD_HEIGHT = 0.8;
-  const HEAD_DEPTH = 0.8;
-  const HEAD_BEVEL = 0.28;
-  const HEAD_BEVEL_SEGMENTS = 6;
+  const HEAD_HEIGHT = 1.4;
+  const HEAD_DEPTH = 1;
+  const HEAD_BEVEL = 0.06;
+  const HEAD_BEVEL_SEGMENTS = 3;
 
   const head = new THREE.Mesh(
     new RoundedBoxGeometry(
@@ -178,7 +177,7 @@ function createCharacter(isGhost = false) {
   );
 
   head.name = 'Head';
-  head.position.set(0, 4.4, 0);
+  head.position.set(0, 4.7, 0);
   head.castShadow = !isGhost;
   head.receiveShadow = !isGhost;
   model.add(head);
