@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Roblox Latency Simulator</title>
+  <title>Classic Roblox R6 Latency Demo</title>
 
   <style>
     * { box-sizing: border-box; }
@@ -12,129 +12,97 @@
     body {
       margin: 0;
       overflow: hidden;
-      background: #87ceeb;
       font-family: Arial, sans-serif;
+      background: #dedede;
     }
 
     #hud {
       position: fixed;
-      top: 16px;
-      left: 16px;
-      z-index: 2;
+      z-index: 5;
+      top: 14px;
+      left: 14px;
+      width: 235px;
       padding: 14px;
-      width: 230px;
+      border-radius: 10px;
       color: white;
-      background: rgba(15, 15, 20, 0.82);
-      border: 1px solid #ffffff25;
-      border-radius: 12px;
+      background: #171717df;
       line-height: 1.8;
-      backdrop-filter: blur(8px);
     }
 
-    #hud strong { color: #ff922e; }
+    #hud strong { color: #ff8a22; }
 
     #latency {
       width: 100%;
-      accent-color: #ff922e;
+      accent-color: #ff8a22;
     }
 
     #help {
       position: fixed;
-      left: 16px;
-      bottom: 16px;
-      z-index: 2;
+      z-index: 5;
+      bottom: 14px;
+      left: 14px;
       padding: 10px 14px;
-      color: white;
-      background: rgba(15, 15, 20, 0.75);
       border-radius: 8px;
+      color: white;
+      background: #171717df;
       font-size: 13px;
-    }
-
-    #crosshair {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #ffffffaa;
-      pointer-events: none;
     }
   </style>
 
   <script type="importmap">
   {
     "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
     }
   }
   </script>
 </head>
-
 <body>
-  <div id="hud">
-    <strong>LATENCY SIMULATOR</strong><br />
-    Simulated ping: <span id="ping">150</span> ms<br />
-    Ghost delay: <span id="delay">150</span> ms
 
-    <label for="latency">Latency amount</label>
+  <div id="hud">
+    <strong>ROBLOX R6 LATENCY</strong><br />
+    Simulated ping: <span id="ping">150</span> ms<br />
+    Ghost delay: <span id="delay">150</span> ms<br />
+
+    <label for="latency">Latency</label>
     <input id="latency" type="range"
            min="50" max="1000" step="10" value="150" />
 
-    <div>
-      <span style="color:#ff922e">■</span>
-      Orange = delayed position
-    </div>
+    <span style="color:#ff8a22">■</span> Delayed character
   </div>
 
   <div id="help">
-    WASD: Move · Space: Jump · Drag mouse: Rotate camera
+    WASD: Move | Space: Jump | Drag mouse: Rotate camera
   </div>
-  <div id="crosshair"></div>
 
   <script type="module">
     import * as THREE from 'three';
-    import { RoundedBoxGeometry } from
-      'three/addons/geometries/RoundedBoxGeometry.js';
 
     // ==========================================
-    // SCENE AND RENDERER
+    // SCENE
+    // 1 unit = 28 cm
     // ==========================================
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xdedede);
-    scene.fog = new THREE.Fog(0xdedede, 45, 120);
 
     const camera = new THREE.PerspectiveCamera(
       65, innerWidth / innerHeight, 0.1, 500
     );
 
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true
-    });
-
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(innerWidth, innerHeight);
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-
     document.body.appendChild(renderer.domElement);
 
-    // ==========================================
-    // LIGHTING
-    // ==========================================
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x777777, 2));
 
-    scene.add(new THREE.HemisphereLight(
-      0xffffff, 0x777777, 2.1
-    ));
-
-    const sun = new THREE.DirectionalLight(0xffffff, 2.2);
-    sun.position.set(8, 15, 10);
-    sun.castShadow = true;
-    sun.shadow.mapSize.set(1024, 1024);
-    scene.add(sun);
+    const light = new THREE.DirectionalLight(0xffffff, 2);
+    light.position.set(8, 15, 10);
+    light.castShadow = true;
+    scene.add(light);
 
     // ==========================================
     // GROUND
@@ -143,7 +111,7 @@
     const ground = new THREE.Mesh(
       new THREE.PlaneGeometry(300, 300),
       new THREE.MeshStandardMaterial({
-        color: 0xb4b4b4,
+        color: 0xd0d0d0,
         roughness: 1
       })
     );
@@ -153,36 +121,47 @@
     scene.add(ground);
 
     const grid = new THREE.GridHelper(
-      300, 100, 0x999999, 0xc8c8c8
+      300, 100, 0xb0b0b0, 0xc7c7c7
     );
 
-    grid.position.y = 0.012;
+    grid.position.y = 0.01;
     scene.add(grid);
 
     // ==========================================
-    // CLASSIC GRAY ROBLOX-STYLE CHARACTER
+    // R6 CHARACTER
+    //
+    // Head:  2 x 1 x 1
+    // Torso: 2 x 2 x 1
+    // Arms:  1 x 2 x 1
+    // Legs:  1 x 2 x 1
+    //
+    // Root is invisible and at ground level.
     // ==========================================
 
-    function makeCharacter(isGhost = false) {
+    function createCharacter(isGhost = false) {
       const root = new THREE.Group();
-      const body = new THREE.Group();
-      root.add(body);
+      const model = new THREE.Group();
+      root.add(model);
 
       const material = new THREE.MeshStandardMaterial({
-        color: isGhost ? 0xff7900 : 0x999999,
+        color: isGhost ? 0xff851f : 0x999999,
         transparent: isGhost,
         opacity: isGhost ? 0.42 : 1,
         depthWrite: !isGhost,
-        roughness: 0.85,
-        metalness: 0
+        roughness: 0.9
       });
 
-      function block(size, position, parent = body, radius = 0.055) {
-        const geometry = new RoundedBoxGeometry(
-          size[0], size[1], size[2], 3, radius
+      // Invisible physics/root part: 2 x 2 x 1.
+      // It is deliberately not added as a visible mesh.
+      root.userData.rootPartSize = new THREE.Vector3(2, 2, 1);
+
+      function part(name, size, position, parent = model) {
+        const mesh = new THREE.Mesh(
+          new THREE.BoxGeometry(size[0], size[1], size[2]),
+          material
         );
 
-        const mesh = new THREE.Mesh(geometry, material);
+        mesh.name = name;
         mesh.position.set(...position);
         mesh.castShadow = !isGhost;
         mesh.receiveShadow = !isGhost;
@@ -191,65 +170,40 @@
         return mesh;
       }
 
-      // Featureless rounded head
-      block(
-        [0.86, 0.86, 0.86],
-        [0, 2.83, 0],
-        body,
-        0.16
-      );
+      // Classic R6 head: 56 x 28 x 28 cm.
+      // No face, hair, accessories, or rounded toy shape.
+      part('Head', [2, 1, 1], [0, 4.5, 0]);
 
-      // Broad rectangular torso
-      block(
-        [1.35, 1.45, 0.62],
-        [0, 1.68, 0],
-        body,
-        0.055
-      );
+      // Torso: 56 x 56 x 28 cm.
+      part('Torso', [2, 2, 1], [0, 3, 0]);
 
-      // Shoulder pivots and arms
-      const leftArm = new THREE.Group();
-      leftArm.position.set(-0.88, 2.25, 0);
-      body.add(leftArm);
+      // Arms pivot at their shoulders.
+      function makeArm(name, x) {
+        const pivot = new THREE.Group();
+        pivot.position.set(x, 4, 0);
+        model.add(pivot);
 
-      block(
-        [0.52, 1.38, 0.58],
-        [0, -0.52, 0],
-        leftArm
-      );
+        part(name, [1, 2, 1], [0, -1, 0], pivot);
+        return pivot;
+      }
 
-      const rightArm = new THREE.Group();
-      rightArm.position.set(0.88, 2.25, 0);
-      body.add(rightArm);
+      const leftArm = makeArm('Left Arm', -1.5);
+      const rightArm = makeArm('Right Arm', 1.5);
 
-      block(
-        [0.52, 1.38, 0.58],
-        [0, -0.52, 0],
-        rightArm
-      );
+      // Legs pivot at the hips.
+      function makeLeg(name, x) {
+        const pivot = new THREE.Group();
+        pivot.position.set(x, 2, 0);
+        model.add(pivot);
 
-      // Leg pivots
-      const leftLeg = new THREE.Group();
-      leftLeg.position.set(-0.34, 0.96, 0);
-      body.add(leftLeg);
+        part(name, [1, 2, 1], [0, -1, 0], pivot);
+        return pivot;
+      }
 
-      block(
-        [0.62, 1.35, 0.62],
-        [0, -0.48, 0],
-        leftLeg
-      );
+      const leftLeg = makeLeg('Left Leg', -0.5);
+      const rightLeg = makeLeg('Right Leg', 0.5);
 
-      const rightLeg = new THREE.Group();
-      rightLeg.position.set(0.34, 0.96, 0);
-      body.add(rightLeg);
-
-      block(
-        [0.62, 1.35, 0.62],
-        [0, -0.48, 0],
-        rightLeg
-      );
-
-      root.userData.body = body;
+      root.userData.model = model;
       root.userData.arms = [leftArm, rightArm];
       root.userData.legs = [leftLeg, rightLeg];
       root.userData.limbs = [
@@ -259,29 +213,28 @@
       return root;
     }
 
-    const player = makeCharacter(false);
-    scene.add(player);
+    const player = createCharacter(false);
+    const ghost = createCharacter(true);
 
-    const ghost = makeCharacter(true);
-    scene.add(ghost);
+    scene.add(player, ghost);
 
     // ==========================================
-    // CONTROLS
+    // INPUT
     // ==========================================
 
     const keys = Object.create(null);
 
     let yaw = 0;
-    let cameraPitch = 0.12;
+    let pitch = 0.12;
     let verticalVelocity = 0;
     let grounded = true;
     let walkTime = 0;
 
-    addEventListener('keydown', (event) => {
-      keys[event.code] = true;
+    addEventListener('keydown', e => {
+      keys[e.code] = true;
 
-      if (event.code === 'Space') {
-        event.preventDefault();
+      if (e.code === 'Space') {
+        e.preventDefault();
 
         if (grounded) {
           verticalVelocity = 8;
@@ -290,25 +243,24 @@
       }
     });
 
-    addEventListener('keyup', (event) => {
-      keys[event.code] = false;
+    addEventListener('keyup', e => {
+      keys[e.code] = false;
     });
 
     addEventListener('blur', () => {
-      for (const key in keys) keys[key] = false;
+      for (const k in keys) keys[k] = false;
     });
 
-    // Mouse drag camera
+    // Mouse-drag camera
     let dragging = false;
     let lastX = 0;
     let lastY = 0;
 
-    renderer.domElement.addEventListener('pointerdown', (event) => {
+    renderer.domElement.addEventListener('pointerdown', e => {
       dragging = true;
-      lastX = event.clientX;
-      lastY = event.clientY;
-
-      renderer.domElement.setPointerCapture(event.pointerId);
+      lastX = e.clientX;
+      lastY = e.clientY;
+      renderer.domElement.setPointerCapture(e.pointerId);
     });
 
     renderer.domElement.addEventListener('pointerup', () => {
@@ -319,22 +271,19 @@
       dragging = false;
     });
 
-    renderer.domElement.addEventListener('pointermove', (event) => {
+    renderer.domElement.addEventListener('pointermove', e => {
       if (!dragging) return;
 
-      yaw -= (event.clientX - lastX) * 0.006;
-      cameraPitch += (event.clientY - lastY) * 0.004;
+      yaw -= (e.clientX - lastX) * 0.006;
+      pitch += (e.clientY - lastY) * 0.004;
+      pitch = THREE.MathUtils.clamp(pitch, -0.2, 0.7);
 
-      cameraPitch = THREE.MathUtils.clamp(
-        cameraPitch, -0.25, 0.75
-      );
-
-      lastX = event.clientX;
-      lastY = event.clientY;
+      lastX = e.clientX;
+      lastY = e.clientY;
     });
 
     // ==========================================
-    // LATENCY SLIDER
+    // LATENCY CONTROL
     // ==========================================
 
     const slider = document.getElementById('latency');
@@ -350,19 +299,18 @@
     });
 
     // ==========================================
-    // DELAYED MOVEMENT HISTORY
+    // POSITION HISTORY
     // ==========================================
 
     const history = [];
     const clock = new THREE.Clock();
 
-    function snapshot(time) {
+    function saveState(time) {
       return {
         time,
         position: player.position.clone(),
         rotation: player.rotation.y,
-
-        limbRotations: player.userData.limbs.map(
+        limbs: player.userData.limbs.map(
           limb => limb.rotation.x
         )
       };
@@ -373,50 +321,51 @@
 
       if (history.length < 2) return;
 
-      // Find the two historical frames surrounding the target time.
-      let index = 0;
+      let i = 0;
 
       while (
-        index < history.length - 2 &&
-        history[index + 1].time < targetTime
+        i < history.length - 2 &&
+        history[i + 1].time < targetTime
       ) {
-        index++;
+        i++;
       }
 
-      const a = history[index];
-      const b = history[Math.min(index + 1, history.length - 1)];
+      const a = history[i];
+      const b = history[Math.min(i + 1, history.length - 1)];
 
-      const span = b.time - a.time;
-
-      const t = span > 0
+      const duration = b.time - a.time;
+      const t = duration > 0
         ? THREE.MathUtils.clamp(
-            (targetTime - a.time) / span, 0, 1
+            (targetTime - a.time) / duration, 0, 1
           )
         : 0;
 
-      ghost.position.lerpVectors(
-        a.position, b.position, t
+      ghost.position.lerpVectors(a.position, b.position, t);
+
+      // Prevent the ghost from appearing above the main character.
+      // It can trail lower while the player jumps, but it won't
+      // float above the player's current root height.
+      ghost.position.y = Math.min(
+        ghost.position.y, player.position.y
       );
 
-      // Interpolate rotation along the shortest angle.
-      const angleDifference = Math.atan2(
+      // Smooth rotation interpolation
+      const angle = Math.atan2(
         Math.sin(b.rotation - a.rotation),
         Math.cos(b.rotation - a.rotation)
       );
 
-      ghost.rotation.y = a.rotation + angleDifference * t;
+      ghost.rotation.y = a.rotation + angle * t;
 
-      ghost.userData.limbs.forEach((limb, i) => {
+      ghost.userData.limbs.forEach((limb, index) => {
         limb.rotation.x = THREE.MathUtils.lerp(
-          a.limbRotations[i],
-          b.limbRotations[i],
-          t
+          a.limbs[index], b.limbs[index], t
         );
       });
     }
 
     // ==========================================
-    // MAIN GAME LOOP
+    // MOVEMENT + CAMERA
     // ==========================================
 
     const direction = new THREE.Vector3();
@@ -431,30 +380,22 @@
       const dt = Math.min(clock.getDelta(), 0.05);
       const now = performance.now();
 
-      // Camera-relative movement
-      forward.set(
-        -Math.sin(yaw), 0, -Math.cos(yaw)
-      );
-
-      right.set(
-        Math.cos(yaw), 0, -Math.sin(yaw)
-      );
+      forward.set(-Math.sin(yaw), 0, -Math.cos(yaw));
+      right.set(Math.cos(yaw), 0, -Math.sin(yaw));
 
       direction.set(0, 0, 0);
 
       if (keys.KeyW) direction.add(forward);
       if (keys.KeyS) direction.sub(forward);
-      if (keys.KeyD) direction.add(right);
       if (keys.KeyA) direction.sub(right);
+      if (keys.KeyD) direction.add(right);
 
       const moving = direction.lengthSq() > 0;
 
       if (moving) {
         direction.normalize();
 
-        player.position.addScaledVector(
-          direction, 6 * dt
-        );
+        player.position.addScaledVector(direction, 6 * dt);
 
         player.rotation.y = Math.atan2(
           -direction.x, -direction.z
@@ -463,16 +404,16 @@
         walkTime += dt * 9;
 
         player.userData.legs[0].rotation.x =
-          Math.sin(walkTime) * 0.65;
+          Math.sin(walkTime) * 0.6;
 
         player.userData.legs[1].rotation.x =
-          -Math.sin(walkTime) * 0.65;
+          -Math.sin(walkTime) * 0.6;
 
         player.userData.arms[0].rotation.x =
-          -Math.sin(walkTime) * 0.45;
+          -Math.sin(walkTime) * 0.4;
 
         player.userData.arms[1].rotation.x =
-          Math.sin(walkTime) * 0.45;
+          Math.sin(walkTime) * 0.4;
       } else {
         player.userData.limbs.forEach(limb => {
           limb.rotation.x = THREE.MathUtils.damp(
@@ -481,7 +422,7 @@
         });
       }
 
-      // Jump and gravity
+      // Jump physics
       verticalVelocity -= 22 * dt;
       player.position.y += verticalVelocity * dt;
 
@@ -491,13 +432,11 @@
         grounded = true;
       }
 
-      // Record current player state
-      history.push(snapshot(now));
-
-      // Update the orange delayed copy
+      // Record player state and replay delayed state
+      history.push(saveState(now));
       updateGhost(now);
 
-      // Keep up to 1.2 seconds of history
+      // Retain sufficient history for maximum slider delay
       while (
         history.length > 2 &&
         history[1].time < now - 1200
@@ -505,39 +444,33 @@
         history.shift();
       }
 
-      // Third-person follow camera
+      // Follow camera
       cameraTarget.set(
         player.position.x + Math.sin(yaw) * 8,
-        player.position.y + 4.5 + cameraPitch * 3,
+        player.position.y + 3.8 + pitch * 3,
         player.position.z + Math.cos(yaw) * 8
       );
 
       camera.position.lerp(
-        cameraTarget,
-        1 - Math.exp(-5 * dt)
+        cameraTarget, 1 - Math.exp(-5 * dt)
       );
 
-      lookTarget.copy(player.position);
-      lookTarget.y += 1.5;
+      lookTarget.set(
+        player.position.x,
+        player.position.y + 2.5,
+        player.position.z
+      );
 
       camera.lookAt(lookTarget);
 
       renderer.render(scene, camera);
     }
 
-    // ==========================================
-    // RESIZE
-    // ==========================================
-
     addEventListener('resize', () => {
       camera.aspect = innerWidth / innerHeight;
       camera.updateProjectionMatrix();
-
       renderer.setSize(innerWidth, innerHeight);
     });
-
-    pingLabel.textContent = latency;
-    delayLabel.textContent = latency;
 
     animate();
   </script>
