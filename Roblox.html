@@ -133,20 +133,19 @@ function createCharacter(isGhost = false) {
     roughness: 0.9
   });
 
-  // Invisible HumanoidRootPart representation
   root.userData.rootPartSize = new THREE.Vector3(2, 2, 1);
 
-  // Rounded block-shaped body parts
-  function box(name, size, position, parent = model) {
-    const bevel = 0.12;
-    const bevelSegments = 4;
+  // Bevel settings for torso, arms, and legs
+  const BODY_BEVEL = 0.12;
+  const BODY_BEVEL_SEGMENTS = 4;
 
+  function box(name, size, position, parent = model) {
     const geometry = new RoundedBoxGeometry(
       size[0],
       size[1],
       size[2],
-      bevelSegments,
-      bevel
+      BODY_BEVEL_SEGMENTS,
+      BODY_BEVEL
     );
 
     const mesh = new THREE.Mesh(geometry, material);
@@ -159,14 +158,27 @@ function createCharacter(isGhost = false) {
     return mesh;
   }
 
-  // Shorter cylindrical head
+  // Head dimensions and bevel settings.
+  // Increase HEAD_BEVEL for rounder edges; reduce it for sharper edges.
+  const HEAD_WIDTH = 1;
+  const HEAD_HEIGHT = 0.8;
+  const HEAD_DEPTH = 0.8;
+  const HEAD_BEVEL = 0.28;
+  const HEAD_BEVEL_SEGMENTS = 6;
+
   const head = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.5, 0.5, 1.4, 24),
+    new RoundedBoxGeometry(
+      HEAD_WIDTH,
+      HEAD_HEIGHT,
+      HEAD_DEPTH,
+      HEAD_BEVEL_SEGMENTS,
+      HEAD_BEVEL
+    ),
     material
   );
 
   head.name = 'Head';
-  head.position.set(0, 4.7, 0);
+  head.position.set(0, 4.4, 0);
   head.castShadow = !isGhost;
   head.receiveShadow = !isGhost;
   model.add(head);
