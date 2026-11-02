@@ -1167,6 +1167,7 @@ Existing classes and functionality preserved
     }
     .browser.open {
     display: flex;
+        z-index: 99999999999999;
     animation: browserIn .25s ease;
     }
     @keyframes browserIn {
