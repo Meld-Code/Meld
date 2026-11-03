@@ -3887,3 +3887,51 @@ PROFILE AND LEADERBOARD — MOBILE
   width: 900px;
   height: auto;
 }
+
+/* movie page warning */
+
+.moviesWarningOverlay {
+position: fixed;
+inset: 0;
+z-index: 10000;
+display: grid;
+place-items: center;
+padding: 20px;
+background: rgba(0, 0, 0, 0.75);
+}
+.moviesWarningOverlay[hidden] {
+display: none;
+}
+.moviesWarningCard {
+width: min(420px, 100%);
+padding: 26px;
+color: #fff;
+background: #181818;
+border: 1px solid rgba(255, 255, 255, 0.16);
+border-radius: 16px;
+box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+.moviesWarningCard h2 {
+margin: 0 0 12px;
+}
+.moviesWarningCard p {
+line-height: 1.5;
+color: #ddd;
+}
+.moviesWarningActions {
+display: flex;
+justify-content: flex-end;
+gap: 10px;
+margin-top: 22px;
+}
+.moviesWarningActions button {
+padding: 10px 15px;
+color: #fff;
+background: #333;
+border: 0;
+border-radius: 8px;
+cursor: pointer;
+}
+.moviesWarningActions #continueMovies {
+background: #d44a2f;
+}
