@@ -2510,3 +2510,60 @@ homeButton?.addEventListener("click", () => {
     browserAddress.value = "meld://browser";
   }
 });
+
+// movies page warning js//
+
+// Show a warning before opening the Movies link.
+(() => {
+const moviesBlock = [...document.querySelectorAll(".block")]
+.find((block) => block.dataset.name === "Movies");
+const warning = document.getElementById("moviesWarning");
+const cancelButton = document.getElementById("cancelMovies");
+const continueButton = document.getElementById("continueMovies");
+if (!moviesBlock || !warning || !cancelButton || !continueButton) return;
+let moviesUrl = "";
+function showMoviesWarning(event) {
+event.preventDefault();
+event.stopImmediatePropagation();
+moviesUrl = moviesBlock.dataset.url;
+warning.hidden = false;
+cancelButton.focus();
+
+}
+moviesBlock.addEventListener("click", showMoviesWarning, true);
+moviesBlock.addEventListener("keydown", (event) => {
+if (event.key === "Enter" || event.key === " ") {
+showMoviesWarning(event);
+}
+}, true);
+cancelButton.addEventListener("click", () => {
+warning.hidden = true;
+moviesUrl = "";
+moviesBlock.focus();
+});
+continueButton.addEventListener("click", () => {
+if (!moviesUrl) return;
+// Hide the warning and open the link using the site's existing block behavior.
+warning.hidden = true;
+const url = moviesUrl;
+moviesUrl = "";
+
+// Open the destination directly after the visitor confirms.
+window.open(url, "_blank", "noopener,noreferrer");
+
+});
+warning.addEventListener("click", (event) => {
+if (event.target === warning) {
+warning.hidden = true;
+moviesUrl = "";
+moviesBlock.focus();
+}
+});
+document.addEventListener("keydown", (event) => {
+if (event.key === "Escape" && !warning.hidden) {
+warning.hidden = true;
+moviesUrl = "";
+moviesBlock.focus();
+}
+});
+})();
