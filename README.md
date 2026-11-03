@@ -8,8 +8,6 @@ Add a suggestions tab or a button with a google form with a way users can sugges
 
 Add a level system with quests to get exp and at certain levels u gain a certain rank or privileges other users dont get
 
-
-
 Add a partners tab with other unblockers
 
 Add website themes
