@@ -3503,172 +3503,98 @@ PROFILE AND LEADERBOARD — MOBILE
 
 
 
-/* ============================================================ CHAT PANEL BUTTON ============================================================ */
+/* CHAT BUTTON — MATCH TOP NAV STYLE, UNDER PROFILE */
+.chatButton {
+position: fixed;
+top: 72px;
+left: 18px;
+right: auto;
+bottom: auto;
+z-index: 7600;
+min-width: 42px;
+height: 42px;
+padding: 0 12px;
 
-.chatButton { position: fixed; right: 70px; bottom: 18px; z-index: 9999;
+display: flex;
+align-items: center;
+justify-content: center;
 
-    width: 42px;
-    height: 42px;
-    padding: 0;
-    
-    display: grid;
-    place-items: center;
-    
-    border: 1px solid #45533d;
-    border-radius: 11px;
-    
-    background: rgba(25, 31, 24, 0.94);
-    color: var(--muted);
-    
-    font-family: inherit;
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 1;
-    
-    cursor: pointer;
-    overflow: hidden;
-    white-space: nowrap;
-    transform-origin: right center;
-    
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.53),
-        inset 0 1px 0 rgba(255, 255, 255, 0.04);
-    
-    transition:
-        width 0.25s ease,
-        transform 0.2s ease,
-        color 0.2s ease,
-        background 0.2s ease,
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-    }
-    
-    .chatButton::before { content: "C"; }
-    
-    .chatButton:hover, .chatButton:focus-visible { width: 90px;
-    
-    border-color: var(--accent);
-    background: #28351b;
-    color: var(--accent-light);
-    
-    transform: translateY(-2px);
-    
-    box-shadow:
-        0 12px 34px rgba(0, 0, 0, 0.6),
-        0 0 16px rgba(143, 209, 79, 0.16),
-        inset 0 1px 0 rgba(255, 255, 255, 0.06);
-    
-    outline: none;
-    }
-    
-    .chatButton:hover::before, .chatButton:focus-visible::before { content: "Chat"; }
-    
-    .chatButton:active { transform: translateY(0); }
+border: 1px solid #45533d;
+border-radius: 11px;
+background: rgba(25, 31, 24, .94);
+color: var(--text);
 
-    /* CHAT BUTTON — MATCH TOP NAV STYLE, UNDER PROFILE */
-    .chatButton {
-    position: fixed;
-    top: 72px;
-    left: 18px;
-    right: auto;
-    bottom: auto;
-    z-index: 7600;
-    min-width: 42px;
-    height: 42px;
-    padding: 0 12px;
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    border: 1px solid #45533d;
-    border-radius: 11px;
-    
-    background: rgba(25, 31, 24, .94);
-    color: var(--text);
-    
-    font-family: inherit;
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 1;
-    
-    cursor: pointer;
-    white-space: nowrap;
-    
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    
-    box-shadow:
-        0 10px 30px #0008,
-        inset 0 1px 0 #ffffff0b;
-    
-    transition:
-        transform .2s ease,
-        color .2s ease,
-        background .2s ease,
-        border-color .2s ease,
-        box-shadow .2s ease;
-    
-    }
-    .chatButton::before {
-    content: "Chat";
-    }
-    .chatButton:hover,
-    .chatButton:focus-visible {
-    border-color: var(--accent);
-    background: #28351b;
-    color: var(--accent-light);
-    transform: translateY(-2px);
-    box-shadow:
-        0 12px 30px #0009,
-        0 0 0 3px #76b90020;
-    
-    }
-    .chatButton:active {
-    transform: scale(.97);
-    }
-    .chatButton:focus-visible {
-    outline: 2px solid var(--accent-light);
-    outline-offset: 3px;
-    }
-    /* Keep the unread count badge */
-    .chatUnreadBadge {
-    position: absolute;
-    top: -5px;
-    right: -7px;
-    min-width: 20px;
-    height: 20px;
-    padding: 0 5px;
-    
-    display: grid;
-    place-items: center;
-    
-    color: white;
-    background: #e85b5b;
-    border: 2px solid #101210;
-    border-radius: 999px;
-    
-    font-size: 11px;
-    font-weight: 800;
-    
-    }
-    .chatUnreadBadge[hidden] {
-    display: none !important;
-    }
-    @media (max-width: 700px) {
-    .chatButton {
-    top: 55px;
-    left: 10px;
-    }
-    }
-    @media (max-width: 380px) {
-    .chatButton {
-    left: 8px;
-    }
-    }
+font-family: inherit;
+font-size: 12px;
+font-weight: 700;
+line-height: 1;
+white-space: nowrap;
+
+backdrop-filter: blur(14px);
+-webkit-backdrop-filter: blur(14px);
+
+box-shadow:
+    0 10px 30px #0008,
+    inset 0 1px 0 #ffffff0b;
+
+cursor: pointer;
+transition:
+    transform .2s ease,
+    color .2s ease,
+    background .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease;
+
+}
+.chatButton::before {
+content: "Chat";
+}
+.chatButton:hover,
+.chatButton:focus-visible {
+border-color: var(--accent);
+background: #28351b;
+color: var(--accent-light);
+transform: translateY(-2px);
+box-shadow:
+0 12px 30px #0009,
+0 0 0 3px #76b90020;
+}
+.chatButton:active {
+transform: scale(.97);
+}
+.chatUnreadBadge {
+position: absolute;
+top: -5px;
+right: -7px;
+min-width: 20px;
+height: 20px;
+padding: 0 5px;
+display: grid;
+place-items: center;
+
+color: white;
+background: #e85b5b;
+border: 2px solid #101210;
+border-radius: 999px;
+
+font-size: 11px;
+font-weight: 800;
+
+}
+.chatUnreadBadge[hidden] {
+display: none !important;
+}
+@media (max-width: 700px) {
+.chatButton {
+top: 55px;
+left: 10px;
+}
+}
+@media (max-width: 380px) {
+.chatButton {
+left: 8px;
+}
+}
   /* =========================
      CHAT PANEL
   ========================= */
