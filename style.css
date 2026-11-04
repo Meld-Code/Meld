@@ -3811,12 +3811,6 @@ left: 8px;
     cursor: wait;
   }
   
-  @media (max-width: 600px) {
-    .chatButton {
-      right: 16px;
-      bottom: 16px;
-    }
-  
     .chatPanel {
       right: 16px;
       bottom: 80px;
