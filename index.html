@@ -325,7 +325,10 @@
   </div>
 
   <!-- CHAT BUTTON -->
-  <button id="chatButton" type="button">Chat</button>
+  <button id="chatButton" class="chatButton" type="button" aria-label="Open chat" aria-expanded="false">
+    Chat
+    <span id="chatUnreadBadge" class="chatUnreadBadge" hidden></span>
+</button>
   <!-- CHAT PANEL -->
   <section
     class="chatPanel"
