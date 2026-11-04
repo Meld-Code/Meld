@@ -3546,9 +3546,7 @@ transition:
     box-shadow .2s ease;
 
 }
-.chatButton::before {
-content: "Chat";
-}
+
 .chatButton:hover,
 .chatButton:focus-visible {
 border-color: var(--accent);
@@ -3810,6 +3808,8 @@ left: 8px;
     opacity: 0.55;
     cursor: wait;
   }
+  
+  @media (max-width: 600px) {
   
     .chatPanel {
       right: 16px;
