@@ -862,9 +862,10 @@ Existing classes and functionality preserved
     
     }
     .SafeBucketLogo {
+        position: absolute;
     display: block;
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
     
     margin: 0 auto 16px;
     
