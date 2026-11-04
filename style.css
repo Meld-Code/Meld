@@ -3568,69 +3568,107 @@ PROFILE AND LEADERBOARD — MOBILE
     
     .chatButton:active { transform: translateY(0); }
 
-    /* =========================
-   CHAT BUTTON
-========================= */
-
-.chatButton {
+    /* CHAT BUTTON — MATCH TOP NAV STYLE, UNDER PROFILE */
+    .chatButton {
     position: fixed;
-    right: 24px;
-    bottom: 24px;
-    z-index: 1200;
-  
-    width: 52px;
-    height: 52px;
-    display: grid;
-    place-items: center;
-  
-    color: #0d140f;
-    background: #a6ff68;
-    border: 1px solid rgba(166, 255, 104, 0.7);
-    border-radius: 50%;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
-  
+    top: 72px;
+    left: 18px;
+    right: auto;
+    bottom: auto;
+    z-index: 7600;
+    min-width: 42px;
+    height: 42px;
+    padding: 0 12px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    border: 1px solid #45533d;
+    border-radius: 11px;
+    
+    background: rgba(25, 31, 24, .94);
+    color: var(--text);
+    
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    
     cursor: pointer;
+    white-space: nowrap;
+    
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    
+    box-shadow:
+        0 10px 30px #0008,
+        inset 0 1px 0 #ffffff0b;
+    
     transition:
-      transform 0.2s ease,
-      filter 0.2s ease,
-      box-shadow 0.2s ease;
-  }
-  
-  .chatButton:hover {
-    filter: brightness(1.08);
-    transform: translateY(-3px);
-    box-shadow: 0 15px 34px rgba(0, 0, 0, 0.45);
-  }
-  
-  .chatButton:active {
-    transform: translateY(0) scale(0.96);
-  }
-  
-  .chatButton i {
-    font-size: 1.15rem;
-  }
-  
-  .chatUnreadBadge {
+        transform .2s ease,
+        color .2s ease,
+        background .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease;
+    
+    }
+    .chatButton::before {
+    content: "Chat";
+    }
+    .chatButton:hover,
+    .chatButton:focus-visible {
+    border-color: var(--accent);
+    background: #28351b;
+    color: var(--accent-light);
+    transform: translateY(-2px);
+    box-shadow:
+        0 12px 30px #0009,
+        0 0 0 3px #76b90020;
+    
+    }
+    .chatButton:active {
+    transform: scale(.97);
+    }
+    .chatButton:focus-visible {
+    outline: 2px solid var(--accent-light);
+    outline-offset: 3px;
+    }
+    /* Keep the unread count badge */
+    .chatUnreadBadge {
     position: absolute;
-    top: -4px;
-    right: -4px;
-  
+    top: -5px;
+    right: -7px;
     min-width: 20px;
     height: 20px;
     padding: 0 5px;
-  
+    
     display: grid;
     place-items: center;
-  
+    
     color: white;
     background: #e85b5b;
-    border: 2px solid #101010;
+    border: 2px solid #101210;
     border-radius: 999px;
-  
-    font-size: 0.68rem;
+    
+    font-size: 11px;
     font-weight: 800;
-  }
-  
+    
+    }
+    .chatUnreadBadge[hidden] {
+    display: none !important;
+    }
+    @media (max-width: 700px) {
+    .chatButton {
+    top: 55px;
+    left: 10px;
+    }
+    }
+    @media (max-width: 380px) {
+    .chatButton {
+    left: 8px;
+    }
+    }
   /* =========================
      CHAT PANEL
   ========================= */
