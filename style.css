@@ -1597,6 +1597,182 @@ Existing classes and functionality preserved
     font-size: 10px;
     line-height: 1.5;
     }
+
+
+	/* ============================================================
+    PARTNERS PANEL
+    ============================================================ */
+    .partnersButton {
+    position: fixed;
+    right: 32px;
+    bottom: 18px;
+    z-index: 9999;
+    width: 42px;
+    height: 42px;
+    
+    display: grid;
+    place-items: center;
+    
+    border: 1px solid #45533d;
+    border-radius: 11px;
+    
+    background: rgba(25, 31, 24, .94);
+    color: var(--muted);
+    
+    font-size: 18px;
+    font-weight: 700;
+    
+    cursor: pointer;
+    
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    
+    box-shadow:
+        0 10px 30px #0008,
+        inset 0 1px 0 #ffffff0b;
+    
+    transition:
+        transform .2s ease,
+        color .2s ease,
+        background .2s ease,
+        border-color .2s ease;
+    
+    }
+    .partnersButton:hover {
+    border-color: var(--accent);
+    background: #28351b;
+    color: var(--accent-light);
+    transform: translateY(-2px) scale(1.05);
+    }
+    .partnersOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 8000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    padding: 20px;
+    
+    background: rgba(3, 6, 3, .7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    
+    transition:
+        opacity .25s ease,
+        visibility .25s ease;
+    
+    }
+    .partnersOverlay.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    }
+    .partnersPanel {
+    position: relative;
+    width: min(470px, 100%);
+    padding: 28px;
+    
+    border: 1px solid #45533d;
+    border-radius: 16px;
+    
+    background:
+        radial-gradient(
+            ellipse at 50% 0%,
+            #76b90012,
+            transparent 58%
+        ),
+        linear-gradient(145deg, #202620, #141914);
+    
+    box-shadow: 0 35px 100px #000;
+    
+    transform: scale(.95) translateY(10px);
+    transition: transform .3s cubic-bezier(.2, .8, .2, 1);
+    
+    }
+    .partnersOverlay.open .infoPanel {
+    transform: scale(1) translateY(0);
+    }
+    .partnersClose {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 36px;
+    height: 36px;
+    
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    
+    background: var(--panel2);
+    color: var(--muted);
+    
+    cursor: pointer;
+    font-size: 14px;
+    
+    transition:
+        color .18s ease,
+        background .18s ease,
+        border-color .18s ease;
+    
+    }
+    .partnersClose:hover {
+    border-color: #52604c;
+    background: var(--panel3);
+    color: var(--text);
+    }
+    .partnersPanel h2 {
+    margin-bottom: 8px;
+    color: var(--text);
+    font-size: 22px;
+    
+    }
+    .partnersPanel > p {
+    margin-bottom: 20px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.7;
+    
+    }
+    .partnersList {
+    display: grid;
+    gap: 9px;
+    }
+    .partnersItem {
+    padding: 13px 14px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    
+    background: var(--panel);
+    
+    transition:
+        background .18s ease,
+        border-color .18s ease;
+    
+    }
+    .partnersItem:hover {
+    border-color: #52604c;
+    background: var(--panel2);
+    }
+    .parntersItem strong {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text);
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    
+    }
+    .partnersItem span {
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.5;
+    }
+
+
     /* ============================================================
     DATE AND TIME
     ============================================================ */
