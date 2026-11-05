@@ -1270,6 +1270,32 @@ document.addEventListener("keydown", event => {
     }
 });
 
+/* ========================= PARTNERS PANEL ======================== */
+
+const partnersButton = document.getElementById("partnersButton");
+const partnersOverlay = document.getElementById("partnersOverlay");
+const partnersClose = document.getElementById("partnersClose");
+
+partnersButton?.addEventListener("click", () => {
+    partnersOverlay?.classList.add("open");
+});
+
+partnersClose?.addEventListener("click", () => {
+    partnersOverlay?.classList.remove("open");
+});
+
+partnersOverlay?.addEventListener("click", event => {
+    if (event.target === partnersOverlay) {
+        partnersOverlay.classList.remove("open");
+    }
+});
+
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+        partnersOverlay?.classList.remove("open");
+    }
+});
+
 /* ========================= DATE / TIME ======================== */
 
 const currentTime = document.getElementById("currentTime");
