@@ -1266,6 +1266,378 @@
       right: 0px;
 
   }
+
+/* Random Game library card */
+.random-game-card {
+min-height: 100%;
+display: flex;
+flex-direction: column;
+border: 1px solid #668d2d;
+background:
+radial-gradient(circle at 50% 28%, #76b90035, transparent 55%),
+linear-gradient(145deg, #26351b, #171b17);
+text-align: left;
+}
+.random-game-card .cover {
+flex: 1;
+min-height: 150px;
+background:
+radial-gradient(circle at 50% 50%, #a3e63545, transparent 46%),
+linear-gradient(145deg, #31451e, #161b15);
+}
+.random-game-card .cover::after {
+border-color: #a3e63555;
+}
+.random-game-card .cover-symbol {
+color: var(--green-light);
+}
+.random-game-card:hover {
+border-color: var(--green-light);
+box-shadow: 0 12px 32px #76b90035;
+}
+.random-game-card .card-meta {
+color: #c4d7a7;
+}
+/* Full-screen picker */
+.random-picker {
+position: fixed;
+inset: 0;
+z-index: 1000;
+display: grid;
+place-items: center;
+overflow: hidden;
+padding: 24px;
+background: rgba(3, 5, 3, .93);
+opacity: 0;
+visibility: hidden;
+transition: opacity .35s ease, visibility .35s ease;
+backdrop-filter: blur(10px);
+}
+.random-picker.active {
+opacity: 1;
+visibility: visible;
+}
+.random-picker[hidden] {
+display: none;
+}
+.random-picker-content {
+position: relative;
+z-index: 2;
+width: 100%;
+max-width: 1000px;
+text-align: center;
+}
+.random-picker-kicker {
+margin-bottom: 6px;
+color: var(--green-light);
+font-size: 11px;
+font-weight: 850;
+letter-spacing: 3px;
+text-transform: uppercase;
+}
+.random-picker h2 {
+margin: 0 0 8px;
+font-size: clamp(25px, 5vw, 42px);
+letter-spacing: -1px;
+}
+.random-picker-help {
+min-height: 24px;
+margin-bottom: 20px;
+color: var(--muted);
+}
+/* Horizontal reel stage */
+.random-stage {
+position: relative;
+width: 100vw;
+max-width: none;
+height: 340px;
+margin: 0 calc(50% - 50vw) 22px;
+overflow: hidden;
+-webkit-mask-image: linear-gradient(
+90deg,
+transparent 0,
+#000 12%,
+#000 88%,
+transparent 100%
+);
+mask-image: linear-gradient(
+90deg,
+transparent 0,
+#000 12%,
+#000 88%,
+transparent 100%
+);
+}
+.random-reel-window {
+position: relative;
+width: 100%;
+height: 100%;
+overflow: hidden;
+background: transparent;
+}
+.random-reel-track {
+position: absolute;
+inset: 0 auto 0 0;
+display: flex;
+align-items: center;
+width: max-content;
+height: 100%;
+will-change: transform;
+}
+/* Hide the center marker: the middle card is highlighted by brightness only */
+.random-reel-selection {
+display: none !important;
+}
+/* Reel card uses library-style card proportions and appearance */
+.random-reel-item {
+--reel-scale: .72;
+--reel-opacity: .2;
+--reel-brightness: .45;
+position: relative;
+width: var(--reel-card-width, 190px);
+height: 286px;
+flex: 0 0 var(--reel-card-width, 190px);
+display: flex;
+flex-direction: column;
+min-width: 0;
+padding: 0;
+overflow: hidden;
+border: 1px solid #303630;
+border-radius: 10px;
+background: var(--surface);
+color: var(--text);
+text-align: left;
+opacity: var(--reel-opacity);
+filter: brightness(var(--reel-brightness));
+transform: scale(var(--reel-scale));
+transform-origin: center;
+transition:
+opacity .12s linear,
+filter .12s linear,
+transform .12s linear;
+will-change: opacity, filter, transform;
+}
+.random-reel-item.is-center {
+--reel-scale: 1;
+--reel-opacity: 1;
+--reel-brightness: 1;
+z-index: 2;
+border-color: #303630;
+box-shadow: none;
+}
+/* Library-style cover */
+.random-reel-cover {
+position: relative;
+width: 100%;
+min-height: 0;
+flex: 1;
+display: grid;
+place-items: center;
+overflow: hidden;
+isolation: isolate;
+background: linear-gradient(145deg, var(--cover-a), var(--cover-b));
+}
+.random-reel-cover::before {
+content: "";
+position: absolute;
+inset: 0;
+z-index: 1;
+opacity: .4;
+background:
+radial-gradient(circle at 70% 22%, #ffffff30 0 1px, transparent 2px),
+linear-gradient(140deg, transparent 35%, #0005 100%);
+background-size: 18px 18px, auto;
+pointer-events: none;
+}
+.random-reel-cover::after {
+content: "";
+position: absolute;
+right: -30%;
+bottom: -22%;
+width: 120%;
+height: 65%;
+z-index: 2;
+border: 1px solid #ffffff1c;
+border-radius: 50%;
+transform: rotate(-25deg);
+pointer-events: none;
+}
+.random-reel-cover img {
+position: absolute;
+inset: 0;
+z-index: 0;
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+.random-reel-icon {
+position: relative;
+z-index: 1;
+color: #ffffffec;
+font-size: clamp(34px, 4.4vw, 62px);
+text-shadow: 0 8px 24px #0008;
+}
+/* Library-style card information */
+.random-reel-info {
+flex: 0 0 auto;
+min-width: 0;
+padding: 11px 11px 12px;
+background: var(--surface);
+}
+.random-reel-name {
+display: block;
+overflow: hidden;
+margin: 0 0 3px;
+font-size: 13px;
+font-weight: 750;
+text-overflow: ellipsis;
+white-space: nowrap;
+}
+.random-reel-category {
+display: block;
+overflow: hidden;
+color: var(--muted);
+font-size: 11px;
+text-overflow: ellipsis;
+white-space: nowrap;
+}
+/* Winner pop */
+.random-picker-content.popping {
+animation: random-picker-pop .5s cubic-bezier(.2, 1.6, .4, 1);
+}
+@keyframes random-picker-pop {
+0% { transform: scale(.96); }
+65% { transform: scale(1.025); }
+100% { transform: scale(1); }
+}
+/* Picker buttons */
+.random-picker-actions {
+min-height: 48px;
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 10px;
+}
+.random-picker-button {
+min-height: 43px;
+padding: 0 18px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+border: 1px solid var(--border);
+border-radius: 9px;
+background: var(--surface2);
+color: var(--text);
+cursor: pointer;
+font-weight: 800;
+transition: .18s ease;
+}
+.random-picker-button:hover {
+transform: translateY(-2px);
+background: var(--surface3);
+}
+.random-picker-button.play {
+border-color: var(--green);
+background: var(--green);
+color: #10150a;
+}
+.random-picker-button.play:hover {
+background: var(--green-light);
+}
+.random-picker-button[hidden] {
+display: none;
+}
+/* Close button */
+.random-picker-close {
+position: absolute;
+top: 18px;
+right: 18px;
+z-index: 6;
+width: 42px;
+height: 42px;
+display: grid;
+place-items: center;
+border: 1px solid #ffffff30;
+border-radius: 50%;
+background: #ffffff10;
+color: white;
+cursor: pointer;
+}
+.random-picker-close:hover {
+background: #ffffff22;
+}
+/* Particle burst */
+.random-particles {
+position: absolute;
+inset: 0;
+z-index: 1;
+overflow: hidden;
+pointer-events: none;
+}
+.random-particle {
+position: absolute;
+left: 50%;
+top: 50%;
+width: 7px;
+height: 7px;
+border-radius: 2px;
+background: var(--green-light);
+box-shadow: 0 0 12px #a3e635;
+animation: particle-burst 850ms ease-out forwards;
+}
+@keyframes particle-burst {
+from {
+opacity: 1;
+transform: translate(-50%, -50%) scale(1);
+}
+to {
+opacity: 0;
+transform:
+translate(
+calc(-50% + var(--particle-x)),
+calc(-50% + var(--particle-y))
+)
+rotate(220deg)
+scale(.2);
+}
+}
+/* Mobile */
+@media (max-width: 600px) {
+.random-picker {
+padding: 18px 12px;
+}
+.random-picker-help {
+margin-bottom: 12px;
+font-size: 12px;
+}
+.random-stage {
+height: 280px;
+}
+.random-reel-item {
+height: 238px;
+}
+.random-reel-info {
+min-height: 52px;
+padding: 8px;
+}
+.random-reel-name {
+font-size: 11px;
+}
+.random-reel-category {
+font-size: 10px;
+}
+.random-picker-close {
+top: 10px;
+right: 10px;
+}
+}
+@media (prefers-reduced-motion: reduce) {
+.random-picker-content.popping,
+.random-particle {
+animation-duration: .01ms !important;
+}
+}
 </style>
 </head>
 <body>
@@ -1676,863 +2048,930 @@
 </section>
 
   </div>
+
+  <div
+  class="random-picker"
+  id="randomPicker"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="randomPickerTitle"
+  hidden
+>
+  <button
+    class="random-picker-close"
+    id="randomPickerClose"
+    type="button"
+    aria-label="Close random game picker"
+  >
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+  <div class="random-particles" id="randomParticles" aria-hidden="true"></div>
+  <div class="random-picker-content">
+    <div class="random-picker-kicker">Meld Games</div>
+    <h2 id="randomPickerTitle">Random Game</h2>
+    <p class="random-picker-help" id="randomPickerHelp">
+      Picking a game from your library…
+    </p>
+<div class="random-stage" id="randomStage">
+  <div class="random-orbit" aria-hidden="true"></div>
+  <div id="randomOrbitCards" aria-hidden="true"></div>
+
+  <div class="random-center-card" id="randomCenterCard">
+    <div class="random-center-cover" id="randomCenterCover">
+      <i class="fa-solid fa-gamepad"></i>
+    </div>
+    <div class="random-center-name" id="randomCenterName">Choosing…</div>
+  </div>
+</div>
+
+<div class="random-picker-actions">
+  <button class="random-picker-button" id="randomAgainButton" type="button" hidden>
+    <i class="fa-solid fa-shuffle"></i>
+    Pick again
+  </button>
+  <button class="random-picker-button play" id="randomPlayButton" type="button" hidden>
+    <i class="fa-solid fa-play"></i>
+    Play game
+  </button>
+</div>
+
+  </div>
+</div>
 </main>
 <script>
-"use strict";
-
-const games = [
-  {
-    name: "GTA 5",
-    url: "https://gta.deloskiyt.pl/",
-    image: "Images/GTA5L.png",
-    icon: "fa-car",
-    a: "#6e3b25",
-    b: "#171d1a",
-    category: "Action",
-    description: "An open-world driving and action game.",
-    isTopRated: true
-  },
-  {
-    name: "Hollow Knight",
-    url: "https://play.1gdata.com/15i2c21c/index.html",
-    image: "Images/HollowKnight.png",
-    icon: "fa-bug",
-    a: "#263c57",
-    b: "#111521",
-    category: "Adventure",
-    description: "Explore a mysterious underground kingdom.",
-    isTopRated: true
-  },
-  {
-    name: "Minecraft 1.26.2",
-    url: "https://eaglercraft-26-2-u1-cdn.u2471966200.workers.dev/eaglercraft-26.2-u1.html?v=u1-20260930",
-    image: "Images/ML.png",
-    icon: "fa-cube",
-    a: "#577b42",
-    b: "#19291d",
-    category: "Minecraft",
-    description: "Build, explore, and survive in a block-based world.",
-    isTopRated: true
-  },
-  {
-    name: "Hacked Minecraft 1.8.8",
-    url: "https://meld-code.github.io/MC/DragonX_V2_International%20(1)%20(1)%20(3).html",
-    image: "Images/ML.png",
-    icon: "fa-cubes",
-    a: "#477a65",
-    b: "#14251e",
-    category: "Minecraft",
-    description: "A Minecraft 1.8.8 browser build."
-  },
-  {
-    name: "Roblox",
-    url: "https://angst.clawschools.org/embed.html#https://nowgg.fun/apps/a/19900/b.html",
-    image: "Images/RBL.png",
-    icon: "fa-shapes",
-    a: "#707579",
-    b: "#1a1c20",
-    category: "Platform",
-    description: "Explore a platform of community-made experiences.",
-    isTopRated: true
-  },
-  {
-    name: "Minecraft 1.8.8",
-    url: "https://meld-code.github.io/MC/",
-    image: "Images/ML.png",
-    icon: "fa-cube",
-    a: "#77914c",
-    b: "#202b19",
-    category: "Minecraft",
-    description: "Play a classic Minecraft browser build."
-  },
-  {
-    name: "Rocket Soccer Derby",
-    url: "https://db.duckmath.org/html/rocket_soccer_derby/",
-    image: "Images/RSDL.png",
-    icon: "fa-futbol",
-    a: "#3d7f8c",
-    b: "#15242d",
-    category: "Sports",
-    description: "Combine cars and soccer in an arcade sports game."
-  },
-  {
-    name: "Cluster Rush",
-    url: "https://db.duckmath.org/html/cluster_rush/",
-    image: "Images/ClusterRush.png",
-    icon: "fa-truck-monster",
-    a: "#c57d36",
-    b: "#37231b",
-    category: "Arcade",
-    description: "An arcade challenge across moving trucks.",
-    isUpdated: true
-  },
-  {
-    name: "Steal A Brainrot",
-    url: "https://db.duckmath.org/html/steal_a_brainrot_2/",
-    image: "Images/SABB.png",
-    icon: "fa-brain",
-    a: "#a64d77",
-    b: "#321a34",
-    category: "Arcade",
-    description: "A chaotic, meme-inspired game."
-  },
-  {
-    name: "Among Us",
-    url: "https://db.duckmath.org/html/among_us/",
-    image: "Images/AU.png",
-    icon: "fa-user-astronaut",
-    a: "#b54d4d",
-    b: "#351b26",
-    category: "Party",
-    description: "Find the impostor in a social deduction game.",
-    isUpdated: true
-  },
-  {
-    name: "Ping Pong Go",
-    url: "https://tataedu23.github.io/g66/class-924/",
-    image: "Images/PPG.png",
-    icon: "fa-table-tennis-paddle-ball",
-    a: "#3c7f59",
-    b: "#152c22",
-    category: "Sports",
-    description: "Fast-paced table tennis.",
-    isTopRated: true
-  },
-  {
-    name: "Retro Bowl College",
-    url: "https://db.duckmath.org/html/retro_bowl_college/",
-    image: "Images/RetroBowlCollege.png",
-    icon: "fa-football",
-    a: "#a87845",
-    b: "#33231a",
-    category: "Sports",
-    description: "A retro-style college football game."
-  },
-  {
-    name: "Minecraft 1.5.2",
-    url: "https://catfoolyou.github.io/Eagler-Online/",
-    image: "Images/ML.png",
-    icon: "fa-cube",
-    a: "#6c8751",
-    b: "#202c1a",
-    category: "Minecraft",
-    description: "A classic version of Minecraft in your browser."
-  },
-  {
-    name: "Minecraft Classic",
-    url: "https://db.duckmath.org/html/minecraft_classic/",
-    image: "Images/ML.png",
-    icon: "fa-cubes-stacked",
-    a: "#6e9856",
-    b: "#23331d",
-    category: "Minecraft",
-    description: "A classic block-building experience."
-  },
-  {
-    name: "Skate 3",
-    url: "https://skate.aaddpp.lol/",
-    image: "Images/Skate3.png",
-    icon: "fa-person-skating",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Sports",
-    description: "A skateboarding-inspired browser game.",
-    isTopRated: true
-  },
-  {
-    name: "60 Seconds",
-    url: "https://meld-code.github.io/files/60Seconds.html",
-    image: "Images/60Seconds.png",
-    icon: "fa-house-chimney-user",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "House",
-    description: "60 Seconds idk what this game is."
-  },
-  {
-    name: "8 Ball Pool",
-    url: "https://meld-code.github.io/files/8BallPool.html",
-    image: "Images/8BallPool.png",
-    icon: "fa-bowling-ball",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "8 Ball",
-    description: "A fun pool game."
-  },
-  {
-    name: "Baldi's Basics",
-    url: "https://meld-code.github.io/files/BaldiBasics.html",
-    image: "",
-    icon: "fa-book",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "School",
-    description: "Baldi's Basics."
-  },
-  {
-    name: "CS16",
-    url: "https://meld-code.github.io/files/CS16.html",
-    image: "",
-    icon: "fa-gun",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Fps",
-    description: "A fun shooter game."
-  },
-  {
-    name: "Call Of Battle",
-    url: "https://meld-code.github.io/files/CallOfBattle.html",
-    image: "",
-    icon: "fa-gun",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Fps",
-    description: "A fun shooter game."
-  },
-  {
-    name: "Celeste",
-    url: "https://meld-code.github.io/files/Celeste.html",
-    image: "Images/Celeste.png",
-    icon: "fa-wand-sparkles",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "RPG",
-    description: "A world game."
-  },
-  {
-    name: "Cheese Chompers",
-    url: "https://meld-code.github.io/files/CheeseChompers.html",
-    image: "Images/CheeseChompers.png",
-    icon: "fa-cheese",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "RPG",
-    description: "A cheese game."
-  },
-  {
-    name: "Chicken War",
-    url: "https://meld-code.github.io/files/ChickenWar.html",
-    image: "",
-    icon: "fa-gun",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "",
-    description: "A fun chicken shooter game."
-  },
-  {
-    name: "Crash Out Crew",
-    url: "https://meld-code.github.io/files/CrashOutCrew.html",
-    image: "",
-    icon: "fa-car-side",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Car",
-    description: "A car game."
-  },
-  {
-    name: "Death Penalty World Cup",
-    url: "https://meld-code.github.io/files/DeathPenaltyWorldCup.html",
-    image: "",
-    icon: "fa-futbol",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Sports",
-    description: "A soccer game."
-  },
-  {
-    name: "Death Run 3D",
-    url: "https://meld-code.github.io/files/DeathRun.html",
-    image: "Images/DeathRun.png",
-    icon: "fa-person-running",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Skill",
-    description: "A fast-paced dodging game."
-  },
-  {
-    name: "PokeBonk",
-    url: "https://pokebonk.com",
-    image: "Images/PokeBonk.png",
-    icon: "fa-bowling-ball",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Pokemon",
-    description: "A fun Pokemon game.",
-    isTopRated: true
-  },
-  {
-    name: "BunnyHop",
-    url: "https://bunnyhop.lol",
-    image: "Images/BunnyHop.png",
-    icon: "fa-carrot",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Skill",
-    description: "B Hop.",
-    isNew: true
-  },
-  {
-    name: "Clutcher",
-    url: "https://www.clutcher.io",
-    image: "Images/Clutcher.png",
-    icon: "fa-gun",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Fps",
-    description: "A gun game.",
-    isNew: true
-  },
-  {
-    name: "Messenger",
-    url: "https://messenger.abeto.com",
-    image: "Images/.png",
-    icon: "fa-globe",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Open World",
-    description: "An open-world game.",
-    isNew: true
-  },
-  {
-    name: "DeadShot",
-    url: "https://deadshot.io/",
-    image: "Images/.png",
-    icon: "fa-gun",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Fps",
-    description: "A gun game.",
-    isNew: true
-  },
-  {
-    name: "Poke Arena 2D",
-    url: "https://pokearena2d.com",
-    image: "Images/.png",
-    icon: "fa-bowling-ball",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Pokemon",
-    description: "A fun Pokemon battle game.",
-    isTopRated: true
-  },
-  {
-    name: "MarioKart 8",
-    url: "https://mariokart8.online",
-    image: "Images/MarioKart8.png",
-    icon: "fa-car-burst",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Racing",
-    description: "A fun racing game.",
-    isNew: true
-  },
-  {
-    name: "Kour",
-    url: "https://kour.io",
-    image: "Images/Kour.png",
-    icon: "fa-gun",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Fps",
-    description: "A fun gun game.",
-    isNew: true
-  },
-  {
-    name: "Tide Water",
-    url: "https://dgreenheck.github.io/tidewater/",
-    image: "Images/.png",
-    icon: "fa-fish",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Fishing",
-    description: "A fun fishing game.",
-    isNew: true
-  },
-  {
-    name: "Doodle Shooter",
-    url: "https://doodleshooter.vercel.app/",
-    image: "Images/.png",
-    icon: "fa-gun",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Fps",
-    description: "A fun gun game.",
-    isTopRated: true
-  },
-  {
-    name: "Car Game",
-    url: "https://whiteout.plgb.chatgpt.site/",
-    image: "Images/.png",
-    icon: "fa-car",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Driving",
-    description: "A fun driving game.",
-    isNew: true
-  },
-  {
-    name: "Jelly Baby",
-    url: "https://jelly.scottsun.io/",
-    image: "Images/.png",
-    icon: "fa-jar",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Simulator",
-    description: "A fun simulator game.",
-    isNew: true
-  },
-  {
-    name: "No Merci Michel",
-    url: "https://no.merci-michel.com/",
-    image: "Images/.png",
-    icon: "fa-arm",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "2 Player",
-    description: "A fun arm-wrestling game.",
-    isNew: true
-  },
-  {
-    name: "Tree Stump",
-    url: "https://screen.toys/firewood/",
-    image: "Images/.png",
-    icon: "fa-tree",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Tree Stump",
-    description: "Tree Stump.",
-    isTopRated: true
-  },
-  {
-    name: "Tiny Skys",
-    url: "https://tinyskies.vercel.app/",
-    image: "Images/TinySkys.png",
-    icon: "fa-plane",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Flying",
-    description: "A flying game.",
-    isNew: true
-  },
-  {
-    name: "Star Wars Model",
-    url: "https://mameson.com/experiment/glsl/fluffed_2/fluffed_2.html",
-    image: "Images/StarWarsModel.png",
-    icon: "fa-cloud",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Model",
-    description: "A Star Wars model.",
-    isNew: true
-  },
-  {
-    name: "Kit Racing",
-    url: "https://mrdoob.github.io/Starter-Kit-Racing/",
-    image: "Images/.png",
-    icon: "fa-car",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Driving",
-    description: "A fun car game.",
-    isNew: true
-  },
-  {
-    name: "Chibi Game",
-    url: "https://worawork.vercel.app/",
-    image: "Images/.png",
-    icon: "fa-doll",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Open World",
-    description: "A fun open-world game.",
-    isNew: true
-  },
-  {
-    name: "Jelly Tetris",
-    url: "https://holtsetio.com/lab/tetris/",
-    image: "Images/JellyTetris.png",
-    icon: "fa-square",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Mind",
-    description: "A fun Tetris game.",
-    isNew: true
-  },
-  {
-    name: "Horizon Drive",
-    url: "https://www.shopify.com/ca/editions/summer2025/drive",
-    image: "Images/HorizonDrive.png",
-    icon: "fa-car",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Driving",
-    description: "A fun driving game.",
-    isNew: true
-  },
-  {
-    name: "MyBlock",
-    url: "https://meld-code.github.io/Mb3",
-    image: "Images/CiphAnonStudios.png",
-    icon: "fa-person",
-    a: "#9c6a43",
-    b: "#2b211b",
-    category: "Owner",
-    description: "A Roblox Project made by CiphAnon Studios - ToonyTime.",
-    isTopRated: true
-  }
-];
-
-const featuredSlides = [
-  {
-    name: "Roblox",
-    video: "RobloxPage.mp4",
-    description: "Explore a platform of community-made experiences."
-  },
-  {
-    name: "Minecraft 1.26.2",
-    video: "Minecraft.mp4",
-    description: "Build, explore, and survive in a block-based world."
-  },
-  {
-    name: "GTA 5",
-    video: "GTA5.mp4",
-    description: "Explore a huge open world full of action."
-  }
-];
-
-const $ = id => document.getElementById(id);
-
-const libraryPage = $("libraryPage");
-const playerPage = $("playerPage");
-const grid = $("gameGrid");
-const search = $("search");
-const frame = $("gameFrame");
-const loadingCover = $("loadingCover");
-const loadingTitle = $("loadingTitle");
-const loadingText = $("loadingText");
-const loadingSpinner = $("loadingSpinner");
-const retryButton = $("retryButton");
-const playerStatus = $("playerStatus");
-const statusDot = $("statusDot");
-
-const featuredBanner = $("featuredBanner");
-const featuredContent = $("featuredContent");
-const featuredTitle = $("featuredTitle");
-const featuredDescription = $("featuredDescription");
-const featuredPlayButton = $("featuredPlayButton");
-const featuredBrowseButton = $("featuredBrowseButton");
-const featuredDots = $("featuredDots");
-const featuredPauseButton = $("featuredPauseButton");
-const featuredPreviousButton = $("featuredPreviousButton");
-const featuredNextButton = $("featuredNextButton");
-
-const categoriesNav = $("categoriesNav");
-const categoryPanel = $("categoryPanel");
-const categoryButtons = $("categoryButtons");
-const allCategoryButton = $("allCategoryButton");
-
-const featuredVideos = [
-  $("featuredVideoOne"),
-  $("featuredVideoTwo")
-];
-
-let selectedGame = null;
-let favorites = readFavorites();
-let favoritesOnly = false;
-let selectedCategory = "All";
-
-let loadTimer = null;
-let loadToken = 0;
-
-let featuredIndex = 0;
-let activeFeaturedVideo = 0;
-let featuredTimer = null;
-let featuredPaused = false;
-let featuredSwitching = false;
-
-function readFavorites() {
-  try {
-    const stored = JSON.parse(
-      localStorage.getItem("gameHubFavorites") || "[]"
-    );
-
-    return Array.isArray(stored) ? stored : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveFavorites() {
-  try {
-    localStorage.setItem(
-      "gameHubFavorites",
-      JSON.stringify(favorites)
-    );
-  } catch (error) {
-    console.warn(
-      "Favorites could not be saved in this browser.",
-      error
-    );
-  }
-}
-
-function isFavorite(game) {
-  return favorites.includes(game.name);
-}
-
-function toggleFavorite(game) {
-  if (isFavorite(game)) {
-    favorites = favorites.filter(
-      name => name !== game.name
-    );
-  } else {
-    favorites.push(game.name);
-  }
-
-  saveFavorites();
-  renderGames();
-  updatePlayerFavorite();
-}
-
-function getCategories() {
-  return [
-    ...new Set(
-      games
-        .map(game => game.category)
-        .filter(Boolean)
-    )
-  ].sort((a, b) =>
-    a.localeCompare(b, undefined, {
-      sensitivity: "base",
-      numeric: true
-    })
-  );
-}
-
-function renderCategoryButtons() {
-  categoryButtons.replaceChildren();
-
-  getCategories().forEach(category => {
-    const button = document.createElement("button");
-
-    button.type = "button";
-    button.className =
-      "category-button" +
-      (
-        selectedCategory.toLowerCase() ===
-        category.toLowerCase()
-          ? " active"
-          : ""
+  "use strict";
+  
+  const games = [
+    {
+      name: "GTA 5",
+      url: "https://gta.deloskiyt.pl/",
+      image: "Images/GTA5L.png",
+      icon: "fa-car",
+      a: "#6e3b25",
+      b: "#171d1a",
+      category: "Action",
+      description: "An open-world driving and action game.",
+      isTopRated: true
+    },
+    {
+      name: "Hollow Knight",
+      url: "https://play.1gdata.com/15i2c21c/index.html",
+      image: "Images/HollowKnight.png",
+      icon: "fa-bug",
+      a: "#263c57",
+      b: "#111521",
+      category: "Adventure",
+      description: "Explore a mysterious underground kingdom.",
+      isTopRated: true
+    },
+    {
+      name: "Minecraft 1.26.2",
+      url: "https://eaglercraft-26-2-u1-cdn.u2471966200.workers.dev/eaglercraft-26.2-u1.html?v=u1-20260930",
+      image: "Images/ML.png",
+      icon: "fa-cube",
+      a: "#577b42",
+      b: "#19291d",
+      category: "Minecraft",
+      description: "Build, explore, and survive in a block-based world.",
+      isTopRated: true
+    },
+    {
+      name: "Hacked Minecraft 1.8.8",
+      url: "https://meld-code.github.io/MC/DragonX_V2_International%20(1)%20(1)%20(3).html",
+      image: "Images/ML.png",
+      icon: "fa-cubes",
+      a: "#477a65",
+      b: "#14251e",
+      category: "Minecraft",
+      description: "A Minecraft 1.8.8 browser build."
+    },
+    {
+      name: "Roblox",
+      url: "https://angst.clawschools.org/embed.html#https://nowgg.fun/apps/a/19900/b.html",
+      image: "Images/RBL.png",
+      icon: "fa-shapes",
+      a: "#707579",
+      b: "#1a1c20",
+      category: "Platform",
+      description: "Explore a platform of community-made experiences.",
+      isTopRated: true
+    },
+    {
+      name: "Minecraft 1.8.8",
+      url: "https://meld-code.github.io/MC/",
+      image: "Images/ML.png",
+      icon: "fa-cube",
+      a: "#77914c",
+      b: "#202b19",
+      category: "Minecraft",
+      description: "Play a classic Minecraft browser build."
+    },
+    {
+      name: "Rocket Soccer Derby",
+      url: "https://db.duckmath.org/html/rocket_soccer_derby/",
+      image: "Images/RSDL.png",
+      icon: "fa-futbol",
+      a: "#3d7f8c",
+      b: "#15242d",
+      category: "Sports",
+      description: "Combine cars and soccer in an arcade sports game."
+    },
+    {
+      name: "Cluster Rush",
+      url: "https://db.duckmath.org/html/cluster_rush/",
+      image: "Images/ClusterRush.png",
+      icon: "fa-truck-monster",
+      a: "#c57d36",
+      b: "#37231b",
+      category: "Arcade",
+      description: "An arcade challenge across moving trucks.",
+      isUpdated: true
+    },
+    {
+      name: "Steal A Brainrot",
+      url: "https://db.duckmath.org/html/steal_a_brainrot_2/",
+      image: "Images/SABB.png",
+      icon: "fa-brain",
+      a: "#a64d77",
+      b: "#321a34",
+      category: "Arcade",
+      description: "A chaotic, meme-inspired game."
+    },
+    {
+      name: "Among Us",
+      url: "https://db.duckmath.org/html/among_us/",
+      image: "Images/AU.png",
+      icon: "fa-user-astronaut",
+      a: "#b54d4d",
+      b: "#351b26",
+      category: "Party",
+      description: "Find the impostor in a social deduction game.",
+      isUpdated: true
+    },
+    {
+      name: "Ping Pong Go",
+      url: "https://tataedu23.github.io/g66/class-924/",
+      image: "Images/PPG.png",
+      icon: "fa-table-tennis-paddle-ball",
+      a: "#3c7f59",
+      b: "#152c22",
+      category: "Sports",
+      description: "Fast-paced table tennis.",
+      isTopRated: true
+    },
+    {
+      name: "Retro Bowl College",
+      url: "https://db.duckmath.org/html/retro_bowl_college/",
+      image: "Images/RetroBowlCollege.png",
+      icon: "fa-football",
+      a: "#a87845",
+      b: "#33231a",
+      category: "Sports",
+      description: "A retro-style college football game."
+    },
+    {
+      name: "Minecraft 1.5.2",
+      url: "https://catfoolyou.github.io/Eagler-Online/",
+      image: "Images/ML.png",
+      icon: "fa-cube",
+      a: "#6c8751",
+      b: "#202c1a",
+      category: "Minecraft",
+      description: "A classic version of Minecraft in your browser."
+    },
+    {
+      name: "Minecraft Classic",
+      url: "https://db.duckmath.org/html/minecraft_classic/",
+      image: "Images/ML.png",
+      icon: "fa-cubes-stacked",
+      a: "#6e9856",
+      b: "#23331d",
+      category: "Minecraft",
+      description: "A classic block-building experience."
+    },
+    {
+      name: "Skate 3",
+      url: "https://skate.aaddpp.lol/",
+      image: "Images/Skate3.png",
+      icon: "fa-person-skating",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Sports",
+      description: "A skateboarding-inspired browser game.",
+      isTopRated: true
+    },
+    {
+      name: "60 Seconds",
+      url: "https://meld-code.github.io/files/60Seconds.html",
+      image: "Images/60Seconds.png",
+      icon: "fa-house-chimney-user",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "House",
+      description: "60 Seconds idk what this game is."
+    },
+    {
+      name: "8 Ball Pool",
+      url: "https://meld-code.github.io/files/8BallPool.html",
+      image: "Images/8BallPool.png",
+      icon: "fa-bowling-ball",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "8 Ball",
+      description: "A fun pool game."
+    },
+    {
+      name: "Baldi's Basics",
+      url: "https://meld-code.github.io/files/BaldiBasics.html",
+      image: "",
+      icon: "fa-book",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "School",
+      description: "Baldi's Basics."
+    },
+    {
+      name: "CS16",
+      url: "https://meld-code.github.io/files/CS16.html",
+      image: "",
+      icon: "fa-gun",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Fps",
+      description: "A fun shooter game."
+    },
+    {
+      name: "Call Of Battle",
+      url: "https://meld-code.github.io/files/CallOfBattle.html",
+      image: "",
+      icon: "fa-gun",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Fps",
+      description: "A fun shooter game."
+    },
+    {
+      name: "Celeste",
+      url: "https://meld-code.github.io/files/Celeste.html",
+      image: "Images/Celeste.png",
+      icon: "fa-wand-sparkles",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "RPG",
+      description: "A world game."
+    },
+    {
+      name: "Cheese Chompers",
+      url: "https://meld-code.github.io/files/CheeseChompers.html",
+      image: "Images/CheeseChompers.png",
+      icon: "fa-cheese",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "RPG",
+      description: "A cheese game."
+    },
+    {
+      name: "Chicken War",
+      url: "https://meld-code.github.io/files/ChickenWar.html",
+      image: "",
+      icon: "fa-gun",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "",
+      description: "A fun chicken shooter game."
+    },
+    {
+      name: "Crash Out Crew",
+      url: "https://meld-code.github.io/files/CrashOutCrew.html",
+      image: "",
+      icon: "fa-car-side",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Car",
+      description: "A car game."
+    },
+    {
+      name: "Death Penalty World Cup",
+      url: "https://meld-code.github.io/files/DeathPenaltyWorldCup.html",
+      image: "",
+      icon: "fa-futbol",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Sports",
+      description: "A soccer game."
+    },
+    {
+      name: "Death Run 3D",
+      url: "https://meld-code.github.io/files/DeathRun.html",
+      image: "Images/DeathRun.png",
+      icon: "fa-person-running",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Skill",
+      description: "A fast-paced dodging game."
+    },
+    {
+      name: "PokeBonk",
+      url: "https://pokebonk.com",
+      image: "Images/PokeBonk.png",
+      icon: "fa-bowling-ball",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Pokemon",
+      description: "A fun Pokemon game.",
+      isTopRated: true
+    },
+    {
+      name: "BunnyHop",
+      url: "https://bunnyhop.lol",
+      image: "Images/BunnyHop.png",
+      icon: "fa-carrot",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Skill",
+      description: "B Hop.",
+      isNew: true
+    },
+    {
+      name: "Clutcher",
+      url: "https://www.clutcher.io",
+      image: "Images/Clutcher.png",
+      icon: "fa-gun",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Fps",
+      description: "A gun game.",
+      isNew: true
+    },
+    {
+      name: "Messenger",
+      url: "https://messenger.abeto.com",
+      image: "Images/.png",
+      icon: "fa-globe",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Open World",
+      description: "An open-world game.",
+      isNew: true
+    },
+    {
+      name: "DeadShot",
+      url: "https://deadshot.io/",
+      image: "Images/.png",
+      icon: "fa-gun",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Fps",
+      description: "A gun game.",
+      isNew: true
+    },
+    {
+      name: "Poke Arena 2D",
+      url: "https://pokearena2d.com",
+      image: "Images/.png",
+      icon: "fa-bowling-ball",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Pokemon",
+      description: "A fun Pokemon battle game.",
+      isTopRated: true
+    },
+    {
+      name: "MarioKart 8",
+      url: "https://mariokart8.online",
+      image: "Images/MarioKart8.png",
+      icon: "fa-car-burst",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Racing",
+      description: "A fun racing game.",
+      isNew: true
+    },
+    {
+      name: "Kour",
+      url: "https://kour.io",
+      image: "Images/Kour.png",
+      icon: "fa-gun",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Fps",
+      description: "A fun gun game.",
+      isNew: true
+    },
+    {
+      name: "Tide Water",
+      url: "https://dgreenheck.github.io/tidewater/",
+      image: "Images/.png",
+      icon: "fa-fish",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Fishing",
+      description: "A fun fishing game.",
+      isNew: true
+    },
+    {
+      name: "Doodle Shooter",
+      url: "https://doodleshooter.vercel.app/",
+      image: "Images/.png",
+      icon: "fa-gun",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Fps",
+      description: "A fun gun game.",
+      isTopRated: true
+    },
+    {
+      name: "Car Game",
+      url: "https://whiteout.plgb.chatgpt.site/",
+      image: "Images/.png",
+      icon: "fa-car",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Driving",
+      description: "A fun driving game.",
+      isNew: true
+    },
+    {
+      name: "Jelly Baby",
+      url: "https://jelly.scottsun.io/",
+      image: "Images/.png",
+      icon: "fa-jar",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Simulator",
+      description: "A fun simulator game.",
+      isNew: true
+    },
+    {
+      name: "No Merci Michel",
+      url: "https://no.merci-michel.com/",
+      image: "Images/.png",
+      icon: "fa-arm",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "2 Player",
+      description: "A fun arm-wrestling game.",
+      isNew: true
+    },
+    {
+      name: "Tree Stump",
+      url: "https://screen.toys/firewood/",
+      image: "Images/.png",
+      icon: "fa-tree",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Tree Stump",
+      description: "Tree Stump.",
+      isTopRated: true
+    },
+    {
+      name: "Tiny Skys",
+      url: "https://tinyskies.vercel.app/",
+      image: "Images/TinySkys.png",
+      icon: "fa-plane",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Flying",
+      description: "A flying game.",
+      isNew: true
+    },
+    {
+      name: "Star Wars Model",
+      url: "https://mameson.com/experiment/glsl/fluffed_2/fluffed_2.html",
+      image: "Images/StarWarsModel.png",
+      icon: "fa-cloud",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Model",
+      description: "A Star Wars model.",
+      isNew: true
+    },
+    {
+      name: "Kit Racing",
+      url: "https://mrdoob.github.io/Starter-Kit-Racing/",
+      image: "Images/.png",
+      icon: "fa-car",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Driving",
+      description: "A fun car game.",
+      isNew: true
+    },
+    {
+      name: "Chibi Game",
+      url: "https://worawork.vercel.app/",
+      image: "Images/.png",
+      icon: "fa-doll",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Open World",
+      description: "A fun open-world game.",
+      isNew: true
+    },
+    {
+      name: "Jelly Tetris",
+      url: "https://holtsetio.com/lab/tetris/",
+      image: "Images/JellyTetris.png",
+      icon: "fa-square",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Mind",
+      description: "A fun Tetris game.",
+      isNew: true
+    },
+    {
+      name: "Horizon Drive",
+      url: "https://www.shopify.com/ca/editions/summer2025/drive",
+      image: "Images/HorizonDrive.png",
+      icon: "fa-car",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Driving",
+      description: "A fun driving game.",
+      isNew: true
+    },
+    {
+      name: "MyBlock",
+      url: "https://meld-code.github.io/Mb3",
+      image: "Images/CiphAnonStudios.png",
+      icon: "fa-person",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Owner",
+      description: "A Roblox Project made by CiphAnon Studios - ToonyTime.",
+      isTopRated: true
+    }
+  ];
+  
+  const featuredSlides = [
+    {
+      name: "Roblox",
+      video: "RobloxPage.mp4",
+      description: "Explore a platform of community-made experiences."
+    },
+    {
+      name: "Minecraft 1.26.2",
+      video: "Minecraft.mp4",
+      description: "Build, explore, and survive in a block-based world."
+    },
+    {
+      name: "GTA 5",
+      video: "GTA5.mp4",
+      description: "Explore a huge open world full of action."
+    }
+  ];
+  
+  const $ = id => document.getElementById(id);
+  
+  const libraryPage = $("libraryPage");
+  const playerPage = $("playerPage");
+  const grid = $("gameGrid");
+  const search = $("search");
+  const frame = $("gameFrame");
+  const loadingCover = $("loadingCover");
+  const loadingTitle = $("loadingTitle");
+  const loadingText = $("loadingText");
+  const loadingSpinner = $("loadingSpinner");
+  const retryButton = $("retryButton");
+  const playerStatus = $("playerStatus");
+  const statusDot = $("statusDot");
+  
+  const featuredBanner = $("featuredBanner");
+  const featuredContent = $("featuredContent");
+  const featuredTitle = $("featuredTitle");
+  const featuredDescription = $("featuredDescription");
+  const featuredPlayButton = $("featuredPlayButton");
+  const featuredBrowseButton = $("featuredBrowseButton");
+  const featuredDots = $("featuredDots");
+  const featuredPauseButton = $("featuredPauseButton");
+  const featuredPreviousButton = $("featuredPreviousButton");
+  const featuredNextButton = $("featuredNextButton");
+  
+  const categoriesNav = $("categoriesNav");
+  const categoryPanel = $("categoryPanel");
+  const categoryButtons = $("categoryButtons");
+  const allCategoryButton = $("allCategoryButton");
+  
+  const featuredVideos = [
+    $("featuredVideoOne"),
+    $("featuredVideoTwo")
+  ];
+  
+  let selectedGame = null;
+  let favorites = readFavorites();
+  let favoritesOnly = false;
+  let selectedCategory = "All";
+  
+  let loadTimer = null;
+  let loadToken = 0;
+  
+  let featuredIndex = 0;
+  let activeFeaturedVideo = 0;
+  let featuredTimer = null;
+  let featuredPaused = false;
+  let featuredSwitching = false;
+  
+  let randomPickerGame = null;
+  let randomPickerTimer = null;
+  let randomPickerFrame = null;
+  let randomPickerAnimationToken = 0;
+  
+  function readFavorites() {
+    try {
+      const stored = JSON.parse(
+        localStorage.getItem("gameHubFavorites") || "[]"
       );
-
-    button.dataset.category = category;
-
-    button.innerHTML = `
-      <i class="fa-solid fa-tag"></i>
-      ${category}
-    `;
-
-    button.addEventListener("click", () => {
-      selectedCategory = category;
-      renderCategoryButtons();
-      renderGames();
-    });
-
-    categoryButtons.appendChild(button);
-  });
-
-  allCategoryButton.classList.toggle(
-    "active",
-    selectedCategory === "All"
-  );
-}
-
-function toggleCategoryPanel() {
-  const isHidden = categoryPanel.hidden;
-
-  categoryPanel.hidden = !isHidden;
-  categoriesNav.classList.toggle("active", isHidden);
-
-  if (isHidden) {
-    renderCategoryButtons();
+      return Array.isArray(stored) ? stored : [];
+    } catch {
+      return [];
+    }
   }
-}
-
-function createCoverImage(
-  game,
-  className = "cover-image"
-) {
-  if (!game.image) {
-    return null;
+  
+  function saveFavorites() {
+    try {
+      localStorage.setItem(
+        "gameHubFavorites",
+        JSON.stringify(favorites)
+      );
+    } catch (error) {
+      console.warn("Favorites could not be saved in this browser.", error);
+    }
   }
-
-  const image = document.createElement("img");
-
-  image.className = className;
-  image.src = game.image;
-  image.alt = game.name + " cover";
-  image.loading = "lazy";
-  image.decoding = "async";
-
-  image.addEventListener("error", () => {
-    image.remove();
-  });
-
-  return image;
-}
-
-function makeCard(game) {
-const card = document.createElement("article");
-card.className = "game-card";
-card.tabIndex = 0;
-card.setAttribute("role", "button");
-card.setAttribute("aria-label", "Play " + game.name);
-const cover = document.createElement("div");
-cover.className = "cover";
-cover.style.setProperty("--cover-a", game.a);
-cover.style.setProperty("--cover-b", game.b);
-const image = createCoverImage(game);
-if (image) {
-cover.appendChild(image);
-}
-const badgeText = game.isTopRated
-? "TOP RATED"
-: game.isUpdated
-? "UPDATED"
-: game.isNew
-? "NEW"
-: "";
-if (badgeText) {
-const badge = document.createElement("span");
-badge.className = "new-badge";
-badge.textContent = badgeText;
-badge.setAttribute("aria-label", badgeText + " game");
-cover.appendChild(badge);
-}
-const symbol = document.createElement("i");
-symbol.className = "cover-symbol fa-solid " + game.icon;
-symbol.setAttribute("aria-hidden", "true");
-const coverLabel = document.createElement("span");
-coverLabel.className = "cover-label";
-coverLabel.textContent = game.category;
-cover.append(symbol, coverLabel);
-const favorite = document.createElement("button");
-favorite.type = "button";
-favorite.className =
-"favorite" + (isFavorite(game) ? " active" : "");
-favorite.setAttribute(
-"aria-label",
-(isFavorite(game) ? "Remove " : "Add ") +
-game.name +
-" favorite"
-);
-favorite.setAttribute(
-"aria-pressed",
-String(isFavorite(game))
-);
-const heart = document.createElement("i");
-heart.className =
-(isFavorite(game) ? "fa-solid" : "fa-regular") +
-" fa-heart";
-favorite.appendChild(heart);
-favorite.addEventListener("click", event => {
-event.stopPropagation();
-toggleFavorite(game);
-});
-const info = document.createElement("div");
-info.className = "card-info";
-const title = document.createElement("h3");
-title.className = "card-title";
-title.textContent = game.name;
-const meta = document.createElement("div");
-meta.className = "card-meta";
-meta.textContent = game.category;
-info.append(title, meta);
-card.append(cover, favorite, info);
-card.addEventListener("click", () => {
-openGame(game);
-});
-card.addEventListener("keydown", event => {
-if (event.target !== card) {
-return;
-}
-if (event.key === "Enter" || event.key === " ") {
-  event.preventDefault();
-  openGame(game);
-}
-
-});
-return card;
-}
-
-function renderGames() {
-  const term = search.value.trim().toLowerCase();
-
-  const visible = games.filter(game => {
-    const matchesCategory =
-      selectedCategory === "All" ||
-      game.category.toLowerCase() ===
-      selectedCategory.toLowerCase();
-
-    const searchableText = [
-      game.name,
-      game.category,
-      game.description
-    ]
-      .join(" ")
-      .toLowerCase();
-
-    const matchesSearch =
-      searchableText.includes(term);
-
-    const matchesFavorite =
-      !favoritesOnly || isFavorite(game);
-
-    return (
-      matchesSearch &&
-      matchesFavorite &&
-      matchesCategory
+  
+  function isFavorite(game) {
+    return favorites.includes(game.name);
+  }
+  
+  function toggleFavorite(game) {
+    if (isFavorite(game)) {
+      favorites = favorites.filter(name => name !== game.name);
+    } else {
+      favorites.push(game.name);
+    }
+  
+    saveFavorites();
+    renderGames();
+    updatePlayerFavorite();
+  }
+  
+  function getCategories() {
+    return [
+      ...new Set(games.map(game => game.category).filter(Boolean))
+    ].sort((a, b) =>
+      a.localeCompare(b, undefined, {
+        sensitivity: "base",
+        numeric: true
+      })
     );
-  });
-
-  grid.replaceChildren();
-
-  $("resultCount").textContent =
-    `${visible.length} game${
-      visible.length === 1 ? "" : "s"
-    }`;
-
-  $("headerCount").textContent =
-    `${games.length} games`;
-
-  $("gridTitle").textContent =
-    favoritesOnly
+  }
+  
+  function renderCategoryButtons() {
+    categoryButtons.replaceChildren();
+  
+    getCategories().forEach(category => {
+      const button = document.createElement("button");
+  
+      button.type = "button";
+      button.className =
+        "category-button" +
+        (selectedCategory.toLowerCase() === category.toLowerCase()
+          ? " active"
+          : "");
+  
+      button.dataset.category = category;
+      button.innerHTML = `<i class="fa-solid fa-tag"></i> ${category}`;
+  
+      button.addEventListener("click", () => {
+        selectedCategory = category;
+        renderCategoryButtons();
+        renderGames();
+      });
+  
+      categoryButtons.appendChild(button);
+    });
+  
+    allCategoryButton.classList.toggle("active", selectedCategory === "All");
+  }
+  
+  function toggleCategoryPanel() {
+    const isHidden = categoryPanel.hidden;
+  
+    categoryPanel.hidden = !isHidden;
+    categoriesNav.classList.toggle("active", isHidden);
+  
+    if (isHidden) renderCategoryButtons();
+  }
+  
+  function createCoverImage(game, className = "cover-image") {
+    if (!game.image) return null;
+  
+    const image = document.createElement("img");
+    image.className = className;
+    image.src = game.image;
+    image.alt = `${game.name} cover`;
+    image.loading = "lazy";
+    image.decoding = "async";
+    image.addEventListener("error", () => image.remove());
+  
+    return image;
+  }
+  
+  function makeCard(game) {
+    const card = document.createElement("article");
+    card.className = "game-card";
+    card.tabIndex = 0;
+    card.setAttribute("role", "button");
+    card.setAttribute("aria-label", `Play ${game.name}`);
+  
+    const cover = document.createElement("div");
+    cover.className = "cover";
+    cover.style.setProperty("--cover-a", game.a || "#444");
+    cover.style.setProperty("--cover-b", game.b || "#171b17");
+  
+    const image = createCoverImage(game);
+    if (image) cover.appendChild(image);
+  
+    const badgeText = game.isTopRated
+      ? "TOP RATED"
+      : game.isUpdated
+        ? "UPDATED"
+        : game.isNew
+          ? "NEW"
+          : "";
+  
+    if (badgeText) {
+      const badge = document.createElement("span");
+      badge.className = "new-badge";
+      badge.textContent = badgeText;
+      badge.setAttribute("aria-label", `${badgeText} game`);
+      cover.appendChild(badge);
+    }
+  
+    const symbol = document.createElement("i");
+    symbol.className = `cover-symbol fa-solid ${game.icon}`;
+    symbol.setAttribute("aria-hidden", "true");
+  
+    const coverLabel = document.createElement("span");
+    coverLabel.className = "cover-label";
+    coverLabel.textContent = game.category || "";
+  
+    cover.append(symbol, coverLabel);
+  
+    const favorite = document.createElement("button");
+    favorite.type = "button";
+    favorite.className =
+      `favorite${isFavorite(game) ? " active" : ""}`;
+    favorite.setAttribute(
+      "aria-label",
+      `${isFavorite(game) ? "Remove" : "Add"} ${game.name} favorite`
+    );
+    favorite.setAttribute("aria-pressed", String(isFavorite(game)));
+  
+    const heart = document.createElement("i");
+    heart.className =
+      `${isFavorite(game) ? "fa-solid" : "fa-regular"} fa-heart`;
+    favorite.appendChild(heart);
+  
+    favorite.addEventListener("click", event => {
+      event.stopPropagation();
+      toggleFavorite(game);
+    });
+  
+    const info = document.createElement("div");
+    info.className = "card-info";
+  
+    const title = document.createElement("h3");
+    title.className = "card-title";
+    title.textContent = game.name;
+  
+    const meta = document.createElement("div");
+    meta.className = "card-meta";
+    meta.textContent = game.category || "Game";
+  
+    info.append(title, meta);
+    card.append(cover, favorite, info);
+  
+    card.addEventListener("click", () => openGame(game));
+    card.addEventListener("keydown", event => {
+      if (
+        event.target === card &&
+        (event.key === "Enter" || event.key === " ")
+      ) {
+        event.preventDefault();
+        openGame(game);
+      }
+    });
+  
+    return card;
+  }
+  
+  function makeRandomGameCard() {
+    const card = document.createElement("article");
+    card.className = "game-card random-game-card";
+    card.tabIndex = 0;
+    card.setAttribute("role", "button");
+    card.setAttribute("aria-label", "Choose a random game");
+  
+    const cover = document.createElement("div");
+    cover.className = "cover";
+  
+    const icon = document.createElement("i");
+    icon.className = "cover-symbol fa-solid fa-shuffle";
+    icon.setAttribute("aria-hidden", "true");
+  
+    const label = document.createElement("span");
+    label.className = "cover-label";
+    label.textContent = "LET FATE DECIDE";
+  
+    cover.append(icon, label);
+  
+    const info = document.createElement("div");
+    info.className = "card-info";
+  
+    const title = document.createElement("h3");
+    title.className = "card-title";
+    title.textContent = "Random Game";
+  
+    const meta = document.createElement("div");
+    meta.className = "card-meta";
+    meta.textContent = "Pick something to play";
+  
+    info.append(title, meta);
+    card.append(cover, info);
+  
+    card.addEventListener("click", openRandomPicker);
+    card.addEventListener("keydown", event => {
+      if (
+        event.target === card &&
+        (event.key === "Enter" || event.key === " ")
+      ) {
+        event.preventDefault();
+        openRandomPicker();
+      }
+    });
+  
+    return card;
+  }
+  
+  function renderGames() {
+    const term = search.value.trim().toLowerCase();
+  
+    const visible = games.filter(game => {
+      const matchesCategory =
+        selectedCategory === "All" ||
+        (game.category || "").toLowerCase() ===
+          selectedCategory.toLowerCase();
+  
+      const searchableText =
+        [game.name, game.category, game.description]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+  
+      const matchesSearch = searchableText.includes(term);
+      const matchesFavorite = !favoritesOnly || isFavorite(game);
+  
+      return matchesSearch && matchesFavorite && matchesCategory;
+    });
+  
+    grid.replaceChildren();
+  
+    $("resultCount").textContent =
+      `${visible.length} game${visible.length === 1 ? "" : "s"}`;
+    $("headerCount").textContent = `${games.length} games`;
+  
+    $("gridTitle").textContent = favoritesOnly
       ? "Your favorites"
       : selectedCategory === "All"
         ? "All games"
         : selectedCategory;
-
-  if (!visible.length) {
-    const empty = document.createElement("div");
-
-    empty.className = "empty-state";
-
-    const icon = document.createElement("i");
-    icon.className = "fa-solid fa-magnifying-glass";
-
-    const title = document.createElement("strong");
-    title.textContent = favoritesOnly
-      ? "No favorites yet"
-      : "No games found";
-
-    const description = document.createElement("span");
-    description.textContent = favoritesOnly
-      ? "Tap the heart on any game to save it here."
-      : "Try a different search or category.";
-
-    empty.append(icon, title, description);
-    grid.appendChild(empty);
-  } else {
+  
+    if (!visible.length) {
+      const empty = document.createElement("div");
+      empty.className = "empty-state";
+  
+      const icon = document.createElement("i");
+      icon.className = "fa-solid fa-magnifying-glass";
+  
+      const title = document.createElement("strong");
+      title.textContent = favoritesOnly
+        ? "No favorites yet"
+        : "No games found";
+  
+      const description = document.createElement("span");
+      description.textContent = favoritesOnly
+        ? "Tap the heart on any game to save it here."
+        : "Try a different search or category.";
+  
+      empty.append(icon, title, description);
+      grid.appendChild(empty);
+      return;
+    }
+  
+    if (!favoritesOnly && selectedCategory === "All" && !term) {
+      grid.appendChild(makeRandomGameCard());
+    }
+  
     visible
       .slice()
       .sort((a, b) =>
@@ -2541,650 +2980,692 @@ function renderGames() {
           sensitivity: "base"
         })
       )
-      .forEach(game => {
-        grid.appendChild(makeCard(game));
-      });
+      .forEach(game => grid.appendChild(makeCard(game)));
   }
-}
-
-function setLibraryMode(mode) {
-  favoritesOnly = mode === "favorites";
-
-  $("homeNav").classList.toggle(
-    "active",
-    !favoritesOnly
-  );
-
-  $("favoritesNav").classList.toggle(
-    "active",
-    favoritesOnly
-  );
-
-  $("allFilter").classList.toggle(
-    "active",
-    !favoritesOnly
-  );
-
-  $("favoritesFilter").classList.toggle(
-    "active",
-    favoritesOnly
-  );
-
-  $("pageTitle").textContent =
-    favoritesOnly
-      ? "Your Favorites"
-      : "Game Library";
-
-  $("pageSubtitle").textContent =
-    favoritesOnly
+  
+  /* Horizontal slot-machine reel */
+  
+  function buildHorizontalReel() {
+    const stage = $("randomStage");
+    if (!stage) return null;
+  
+    stage.replaceChildren();
+  
+    const reelWindow = document.createElement("div");
+    reelWindow.className = "random-reel-window";
+    reelWindow.id = "randomReelWindow";
+  
+    const track = document.createElement("div");
+    track.className = "random-reel-track";
+    track.id = "randomReelTrack";
+  
+    // No visible center box: the middle card is identified by brightness and size.
+    reelWindow.appendChild(track);
+    stage.appendChild(reelWindow);
+  
+    return { reelWindow, track };
+  }
+  
+  function createReelIcon(game) {
+    const icon = document.createElement("i");
+    icon.className = "random-reel-icon fa-solid " + game.icon;
+    icon.setAttribute("aria-hidden", "true");
+    return icon;
+  }
+  
+  function createReelItem(game) {
+    const card = document.createElement("article");
+    card.className = "random-reel-item";
+    card.dataset.gameName = game.name;
+  
+    const cover = document.createElement("div");
+    cover.className = "random-reel-cover";
+    cover.style.setProperty("--cover-a", game.a || "#444");
+    cover.style.setProperty("--cover-b", game.b || "#171b17");
+  
+    if (game.image) {
+      const image = document.createElement("img");
+      image.src = game.image;
+      image.alt = game.name + " cover";
+      image.loading = "eager";
+      image.addEventListener("error", () => {
+        image.remove();
+        if (!cover.querySelector(".random-reel-icon")) {
+          cover.appendChild(createReelIcon(game));
+        }
+      });
+      cover.appendChild(image);
+    } else {
+      cover.appendChild(createReelIcon(game));
+    }
+  
+    const info = document.createElement("div");
+    info.className = "random-reel-info";
+  
+    const name = document.createElement("span");
+    name.className = "random-reel-name";
+    name.textContent = game.name;
+  
+    const category = document.createElement("span");
+    category.className = "random-reel-category";
+    category.textContent = game.category || "Game";
+  
+    info.append(name, category);
+    card.append(cover, info);
+  
+    return card;
+  }
+  
+  function updateReelCardAppearance(track, reelWindow) {
+    const windowRect = reelWindow.getBoundingClientRect();
+    const centerX = windowRect.left + windowRect.width / 2;
+    const fadeDistance = Math.max(windowRect.width * 0.48, 1);
+  
+    track.querySelectorAll(".random-reel-item").forEach(card => {
+      const rect = card.getBoundingClientRect();
+      const cardCenter = rect.left + rect.width / 2;
+      const distance = Math.abs(centerX - cardCenter);
+      const amount = Math.min(distance / fadeDistance, 1);
+  
+      const scale = 1 - amount * 0.28;
+      const opacity = 1 - amount * 0.8;
+      const brightness = 1 - amount * 0.55;
+      const centered = distance < rect.width * 0.12;
+  
+      card.style.setProperty("--reel-scale", scale.toFixed(3));
+      card.style.setProperty("--reel-opacity", opacity.toFixed(3));
+      card.style.setProperty("--reel-brightness", brightness.toFixed(3));
+      card.classList.toggle("is-center", centered);
+    });
+  }
+  
+  function burstRandomParticles() {
+    const particles = $("randomParticles");
+    if (!particles) return;
+  
+    particles.replaceChildren();
+  
+    for (let index = 0; index < 34; index++) {
+      const particle = document.createElement("span");
+      particle.className = "random-particle";
+  
+      const angle = Math.random() * Math.PI * 2;
+      const distance = 90 + Math.random() * 210;
+  
+      particle.style.setProperty(
+        "--particle-x",
+        `${Math.cos(angle) * distance}px`
+      );
+      particle.style.setProperty(
+        "--particle-y",
+        `${Math.sin(angle) * distance}px`
+      );
+      particle.style.animationDelay = `${Math.random() * 120}ms`;
+  
+      particles.appendChild(particle);
+    }
+  
+    setTimeout(() => particles.replaceChildren(), 1100);
+  }
+  
+  function stopRandomReelAnimation() {
+    clearTimeout(randomPickerTimer);
+    randomPickerTimer = null;
+  
+    if (randomPickerFrame !== null) {
+      cancelAnimationFrame(randomPickerFrame);
+      randomPickerFrame = null;
+    }
+  
+    randomPickerAnimationToken++;
+  }
+  
+  function openRandomPicker() {
+    const eligibleGames = games.filter(game => game.url);
+    if (!eligibleGames.length) return;
+  
+    stopRandomReelAnimation();
+    randomPickerGame = null;
+  
+    const picker = $("randomPicker");
+    const help = $("randomPickerHelp");
+    const againButton = $("randomAgainButton");
+    const playButton = $("randomPlayButton");
+  
+    if (!picker || !help || !againButton || !playButton) {
+      console.error("The random picker is missing required HTML elements.");
+      return;
+    }
+  
+    const reel = buildHorizontalReel();
+    if (!reel) {
+      console.error("The random picker is missing #randomStage.");
+      return;
+    }
+  
+    const { reelWindow, track } = reel;
+    const isMobile = window.matchMedia("(max-width: 600px)").matches;
+    const cardWidth = isMobile ? 145 : 190;
+    const itemHeight = isMobile ? 238 : 286;
+    const token = randomPickerAnimationToken;
+  
+    reelWindow.style.setProperty("--reel-card-width", `${cardWidth}px`);
+    track.style.setProperty("--reel-card-width", `${cardWidth}px`);
+  
+    picker.hidden = false;
+    requestAnimationFrame(() => picker.classList.add("active"));
+  
+    help.textContent = "Spinning for a random game…";
+    againButton.hidden = true;
+    playButton.hidden = true;
+    $("randomParticles")?.replaceChildren();
+  
+    const rounds = 10;
+    const reelGames = [];
+  
+    for (let round = 0; round < rounds; round++) {
+      reelGames.push(...eligibleGames);
+    }
+  
+    const winnerIndex = Math.floor(Math.random() * eligibleGames.length);
+    const winnerPosition =
+      (rounds - 1) * eligibleGames.length + winnerIndex;
+  
+    track.replaceChildren(...reelGames.map(createReelItem));
+    track.style.transition = "none";
+    track.style.transform = "translateX(0)";
+  
+    requestAnimationFrame(() => {
+      if (token !== randomPickerAnimationToken) return;
+  
+      // The first card's left edge is the track's origin.
+      const centerOffset =
+        (reelWindow.clientWidth - cardWidth) / 2;
+      const finalOffset =
+        winnerPosition * cardWidth - centerOffset;
+  
+      track.style.transition =
+        "transform 6.2s cubic-bezier(.12,.72,.12,1)";
+      track.style.transform = `translateX(-${finalOffset}px)`;
+  
+      const updateAppearance = () => {
+        if (token !== randomPickerAnimationToken) return;
+  
+        updateReelCardAppearance(track, reelWindow);
+        randomPickerFrame = requestAnimationFrame(updateAppearance);
+      };
+  
+      randomPickerFrame = requestAnimationFrame(updateAppearance);
+  
+      randomPickerTimer = setTimeout(() => {
+        if (token !== randomPickerAnimationToken) return;
+  
+        if (randomPickerFrame !== null) {
+          cancelAnimationFrame(randomPickerFrame);
+          randomPickerFrame = null;
+        }
+  
+        randomPickerGame = eligibleGames[winnerIndex];
+  
+        // Ensure the selected item lands exactly in the center.
+        track.style.transition = "transform .16s ease-out";
+        track.style.transform = `translateX(-${finalOffset}px)`;
+  
+        help.textContent = `${randomPickerGame.name} is the winner!`;
+        againButton.hidden = false;
+        playButton.hidden = false;
+  
+        requestAnimationFrame(() => {
+          updateReelCardAppearance(track, reelWindow);
+          burstRandomParticles();
+  
+          const content =
+            document.querySelector(".random-picker-content");
+          if (content) {
+            content.classList.remove("popping");
+            void content.offsetWidth;
+            content.classList.add("popping");
+          }
+        });
+      }, 6350);
+    });
+  }
+  
+  function closeRandomPicker() {
+    stopRandomReelAnimation();
+  
+    const picker = $("randomPicker");
+    if (!picker) return;
+  
+    picker.classList.remove("active");
+  
+    setTimeout(() => {
+      picker.hidden = true;
+      $("randomParticles")?.replaceChildren();
+    }, 350);
+  }
+  
+  function setLibraryMode(mode) {
+    favoritesOnly = mode === "favorites";
+  
+    $("homeNav").classList.toggle("active", !favoritesOnly);
+    $("favoritesNav").classList.toggle("active", favoritesOnly);
+    $("allFilter").classList.toggle("active", !favoritesOnly);
+    $("favoritesFilter").classList.toggle("active", favoritesOnly);
+  
+    $("pageTitle").textContent =
+      favoritesOnly ? "Your Favorites" : "Game Library";
+    $("pageSubtitle").textContent = favoritesOnly
       ? "Your saved games, all in one place."
       : "All your games, together in one place.";
-
-  renderGames();
-}
-
-function setStatus(message, type = "") {
-  playerStatus.textContent = message;
-  playerStatus.className = type;
-
-  statusDot.style.background =
-    type === "error"
-      ? "#ff626e"
-      : type === "waiting"
-        ? "#e7c75b"
-        : "var(--green)";
-}
-
-function showLoading() {
-  loadingCover.classList.remove("hidden");
-  loadingSpinner.hidden = false;
-  loadingTitle.textContent = "Loading game";
-
-  loadingText.textContent =
-    "Please wait while the game page loads inside Game Hub.";
-
-  retryButton.hidden = true;
-  setStatus("Loading game...");
-}
-
-function showPossibleBlock() {
-  loadingSpinner.hidden = true;
-  loadingTitle.textContent =
-    "Game may not be embeddable";
-
-  loadingText.textContent =
-    "This site may block embedded play, or it may be taking too long to respond. Try reloading. Some sites cannot run inside an iframe.";
-
-  retryButton.hidden = false;
-
-  setStatus(
-    "Unable to confirm gameplay",
-    "waiting"
-  );
-}
-
-function updateSidebarCover(game) {
-  const sidebarCover = $("sidebarCover");
-
-  sidebarCover.replaceChildren();
-
-  sidebarCover.style.setProperty(
-    "--cover-a",
-    game.a
-  );
-
-  sidebarCover.style.setProperty(
-    "--cover-b",
-    game.b
-  );
-
-  const image = createCoverImage(
-    game,
-    "sidebar-cover-image"
-  );
-
-  if (image) {
-    sidebarCover.appendChild(image);
+  
+    renderGames();
   }
-
-  const icon = document.createElement("i");
-
-  icon.className =
-    "fa-solid " + game.icon;
-
-  icon.setAttribute("aria-hidden", "true");
-
-  sidebarCover.appendChild(icon);
-}
-
-function openGame(game) {
-  selectedGame = game;
-
-  libraryPage.classList.add("hidden");
-  playerPage.classList.add("active");
-
-  featuredBanner.style.display = "none";
-
-  $("playerTitle").textContent = game.name;
-  $("sidebarTitle").textContent = game.name;
-  $("sidebarDescription").textContent =
-    game.description;
-
-  updateSidebarCover(game);
-
-  $("gameInfo").textContent =
-    `${game.category} • This game is displayed inside the Game Hub player.`;
-
-  document.title =
-    game.name + " - Game Hub";
-
-  updatePlayerFavorite();
-  loadGame();
-
-  window.scrollTo({
-    top: 0,
-    behavior: "auto"
+  
+  function setStatus(message, type = "") {
+    playerStatus.textContent = message;
+    playerStatus.className = type;
+  
+    statusDot.style.background =
+      type === "error"
+        ? "#ff626e"
+        : type === "waiting"
+          ? "#e7c75b"
+          : "var(--green)";
+  }
+  
+  function showLoading() {
+    loadingCover.classList.remove("hidden");
+    loadingSpinner.hidden = false;
+    loadingTitle.textContent = "Loading game";
+    loadingText.textContent =
+      "Please wait while the game page loads inside Game Hub.";
+    retryButton.hidden = true;
+    setStatus("Loading game...");
+  }
+  
+  function showPossibleBlock() {
+    loadingSpinner.hidden = true;
+    loadingTitle.textContent = "Game may not be embeddable";
+    loadingText.textContent =
+      "This site may block embedded play, or it may be taking too long to respond. Try reloading. Some sites cannot run inside an iframe.";
+    retryButton.hidden = false;
+    setStatus("Unable to confirm gameplay", "waiting");
+  }
+  
+  function updateSidebarCover(game) {
+    const sidebarCover = $("sidebarCover");
+    sidebarCover.replaceChildren();
+  
+    sidebarCover.style.setProperty("--cover-a", game.a);
+    sidebarCover.style.setProperty("--cover-b", game.b);
+  
+    const image = createCoverImage(game, "sidebar-cover-image");
+    if (image) sidebarCover.appendChild(image);
+  
+    const icon = document.createElement("i");
+    icon.className = `fa-solid ${game.icon}`;
+    icon.setAttribute("aria-hidden", "true");
+    sidebarCover.appendChild(icon);
+  }
+  
+  function openGame(game) {
+    selectedGame = game;
+  
+    libraryPage.classList.add("hidden");
+    playerPage.classList.add("active");
+    featuredBanner.style.display = "none";
+  
+    $("playerTitle").textContent = game.name;
+    $("sidebarTitle").textContent = game.name;
+    $("sidebarDescription").textContent = game.description;
+    $("gameInfo").textContent =
+      `${game.category || "Game"} • This game is displayed inside the Game Hub player.`;
+  
+    updateSidebarCover(game);
+    document.title = `${game.name} - Game Hub`;
+    updatePlayerFavorite();
+    loadGame();
+  
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }
+  
+  function loadGame() {
+    if (!selectedGame) return;
+  
+    clearTimeout(loadTimer);
+    const thisLoad = ++loadToken;
+  
+    showLoading();
+    frame.src = "about:blank";
+  
+    requestAnimationFrame(() => {
+      if (thisLoad !== loadToken || !selectedGame) return;
+      frame.src = selectedGame.url;
+    });
+  
+    loadTimer = setTimeout(() => {
+      if (
+        thisLoad === loadToken &&
+        !loadingCover.classList.contains("hidden")
+      ) {
+        showPossibleBlock();
+      }
+    }, 12000);
+  }
+  
+  frame.addEventListener("load", () => {
+    if (!selectedGame) return;
+  
+    clearTimeout(loadTimer);
+    loadingCover.classList.add("hidden");
+    setStatus("Game page responded — gameplay not verified", "waiting");
   });
-}
-
-function loadGame() {
-  if (!selectedGame) {
-    return;
+  
+  function updatePlayerFavorite() {
+    if (!selectedGame) return;
+  
+    const favorite = isFavorite(selectedGame);
+  
+    $("playerFavorite").innerHTML =
+      `<i class="${favorite ? "fa-solid" : "fa-regular"} fa-heart"></i> ` +
+      `${favorite ? "Favorited" : "Favorite"}`;
+  
+    $("playerFavorite").setAttribute("aria-pressed", String(favorite));
   }
-
-  clearTimeout(loadTimer);
-
-  const thisLoad = ++loadToken;
-
-  showLoading();
-  frame.src = "about:blank";
-
-  requestAnimationFrame(() => {
+  
+  function backToLibrary() {
+    clearTimeout(loadTimer);
+  
+    loadToken++;
+    selectedGame = null;
+    frame.src = "about:blank";
+  
+    playerPage.classList.remove("active");
+    libraryPage.classList.remove("hidden");
+    featuredBanner.style.display = "";
+  
+    document.title = "Game Hub";
+    renderGames();
+    startFeaturedSlideshow();
+  
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }
+  
+  async function toggleFullscreen() {
+    const target = $("playerShell");
+  
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      } else if (target.requestFullscreen) {
+        await target.requestFullscreen();
+      } else {
+        setStatus("Fullscreen is not supported by this browser", "waiting");
+      }
+    } catch {
+      setStatus("Fullscreen could not be activated", "error");
+    }
+  }
+  
+  /* Featured video slideshow */
+  
+  function createFeaturedDots() {
+    featuredDots.replaceChildren();
+  
+    featuredSlides.forEach((slide, index) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = "featured-dot";
+      dot.setAttribute("aria-label", `Show ${slide.name} featured slide`);
+      dot.addEventListener("click", () => showFeaturedSlide(index));
+      featuredDots.appendChild(dot);
+    });
+  }
+  
+  function updateFeaturedDots() {
+    featuredDots.querySelectorAll(".featured-dot").forEach((dot, index) => {
+      dot.classList.toggle("active", index === featuredIndex);
+    });
+  }
+  
+  function updateFeaturedText() {
+    const slide = featuredSlides[featuredIndex];
+  
+    featuredContent.style.opacity = "0";
+    featuredContent.style.transform = "translateY(10px)";
+  
+    setTimeout(() => {
+      featuredTitle.textContent = slide.name;
+      featuredDescription.textContent = slide.description;
+      featuredPlayButton.innerHTML =
+        `<i class="fa-solid fa-play"></i><span>Play ${slide.name}</span>`;
+  
+      featuredContent.style.opacity = "1";
+      featuredContent.style.transform = "translateY(0)";
+    }, 180);
+  }
+  
+  function updateFeaturedPauseButton() {
+    featuredPauseButton.innerHTML =
+      `<i class="fa-solid ${featuredPaused ? "fa-play" : "fa-pause"}"></i>`;
+  
+    featuredPauseButton.setAttribute(
+      "aria-label",
+      featuredPaused ? "Play featured slideshow" : "Pause featured slideshow"
+    );
+    featuredPauseButton.setAttribute("aria-pressed", String(featuredPaused));
+  }
+  
+  function scheduleFeaturedSlide() {
+    clearTimeout(featuredTimer);
+  
     if (
-      thisLoad !== loadToken ||
-      !selectedGame
+      !featuredPaused &&
+      featuredSlides.length > 1 &&
+      !playerPage.classList.contains("active")
+    ) {
+      featuredTimer = setTimeout(() => {
+        showFeaturedSlide((featuredIndex + 1) % featuredSlides.length);
+      }, 7000);
+    }
+  }
+  
+  function showFeaturedSlide(index) {
+    if (
+      featuredSlides.length <= 1 ||
+      index === featuredIndex ||
+      featuredSwitching
     ) {
       return;
     }
-
-    frame.src = selectedGame.url;
-  });
-
-  loadTimer = setTimeout(() => {
-    if (
-      thisLoad === loadToken &&
-      !loadingCover.classList.contains("hidden")
-    ) {
-      showPossibleBlock();
+  
+    featuredSwitching = true;
+    clearTimeout(featuredTimer);
+  
+    const nextVideoIndex = 1 - activeFeaturedVideo;
+    const nextVideo = featuredVideos[nextVideoIndex];
+    const previousVideo = featuredVideos[activeFeaturedVideo];
+  
+    nextVideo.classList.remove("active");
+    nextVideo.src = featuredSlides[index].video;
+    nextVideo.load();
+  
+    const finishSwitch = () => {
+      nextVideo.classList.add("active");
+      previousVideo.classList.remove("active");
+  
+      featuredIndex = index;
+      activeFeaturedVideo = nextVideoIndex;
+  
+      updateFeaturedText();
+      updateFeaturedDots();
+  
+      setTimeout(() => {
+        previousVideo.pause();
+        previousVideo.removeAttribute("src");
+        previousVideo.load();
+  
+        featuredSwitching = false;
+        scheduleFeaturedSlide();
+      }, 750);
+    };
+  
+    nextVideo.play().then(finishSwitch).catch(finishSwitch);
+  }
+  
+  function startFeaturedSlideshow() {
+    if (!featuredSlides.length) {
+      featuredTitle.textContent = "No featured games";
+      featuredDescription.textContent =
+        "Add videos to display featured games.";
+      return;
     }
-  }, 12000);
-}
-
-frame.addEventListener("load", () => {
-  if (!selectedGame) {
-    return;
-  }
-
-  clearTimeout(loadTimer);
-  loadingCover.classList.add("hidden");
-
-  setStatus(
-    "Game page responded — gameplay not verified",
-    "waiting"
-  );
-});
-
-function updatePlayerFavorite() {
-  if (!selectedGame) {
-    return;
-  }
-
-  const favorite = isFavorite(selectedGame);
-
-  $("playerFavorite").innerHTML =
-    `<i class="${
-      favorite
-        ? "fa-solid"
-        : "fa-regular"
-    } fa-heart"></i> ` +
-    `${favorite ? "Favorited" : "Favorite"}`;
-
-  $("playerFavorite").setAttribute(
-    "aria-pressed",
-    String(favorite)
-  );
-}
-
-function backToLibrary() {
-  clearTimeout(loadTimer);
-
-  loadToken++;
-  selectedGame = null;
-  frame.src = "about:blank";
-
-  playerPage.classList.remove("active");
-  libraryPage.classList.remove("hidden");
-
-  featuredBanner.style.display = "";
-
-  document.title = "Game Hub";
-
-  renderGames();
-  startFeaturedSlideshow();
-
-  window.scrollTo({
-    top: 0,
-    behavior: "auto"
-  });
-}
-
-async function toggleFullscreen() {
-  const target = $("playerShell");
-
-  try {
-    if (document.fullscreenElement) {
-      await document.exitFullscreen();
-    } else if (target.requestFullscreen) {
-      await target.requestFullscreen();
-    } else {
-      setStatus(
-        "Fullscreen is not supported by this browser",
-        "waiting"
-      );
-    }
-  } catch (error) {
-    setStatus(
-      "Fullscreen could not be activated",
-      "error"
-    );
-  }
-}
-
-/* Featured video slideshow */
-
-function createFeaturedDots() {
-  featuredDots.replaceChildren();
-
-  featuredSlides.forEach((slide, index) => {
-    const dot = document.createElement("button");
-
-    dot.type = "button";
-    dot.className = "featured-dot";
-
-    dot.setAttribute(
-      "aria-label",
-      "Show " + slide.name + " featured slide"
-    );
-
-    dot.addEventListener("click", () => {
-      showFeaturedSlide(index);
-    });
-
-    featuredDots.appendChild(dot);
-  });
-}
-
-function updateFeaturedDots() {
-  const dots =
-    featuredDots.querySelectorAll(
-      ".featured-dot"
-    );
-
-  dots.forEach((dot, index) => {
-    dot.classList.toggle(
-      "active",
-      index === featuredIndex
-    );
-  });
-}
-
-function updateFeaturedText() {
-  const slide = featuredSlides[featuredIndex];
-
-  featuredContent.style.opacity = "0";
-  featuredContent.style.transform =
-    "translateY(10px)";
-
-  setTimeout(() => {
-    featuredTitle.textContent = slide.name;
-    featuredDescription.textContent =
-      slide.description;
-
-    featuredPlayButton.innerHTML = `
-      <i class="fa-solid fa-play"></i>
-      <span>Play ${slide.name}</span>
-    `;
-
-    featuredContent.style.opacity = "1";
-    featuredContent.style.transform =
-      "translateY(0)";
-  }, 180);
-}
-
-function updateFeaturedPauseButton() {
-  featuredPauseButton.innerHTML = `
-    <i class="fa-solid ${
-      featuredPaused
-        ? "fa-play"
-        : "fa-pause"
-    }"></i>
-  `;
-
-  featuredPauseButton.setAttribute(
-    "aria-label",
-    featuredPaused
-      ? "Play featured slideshow"
-      : "Pause featured slideshow"
-  );
-
-  featuredPauseButton.setAttribute(
-    "aria-pressed",
-    String(featuredPaused)
-  );
-}
-
-function scheduleFeaturedSlide() {
-  clearTimeout(featuredTimer);
-
-  if (
-    !featuredPaused &&
-    featuredSlides.length > 1 &&
-    !playerPage.classList.contains("active")
-  ) {
-    featuredTimer = setTimeout(() => {
-      showFeaturedSlide(
-        (featuredIndex + 1) %
-        featuredSlides.length
-      );
-    }, 7000);
-  }
-}
-
-function showFeaturedSlide(index) {
-  if (
-    featuredSlides.length <= 1 ||
-    index === featuredIndex ||
-    featuredSwitching
-  ) {
-    return;
-  }
-
-  featuredSwitching = true;
-  clearTimeout(featuredTimer);
-
-  const nextVideoIndex =
-    1 - activeFeaturedVideo;
-
-  const nextVideo =
-    featuredVideos[nextVideoIndex];
-
-  const previousVideo =
-    featuredVideos[activeFeaturedVideo];
-
-  nextVideo.classList.remove("active");
-  nextVideo.src =
-    featuredSlides[index].video;
-
-  nextVideo.load();
-
-  const finishSwitch = () => {
-    nextVideo.classList.add("active");
-    previousVideo.classList.remove("active");
-
-    featuredIndex = index;
-    activeFeaturedVideo = nextVideoIndex;
-
+  
+    createFeaturedDots();
     updateFeaturedText();
     updateFeaturedDots();
-
-    setTimeout(() => {
-      previousVideo.pause();
-      previousVideo.removeAttribute("src");
-      previousVideo.load();
-
-      featuredSwitching = false;
-      scheduleFeaturedSlide();
-    }, 750);
-  };
-
-  nextVideo.play()
-    .then(finishSwitch)
-    .catch(finishSwitch);
-}
-
-function startFeaturedSlideshow() {
-  if (!featuredSlides.length) {
-    featuredTitle.textContent =
-      "No featured games";
-
-    featuredDescription.textContent =
-      "Add videos to display featured games.";
-
-    return;
-  }
-
-  createFeaturedDots();
-  updateFeaturedText();
-  updateFeaturedDots();
-  updateFeaturedPauseButton();
-
-  const activeVideo =
-    featuredVideos[activeFeaturedVideo];
-
-  if (!activeVideo.src) {
-    activeVideo.src =
-      featuredSlides[featuredIndex].video;
-
-    activeVideo.load();
-  }
-
-  activeVideo.play().catch(() => {});
-
-  scheduleFeaturedSlide();
-}
-
-function toggleFeaturedPause() {
-  featuredPaused = !featuredPaused;
-
-  if (featuredPaused) {
-    clearTimeout(featuredTimer);
-    featuredVideos[activeFeaturedVideo].pause();
-  } else {
-    featuredVideos[activeFeaturedVideo]
-      .play()
-      .catch(() => {});
-
+    updateFeaturedPauseButton();
+  
+    const activeVideo = featuredVideos[activeFeaturedVideo];
+  
+    if (!activeVideo.src) {
+      activeVideo.src = featuredSlides[featuredIndex].video;
+      activeVideo.load();
+    }
+  
+    activeVideo.play().catch(() => {});
     scheduleFeaturedSlide();
   }
-
-  updateFeaturedPauseButton();
-}
-
-function getFeaturedIndex(direction) {
-  return (
-    (
-      featuredIndex +
-      direction +
-      featuredSlides.length
-    ) %
-    featuredSlides.length
-  );
-}
-
-/* Featured controls */
-
-featuredPlayButton.addEventListener("click", () => {
-  const featuredName =
-    featuredSlides[featuredIndex].name;
-
-  const game = games.find(item => {
-    if (featuredName === "Minecraft") {
-      return item.name === "Minecraft 1.26.2";
-    }
-
-    return item.name === featuredName;
-  });
-
-  if (game) {
-    openGame(game);
-  }
-});
-
-featuredBrowseButton.addEventListener("click", () => {
-  libraryPage.scrollIntoView({
-    behavior: "smooth"
-  });
-});
-
-featuredPauseButton.addEventListener(
-  "click",
-  toggleFeaturedPause
-);
-
-featuredPreviousButton.addEventListener(
-  "click",
-  () => {
-    showFeaturedSlide(
-      getFeaturedIndex(-1)
-    );
-  }
-);
-
-featuredNextButton.addEventListener(
-  "click",
-  () => {
-    showFeaturedSlide(
-      getFeaturedIndex(1)
-    );
-  }
-);
-
-featuredBanner.addEventListener(
-  "mouseenter",
-  () => {
-    if (!featuredPaused) {
+  
+  function toggleFeaturedPause() {
+    featuredPaused = !featuredPaused;
+  
+    if (featuredPaused) {
       clearTimeout(featuredTimer);
-    }
-  }
-);
-
-featuredBanner.addEventListener(
-  "mouseleave",
-  () => {
-    if (!featuredPaused) {
+      featuredVideos[activeFeaturedVideo].pause();
+    } else {
+      featuredVideos[activeFeaturedVideo].play().catch(() => {});
       scheduleFeaturedSlide();
     }
+  
+    updateFeaturedPauseButton();
   }
-);
-
-/* Main controls */
-
-categoriesNav.addEventListener(
-  "click",
-  toggleCategoryPanel
-);
-
-allCategoryButton.addEventListener(
-  "click",
-  () => {
+  
+  function getFeaturedIndex(direction) {
+    return (
+      (featuredIndex + direction + featuredSlides.length) %
+      featuredSlides.length
+    );
+  }
+  
+  /* Featured controls */
+  
+  featuredPlayButton.addEventListener("click", () => {
+    const featuredName = featuredSlides[featuredIndex].name;
+  
+    const game = games.find(item => {
+      if (featuredName === "Minecraft") {
+        return item.name === "Minecraft 1.26.2";
+      }
+  
+      return item.name === featuredName;
+    });
+  
+    if (game) openGame(game);
+  });
+  
+  featuredBrowseButton.addEventListener("click", () => {
+    libraryPage.scrollIntoView({ behavior: "smooth" });
+  });
+  
+  featuredPauseButton.addEventListener("click", toggleFeaturedPause);
+  
+  featuredPreviousButton.addEventListener("click", () => {
+    showFeaturedSlide(getFeaturedIndex(-1));
+  });
+  
+  featuredNextButton.addEventListener("click", () => {
+    showFeaturedSlide(getFeaturedIndex(1));
+  });
+  
+  featuredBanner.addEventListener("mouseenter", () => {
+    if (!featuredPaused) clearTimeout(featuredTimer);
+  });
+  
+  featuredBanner.addEventListener("mouseleave", () => {
+    if (!featuredPaused) scheduleFeaturedSlide();
+  });
+  
+  /* Main controls */
+  
+  categoriesNav.addEventListener("click", toggleCategoryPanel);
+  
+  allCategoryButton.addEventListener("click", () => {
     selectedCategory = "All";
     renderCategoryButtons();
     renderGames();
-  }
-);
-
-search.addEventListener(
-  "input",
-  renderGames
-);
-
-$("homeNav").addEventListener(
-  "click",
-  () => {
+  });
+  
+  search.addEventListener("input", renderGames);
+  
+  $("homeNav").addEventListener("click", () => {
     backToLibrary();
     setLibraryMode("all");
-  }
-);
-
-$("favoritesNav").addEventListener(
-  "click",
-  () => {
+  });
+  
+  $("favoritesNav").addEventListener("click", () => {
     backToLibrary();
     setLibraryMode("favorites");
-  }
-);
-
-$("allFilter").addEventListener(
-  "click",
-  () => {
-    setLibraryMode("all");
-  }
-);
-
-$("favoritesFilter").addEventListener(
-  "click",
-  () => {
-    setLibraryMode("favorites");
-  }
-);
-
-$("backButton").addEventListener(
-  "click",
-  backToLibrary
-);
-
-$("backToLibraryButton").addEventListener(
-  "click",
-  backToLibrary
-);
-
-$("sidebarBack").addEventListener(
-  "click",
-  backToLibrary
-);
-
-$("reloadButton").addEventListener(
-  "click",
-  loadGame
-);
-
-$("reloadGameButton").addEventListener(
-  "click",
-  loadGame
-);
-
-$("sidebarReload").addEventListener(
-  "click",
-  loadGame
-);
-
-$("retryButton").addEventListener(
-  "click",
-  loadGame
-);
-
-$("fullscreenButton").addEventListener(
-  "click",
-  toggleFullscreen
-);
-
-$("fullscreenGameButton").addEventListener(
-  "click",
-  toggleFullscreen
-);
-
-$("playerFavorite").addEventListener(
-  "click",
-  () => {
-    if (selectedGame) {
-      toggleFavorite(selectedGame);
+  });
+  
+  $("allFilter").addEventListener("click", () => setLibraryMode("all"));
+  $("favoritesFilter").addEventListener("click", () => setLibraryMode("favorites"));
+  
+  $("backButton").addEventListener("click", backToLibrary);
+  $("backToLibraryButton").addEventListener("click", backToLibrary);
+  $("sidebarBack").addEventListener("click", backToLibrary);
+  
+  $("reloadButton").addEventListener("click", loadGame);
+  $("reloadGameButton").addEventListener("click", loadGame);
+  $("sidebarReload").addEventListener("click", loadGame);
+  $("retryButton").addEventListener("click", loadGame);
+  
+  $("fullscreenButton").addEventListener("click", toggleFullscreen);
+  $("fullscreenGameButton").addEventListener("click", toggleFullscreen);
+  
+  $("playerFavorite").addEventListener("click", () => {
+    if (selectedGame) toggleFavorite(selectedGame);
+  });
+  
+  /* Random Game picker */
+  
+  $("randomPickerClose").addEventListener("click", closeRandomPicker);
+  $("randomAgainButton").addEventListener("click", openRandomPicker);
+  
+  $("randomPlayButton").addEventListener("click", () => {
+    if (!randomPickerGame) return;
+  
+    const game = randomPickerGame;
+    closeRandomPicker();
+    openGame(game);
+  });
+  
+  $("randomPicker").addEventListener("click", event => {
+    if (event.target === $("randomPicker")) {
+      closeRandomPicker();
     }
-  }
-);
-
-document.addEventListener(
-  "keydown",
-  event => {
+  });
+  
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && !$("randomPicker").hidden) {
+      closeRandomPicker();
+    }
+  });
+  
+  /* Keyboard controls */
+  
+  document.addEventListener("keydown", event => {
     if (
       event.key === "Escape" &&
       playerPage.classList.contains("active") &&
@@ -3192,25 +3673,21 @@ document.addEventListener(
     ) {
       backToLibrary();
     }
-
+  
     if (
       event.key === "ArrowLeft" &&
       !playerPage.classList.contains("active")
     ) {
-      showFeaturedSlide(
-        getFeaturedIndex(-1)
-      );
+      showFeaturedSlide(getFeaturedIndex(-1));
     }
-
+  
     if (
       event.key === "ArrowRight" &&
       !playerPage.classList.contains("active")
     ) {
-      showFeaturedSlide(
-        getFeaturedIndex(1)
-      );
+      showFeaturedSlide(getFeaturedIndex(1));
     }
-
+  
     if (
       event.key === " " &&
       !playerPage.classList.contains("active") &&
@@ -3219,25 +3696,19 @@ document.addEventListener(
       event.preventDefault();
       toggleFeaturedPause();
     }
-  }
-);
-
-document.addEventListener(
-  "fullscreenchange",
-  () => {
-    const icon =
-      $("fullscreenButton").querySelector("i");
-
-    icon.className =
-      document.fullscreenElement
-        ? "fa-solid fa-compress"
-        : "fa-solid fa-expand";
-  }
-);
-
-renderCategoryButtons();
-renderGames();
-startFeaturedSlideshow();
-</script>
+  });
+  
+  document.addEventListener("fullscreenchange", () => {
+    const icon = $("fullscreenButton").querySelector("i");
+    icon.className = document.fullscreenElement
+      ? "fa-solid fa-compress"
+      : "fa-solid fa-expand";
+  });
+  
+  renderCategoryButtons();
+  renderGames();
+  startFeaturedSlideshow();
+  </script>
+  
 </body>
 </html>
