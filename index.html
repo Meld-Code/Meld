@@ -341,78 +341,400 @@
     <img id="myGif" src="TobnyiFire.gif" alt="Animation">
   </div>
 
-  <!-- CHAT BUTTON -->
-  <button id="chatButton" class="chatButton" type="button" aria-label="Open chat" aria-expanded="false">
-    Chat
-    <span id="chatUnreadBadge" class="chatUnreadBadge" hidden></span>
+
+<!-- MELD CHAT BUTTON -->
+<button
+  id="chatButton"
+  class="chatButton"
+  type="button"
+  aria-label="Open chat"
+  aria-expanded="false"
+>
+  <i class="fa-solid fa-comments" aria-hidden="true"></i>
+  Chat
+  <span id="chatUnreadBadge" class="chatUnreadBadge" hidden></span>
 </button>
-  <!-- CHAT PANEL -->
-  <section
-    class="chatPanel"
-    id="chatPanel"
-    aria-labelledby="chatTitle"
-    hidden
-  >
-    <div class="chatHeader">
-      <div>
-        <h2 id="chatTitle">Meld Chat</h2>
-        <p id="chatStatus">Connecting...</p>
-      </div>
+
+<!-- MELD CHAT APPLICATION -->
+<section
+  class="chatPanel"
+  id="chatPanel"
+  aria-labelledby="chatTitle"
+  hidden
+>
+  <!-- SERVER SIDEBAR -->
+  <aside class="chatServerSidebar" aria-label="Servers">
+    <button class="chatServerIcon active" type="button" title="Home" data-server="home">
+      <i class="fa-solid fa-house"></i>
+    </button>
+
+    <div class="chatServerDivider"></div>
+
+    <div id="chatServerList" class="chatServerList">
+      <!-- Firebase server icons will appear here -->
+    </div>
+
+    <button
+      id="chatAddServerButton"
+      class="chatServerIcon chatAddServer"
+      type="button"
+      title="Add a server"
+    >
+      <i class="fa-solid fa-plus"></i>
+    </button>
+
+    <button
+      id="chatDiscoverButton"
+      class="chatServerIcon"
+      type="button"
+      title="Discover servers"
+    >
+      <i class="fa-solid fa-compass"></i>
+    </button>
+  </aside>
+
+  <!-- CHANNEL / NAVIGATION SIDEBAR -->
+  <aside class="chatNavigation">
+    <header class="chatNavigationHeader">
+      <h2 id="chatTitle">Meld Chat</h2>
 
       <button
-        class="chatCloseButton"
         id="chatCloseButton"
+        class="chatCloseButton"
         type="button"
         aria-label="Close chat"
-        title="Close chat"
       >
-        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </header>
+
+    <!-- USER PROFILE -->
+    <div class="chatCurrentUser">
+      <div class="chatAvatar" id="chatCurrentAvatar">?</div>
+      <div class="chatCurrentUserInfo">
+        <strong id="chatCurrentName">Guest</strong>
+        <span id="chatCurrentStatus">Offline</span>
+      </div>
+      <button id="chatUserSettings" type="button" title="User settings">
+        <i class="fa-solid fa-gear"></i>
       </button>
     </div>
 
+    <!-- HOME NAVIGATION -->
+    <nav class="chatHomeNavigation" aria-label="Chat navigation">
+      <button class="chatNavItem active" type="button" data-view="messages">
+        <i class="fa-solid fa-message"></i>
+        Messages
+      </button>
+
+      <button class="chatNavItem" type="button" data-view="friends">
+        <i class="fa-solid fa-user-group"></i>
+        Friends
+      </button>
+
+      <button class="chatNavItem" type="button" data-view="activity">
+        <i class="fa-solid fa-bolt"></i>
+        Activity
+      </button>
+    </nav>
+
+    <!-- SERVER CHANNELS -->
+    <div class="chatChannelSection" id="chatChannelSection">
+      <div class="chatSectionHeading">
+        <span>TEXT CHANNELS</span>
+        <button id="chatAddChannelButton" type="button" title="Create channel">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+
+      <div id="chatTextChannels" class="chatChannelList">
+        <button class="chatChannelItem active" type="button" data-channel="general">
+          <i class="fa-solid fa-hashtag"></i>
+          general
+        </button>
+      </div>
+
+      <div class="chatSectionHeading">
+        <span>VOICE CHANNELS</span>
+        <button id="chatAddVoiceChannelButton" type="button" title="Create voice channel">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+
+      <div id="chatVoiceChannels" class="chatChannelList">
+        <button class="chatChannelItem voiceChannelItem" type="button" data-voice-channel="lounge">
+          <i class="fa-solid fa-volume-high"></i>
+          lounge
+        </button>
+      </div>
+    </div>
+
+    <!-- DIRECT MESSAGES -->
+    <div class="chatDMSection">
+      <div class="chatSectionHeading">
+        <span>DIRECT MESSAGES</span>
+        <button id="chatNewDMButton" type="button" title="New message">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+
+      <div id="chatDMList" class="chatDMList">
+        <p class="chatSidebarEmpty">No conversations yet.</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CHAT AREA -->
+  <main class="chatMain">
+    <header class="chatMainHeader">
+      <div class="chatMainTitle">
+        <i id="chatRoomIcon" class="fa-solid fa-hashtag"></i>
+        <h3 id="chatRoomName">general</h3>
+        <span id="chatRoomDescription">Welcome to Meld Chat</span>
+      </div>
+
+      <div class="chatMainActions">
+        <button id="chatSearchButton" type="button" title="Search messages">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+
+        <button id="chatMembersButton" type="button" title="Toggle members">
+          <i class="fa-solid fa-users"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- SEARCH -->
+    <div class="chatSearchBar" id="chatSearchBar" hidden>
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input
+        id="chatSearchInput"
+        type="search"
+        placeholder="Search messages..."
+        autocomplete="off"
+      >
+      <button id="chatSearchClose" type="button" aria-label="Close search">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- MESSAGES -->
     <div
       class="chatMessages"
       id="chatMessages"
       aria-live="polite"
       aria-label="Chat messages"
     >
-      <p class="chatEmptyMessage">No messages yet.</p>
+      <div class="chatWelcome">
+        <div class="chatWelcomeIcon">
+          <i class="fa-solid fa-hashtag"></i>
+        </div>
+        <h3>Welcome to #general</h3>
+        <p>This is the beginning of this channel.</p>
+      </div>
     </div>
 
-    <form class="chatForm" id="chatForm">
-      <input
-        class="chatNameInput"
-        id="chatNameInput"
-        type="text"
-        maxlength="24"
-        placeholder="Name"
-        autocomplete="nickname"
-        required
-      >
+    <!-- TYPING INDICATOR -->
+    <div id="chatTypingIndicator" class="chatTypingIndicator" aria-live="polite" hidden>
+      Someone is typing...
+    </div>
 
-      <div class="chatMessageRow">
+    <!-- MESSAGE COMPOSER -->
+    <form class="chatForm" id="chatForm">
+      <div class="chatComposer">
+        <button
+          id="chatUploadButton"
+          class="chatAttachmentButton"
+          type="button"
+          aria-label="Attach image"
+          title="Attach image"
+        >
+          <i class="fa-solid fa-plus"></i>
+        </button>
+
         <input
-          class="chatMessageInput"
-          id="chatMessageInput"
-          type="text"
-          maxlength="300"
-          placeholder="Write a message..."
-          autocomplete="off"
-          required
+          id="chatImageInput"
+          type="file"
+          accept="image/png,image/jpeg,image/gif,image/webp"
+          hidden
         >
 
+        <div class="chatComposerInput">
+          <textarea
+            class="chatMessageInput"
+            id="chatMessageInput"
+            maxlength="3000"
+            rows="1"
+            placeholder="Message #general"
+            aria-label="Message"
+            required
+          ></textarea>
+        </div>
+
         <button
-          class="chatSendButton"
+          id="chatEmojiButton"
+          class="chatAttachmentButton"
+          type="button"
+          aria-label="Emoji picker"
+          title="Emoji"
+        >
+          <i class="fa-regular fa-face-smile"></i>
+        </button>
+
+        <button
           id="chatSendButton"
+          class="chatSendButton"
           type="submit"
           aria-label="Send message"
           title="Send message"
         >
-          <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+          <i class="fa-solid fa-paper-plane"></i>
         </button>
       </div>
+
+      <div id="chatAttachmentPreview" class="chatAttachmentPreview" hidden></div>
     </form>
+  </main>
+
+  <!-- MEMBER SIDEBAR -->
+  <aside class="chatMembersPanel" id="chatMembersPanel">
+    <div class="chatMembersHeader">
+      <h3>Members</h3>
+      <span id="chatMemberCount">0</span>
+    </div>
+
+    <div class="chatMemberGroup">
+      <h4>ONLINE</h4>
+      <div id="chatOnlineMembers" class="chatMemberList">
+        <p class="chatSidebarEmpty">No members online.</p>
+      </div>
+    </div>
+
+    <div class="chatMemberGroup">
+      <h4>OFFLINE</h4>
+      <div id="chatOfflineMembers" class="chatMemberList">
+        <p class="chatSidebarEmpty">No offline members.</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- FRIENDS VIEW -->
+  <section class="chatSecondaryView" id="chatFriendsView" hidden>
+    <header class="chatSecondaryHeader">
+      <h2>Friends</h2>
+      <button id="chatAddFriendButton" type="button">
+        <i class="fa-solid fa-user-plus"></i>
+        Add Friend
+      </button>
+    </header>
+
+    <div class="chatFriendsTabs">
+      <button class="active" type="button" data-friend-tab="all">All</button>
+      <button type="button" data-friend-tab="online">Online</button>
+      <button type="button" data-friend-tab="pending">Pending</button>
+      <button type="button" data-friend-tab="blocked">Blocked</button>
+    </div>
+
+    <div id="chatFriendsList" class="chatFriendsList">
+      <p class="chatSidebarEmpty">Your friends will appear here.</p>
+    </div>
   </section>
+
+  <!-- ACTIVITY VIEW -->
+  <section class="chatSecondaryView" id="chatActivityView" hidden>
+    <header class="chatSecondaryHeader">
+      <h2>Activity</h2>
+    </header>
+    <div id="chatActivityList" class="chatActivityList">
+      <p class="chatSidebarEmpty">No recent activity.</p>
+    </div>
+  </section>
+
+  <!-- VOICE OVERLAY -->
+  <section class="chatVoicePanel" id="chatVoicePanel" hidden>
+    <div class="chatVoiceHeader">
+      <h3>
+        <i class="fa-solid fa-volume-high"></i>
+        Voice Connected
+      </h3>
+      <button id="chatVoiceClose" type="button" aria-label="Leave voice">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div id="chatVoiceParticipants" class="chatVoiceParticipants">
+      <p>Waiting for participants...</p>
+    </div>
+
+    <div class="chatVoiceControls">
+      <button id="chatVoiceMute" type="button" title="Mute microphone">
+        <i class="fa-solid fa-microphone"></i>
+      </button>
+      <button id="chatVoiceDeafen" type="button" title="Deafen">
+        <i class="fa-solid fa-headphones"></i>
+      </button>
+      <button id="chatVoiceDisconnect" type="button" title="Disconnect">
+        <i class="fa-solid fa-phone-slash"></i>
+      </button>
+    </div>
+  </section>
+
+  <!-- USER SETTINGS MODAL -->
+  <section class="chatModal" id="chatSettingsModal" hidden>
+    <div class="chatModalContent">
+      <header>
+        <h2>User Settings</h2>
+        <button id="chatSettingsClose" type="button" aria-label="Close settings">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </header>
+
+      <label for="chatNameInput">Display name</label>
+      <input
+        id="chatNameInput"
+        type="text"
+        maxlength="24"
+        placeholder="Your display name"
+      >
+
+      <label for="chatStatusSelect">Status</label>
+      <select id="chatStatusSelect">
+        <option value="online">Online</option>
+        <option value="idle">Idle</option>
+        <option value="dnd">Do Not Disturb</option>
+        <option value="invisible">Invisible</option>
+      </select>
+
+      <button id="chatSaveSettings" type="button">Save Changes</button>
+    </div>
+  </section>
+
+  <!-- ADD FRIEND MODAL -->
+  <section class="chatModal" id="chatAddFriendModal" hidden>
+    <div class="chatModalContent">
+      <header>
+        <h2>Add Friend</h2>
+        <button id="chatAddFriendClose" type="button" aria-label="Close">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </header>
+
+      <label for="chatFriendUsername">Username</label>
+      <input
+        id="chatFriendUsername"
+        type="text"
+        maxlength="32"
+        placeholder="Enter username"
+        autocomplete="off"
+      >
+
+      <button id="chatSendFriendRequest" type="button">
+        Send Friend Request
+      </button>
+    </div>
+  </section>
+</section>
+
 
   <!-- PROFILE AND LEADERBOARD BUTTONS -->
   <div class="topLeftButtons">
