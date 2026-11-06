@@ -1,3 +1,4 @@
+
 import { initializeApp, getApps, getApp } from
     "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 
@@ -17,12 +18,22 @@ import {
     onValue,
     get,
     remove,
+    set,
+    onDisconnect,
     serverTimestamp
 } from
     "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
 
+import {
+    getStorage,
+    ref as storageRef,
+    uploadBytes,
+    getDownloadURL
+} from
+    "https://www.gstatic.com/firebasejs/12.4.0/firebase-storage.js";
+
 /* ============================================================
-   FIREBASE
+   FIREBASE CONFIGURATION
 ============================================================ */
 
 const firebaseConfig = {
@@ -41,41 +52,57 @@ const app = getApps().length
 
 const auth = getAuth(app);
 const database = getDatabase(app);
+const storage = getStorage(app);
 
 /* ============================================================
-   CHAT ELEMENTS
+   CONFIGURATION
 ============================================================ */
 
-const chatButton = document.getElementById("chatButton");
-const chatPanel = document.getElementById("chatPanel");
-const chatCloseButton = document.getElementById("chatCloseButton");
-const chatForm = document.getElementById("chatForm");
-const chatNameInput = document.getElementById("chatNameInput");
-const chatMessageInput = document.getElementById("chatMessageInput");
-const chatSendButton = document.getElementById("chatSendButton");
-const chatMessages = document.getElementById("chatMessages");
-const chatStatus = document.getElementById("chatStatus");
-const chatUnreadBadge = document.getElementById("chatUnreadBadge");
+const CONFIG = {
+    MESSAGE_LIFETIME: 24 * 60 * 60 * 1000,
+    MAX_MESSAGE_LENGTH: 300,
+    MAX_MESSAGES: 100,
+    MAX_IMAGE_SIZE: 5 * 1024 * 1024,
+    ALLOWED_IMAGE_TYPES: [
+        "image/png",
+        "image/jpeg",
+        "image/gif",
+        "image/webp"
+    ]
+};
 
-const CHAT_LIFETIME = 24 * 60 * 60 * 1000;
-const MAX_MESSAGE_LENGTH = 300;
-const MAX_MESSAGES = 100;
+/* ============================================================
+   HTML ELEMENTS
+============================================================ */
+
+const elements = {
+    button: document.getElementById("chatButton"),
+    panel: document.getElementById("chatPanel"),
+    close: document.getElementById("chatCloseButton"),
+    form: document.getElementById("chatForm"),
+    name: document.getElementById("chatNameInput"),
+    input: document.getElementById("chatMessageInput"),
+    send: document.getElementById("chatSendButton"),
+    messages: document.getElementById("chatMessages"),
+    status: document.getElementById("chatStatus"),
+    unread: document.getElementById("chatUnreadBadge")
+};
 
 const requiredElements = [
-    chatButton,
-    chatPanel,
-    chatCloseButton,
-    chatForm,
-    chatNameInput,
-    chatMessageInput,
-    chatSendButton,
-    chatMessages,
-    chatStatus
+    elements.button,
+    elements.panel,
+    elements.close,
+    elements.form,
+    elements.name,
+    elements.input,
+    elements.send,
+    elements.messages,
+    elements.status
 ];
 
 if (requiredElements.some(element => !element)) {
     console.error(
-        "Meld Chat: Required HTML elements are missing. Check your chat HTML IDs."
+        "Meld Chat: Missing required HTML elements. Check your chat HTML IDs."
     );
 } else {
     initializeChat();
@@ -88,131 +115,242 @@ if (requiredElements.some(element => !element)) {
 function initializeChat() {
     let currentUser = null;
     let profile = null;
+
     let chatIsOpen = false;
     let unreadCount = 0;
     let firstMessageLoad = true;
+
     let stopMessagesListener = null;
+    let stopPresenceListener = null;
+    let stopTypingListener = null;
+
     let lastMessageIds = new Set();
     let authSessionNumber = 0;
+    let typingTimeout = null;
+    let isSending = false;
+
+    const messagesRef = ref(database, "chatMessages");
 
     const messagesQuery = query(
-        ref(database, "chatMessages"),
+        messagesRef,
         orderByChild("createdAt"),
-        limitToLast(MAX_MESSAGES)
+        limitToLast(CONFIG.MAX_MESSAGES)
     );
 
-    chatButton.type = "button";
-    chatButton.setAttribute("aria-label", "Open chat");
-    chatButton.setAttribute("aria-expanded", "false");
+    /* ========================================================
+       INITIAL SETUP
+    ======================================================== */
 
-    chatPanel.hidden = true;
-    chatNameInput.readOnly = true;
-    chatNameInput.placeholder = "Your Meld username";
-    chatMessageInput.maxLength = MAX_MESSAGE_LENGTH;
+    elements.button.type = "button";
+    elements.button.setAttribute("aria-label", "Open chat");
+    elements.button.setAttribute("aria-expanded", "false");
 
-    chatSendButton.disabled = true;
-    chatNameInput.disabled = true;
-    chatMessageInput.disabled = true;
+    elements.panel.hidden = true;
 
-    /* --------------------------------------------------------
-       OPEN AND CLOSE
-    -------------------------------------------------------- */
+    elements.name.readOnly = true;
+    elements.name.placeholder = "Your Meld username";
+
+    elements.input.maxLength = CONFIG.MAX_MESSAGE_LENGTH;
+
+    elements.send.disabled = true;
+    elements.name.disabled = true;
+    elements.input.disabled = true;
+
+    /* ========================================================
+       ADD IMAGE UPLOAD CONTROLS
+    ======================================================== */
+
+    const imageButton = document.createElement("button");
+    imageButton.type = "button";
+    imageButton.className = "chatImageButton";
+    imageButton.textContent = "Image";
+    imageButton.setAttribute("aria-label", "Upload an image");
+
+    const imageInput = document.createElement("input");
+    imageInput.type = "file";
+    imageInput.accept = "image/png,image/jpeg,image/gif,image/webp";
+    imageInput.hidden = true;
+
+    const imagePreview = document.createElement("div");
+    imagePreview.className = "chatImagePreview";
+    imagePreview.hidden = true;
+
+    const typingIndicator = document.createElement("div");
+    typingIndicator.className = "chatTypingIndicator";
+    typingIndicator.setAttribute("aria-live", "polite");
+
+    const onlineIndicator = document.createElement("span");
+    onlineIndicator.className = "chatOnlineIndicator";
+
+    const toolbar = document.createElement("div");
+    toolbar.className = "chatToolbar";
+
+    toolbar.append(imageButton, imageInput);
+
+    elements.form.insertBefore(toolbar, elements.input);
+    elements.form.insertBefore(imagePreview, elements.input);
+    elements.panel.appendChild(typingIndicator);
+
+    if (elements.status.parentElement) {
+        elements.status.parentElement.appendChild(onlineIndicator);
+    }
+
+    let selectedImage = null;
+
+    imageButton.addEventListener("click", () => {
+        if (!currentUser || !profile) return;
+        imageInput.click();
+    });
+
+    imageInput.addEventListener("change", () => {
+        const file = imageInput.files?.[0];
+
+        if (!file) return;
+
+        if (!CONFIG.ALLOWED_IMAGE_TYPES.includes(file.type)) {
+            setStatus("That image format is not supported");
+            imageInput.value = "";
+            return;
+        }
+
+        if (file.size > CONFIG.MAX_IMAGE_SIZE) {
+            setStatus("Images must be smaller than 5 MB");
+            imageInput.value = "";
+            return;
+        }
+
+        selectedImage = file;
+
+        imagePreview.replaceChildren();
+
+        const image = document.createElement("img");
+        image.src = URL.createObjectURL(file);
+        image.alt = "Selected image preview";
+
+        const removeButton = document.createElement("button");
+        removeButton.type = "button";
+        removeButton.textContent = "Remove";
+
+        removeButton.addEventListener("click", clearSelectedImage);
+
+        imagePreview.append(image, removeButton);
+        imagePreview.hidden = false;
+
+        updateSendButtonState();
+    });
+
+    function clearSelectedImage() {
+        const previewImage = imagePreview.querySelector("img");
+
+        if (previewImage?.src.startsWith("blob:")) {
+            URL.revokeObjectURL(previewImage.src);
+        }
+
+        selectedImage = null;
+        imageInput.value = "";
+        imagePreview.replaceChildren();
+        imagePreview.hidden = true;
+
+        updateSendButtonState();
+    }
+
+    /* ========================================================
+       CHAT OPEN / CLOSE
+    ======================================================== */
 
     function openChat() {
         chatIsOpen = true;
-        chatPanel.hidden = false;
-
-        chatButton.setAttribute("aria-label", "Close chat");
-        chatButton.setAttribute("aria-expanded", "true");
+        elements.panel.hidden = false;
 
         unreadCount = 0;
         updateUnreadBadge();
 
+        elements.button.setAttribute("aria-expanded", "true");
+
         if (currentUser && profile) {
-            requestAnimationFrame(() => {
-                chatMessageInput.focus();
-            });
+            requestAnimationFrame(() => elements.input.focus());
         }
     }
 
     function closeChat() {
         chatIsOpen = false;
-        chatPanel.hidden = true;
+        elements.panel.hidden = true;
 
-        chatButton.setAttribute("aria-label", "Open chat");
-        chatButton.setAttribute("aria-expanded", "false");
+        elements.button.setAttribute("aria-expanded", "false");
     }
 
-    chatButton.addEventListener("click", () => {
-        if (chatIsOpen) {
-            closeChat();
-        } else {
-            openChat();
-        }
+    elements.button.addEventListener("click", () => {
+        chatIsOpen ? closeChat() : openChat();
     });
 
-    chatCloseButton.addEventListener("click", closeChat);
+    elements.close.addEventListener("click", closeChat);
 
-    /* --------------------------------------------------------
-       STATUS AND UNREAD BADGE
-    -------------------------------------------------------- */
+    /* ========================================================
+       STATUS
+    ======================================================== */
 
     function setStatus(message) {
-        chatStatus.textContent = message;
+        elements.status.textContent = message;
     }
 
     function updateUnreadBadge() {
-        if (!chatUnreadBadge) return;
+        if (!elements.unread) return;
 
-        chatUnreadBadge.hidden = unreadCount <= 0;
-        chatUnreadBadge.textContent =
+        elements.unread.hidden = unreadCount <= 0;
+
+        elements.unread.textContent =
             unreadCount > 99 ? "99+" : String(unreadCount);
 
-        chatButton.setAttribute(
+        elements.button.setAttribute(
             "aria-label",
             unreadCount > 0
-                ? `Open chat, ${unreadCount} unread message${unreadCount === 1 ? "" : "s"}`
+                ? `Open chat, ${unreadCount} unread messages`
                 : chatIsOpen
                     ? "Close chat"
                     : "Open chat"
         );
     }
 
-    /* --------------------------------------------------------
-       MESSAGE HELPERS
-    -------------------------------------------------------- */
+    function updateSendButtonState() {
+        const hasText = elements.input.value.trim().length > 0;
+
+        elements.send.disabled =
+            !currentUser ||
+            !profile ||
+            isSending ||
+            (!hasText && !selectedImage);
+    }
+
+    /* ========================================================
+       EMPTY STATES
+    ======================================================== */
 
     function showMessage(message) {
-        chatMessages.replaceChildren();
+        elements.messages.replaceChildren();
 
         const paragraph = document.createElement("p");
         paragraph.className = "chatEmptyMessage";
         paragraph.textContent = message;
 
-        chatMessages.appendChild(paragraph);
+        elements.messages.appendChild(paragraph);
     }
 
     function showLoginPrompt() {
         showMessage("Please sign in to read and send chat messages.");
 
-        chatNameInput.value = "";
-        chatNameInput.disabled = true;
-        chatMessageInput.disabled = true;
-        chatSendButton.disabled = true;
+        elements.name.value = "";
+        elements.name.disabled = true;
+
+        elements.input.disabled = true;
+        elements.send.disabled = true;
+        imageButton.disabled = true;
 
         setStatus("Sign in to chat");
     }
 
-    function updateSendButtonState() {
-        chatSendButton.disabled =
-            !currentUser ||
-            !profile ||
-            chatMessageInput.value.trim().length === 0;
-    }
-
-    /* --------------------------------------------------------
+    /* ========================================================
        TIME FORMATTING
-    -------------------------------------------------------- */
+    ======================================================== */
 
     function formatTime(timestamp) {
         if (typeof timestamp !== "number") {
@@ -227,12 +365,35 @@ function initializeChat() {
         });
     }
 
-    /* --------------------------------------------------------
+    /* ========================================================
+       IMAGE UPLOAD
+    ======================================================== */
+
+    async function uploadChatImage(file, userId) {
+        const extension = file.name.split(".").pop().toLowerCase();
+
+        const imagePath =
+            `chatImages/${userId}/${Date.now()}_${crypto.randomUUID()}.${extension}`;
+
+        const imageReference = storageRef(storage, imagePath);
+
+        const uploadedFile = await uploadBytes(
+            imageReference,
+            file,
+            {
+                contentType: file.type
+            }
+        );
+
+        return await getDownloadURL(uploadedFile.ref);
+    }
+
+    /* ========================================================
        DISPLAY MESSAGES
-    -------------------------------------------------------- */
+    ======================================================== */
 
     function renderMessages(snapshot) {
-        chatMessages.replaceChildren();
+        elements.messages.replaceChildren();
 
         const messages = [];
 
@@ -243,24 +404,8 @@ function initializeChat() {
 
             if (
                 typeof message.createdAt !== "number" ||
-                Date.now() - message.createdAt >= CHAT_LIFETIME
+                Date.now() - message.createdAt >= CONFIG.MESSAGE_LIFETIME
             ) {
-                if (
-                    currentUser &&
-                    message.userId === currentUser.uid &&
-                    typeof message.createdAt === "number" &&
-                    Date.now() - message.createdAt >= CHAT_LIFETIME
-                ) {
-                    remove(
-                        ref(database, `chatMessages/${messageSnapshot.key}`)
-                    ).catch(error => {
-                        console.warn(
-                            "Expired message cleanup failed:",
-                            error
-                        );
-                    });
-                }
-
                 return;
             }
 
@@ -275,17 +420,19 @@ function initializeChat() {
             return;
         }
 
-        messages.forEach(message => {
+        for (const message of messages) {
             const article = document.createElement("article");
             article.className = "chatMessage";
 
             const isOwnMessage =
-                Boolean(currentUser) &&
+                currentUser &&
                 message.userId === currentUser.uid;
 
             if (isOwnMessage) {
                 article.classList.add("chatMessageOwn");
             }
+
+            /* Message header */
 
             const top = document.createElement("div");
             top.className = "chatMessageTop";
@@ -308,12 +455,41 @@ function initializeChat() {
             time.textContent = formatTime(message.createdAt);
 
             top.append(identity, time);
+            article.appendChild(top);
 
-            const text = document.createElement("p");
-            text.className = "chatMessageText";
-            text.textContent = message.text || "";
+            /* Text */
 
-            article.append(top, text);
+            if (message.text) {
+                const text = document.createElement("p");
+                text.className = "chatMessageText";
+                text.textContent = message.text;
+
+                article.appendChild(text);
+            }
+
+            /* Image */
+
+            if (message.imageUrl) {
+                const imageLink = document.createElement("a");
+                imageLink.href = message.imageUrl;
+                imageLink.target = "_blank";
+                imageLink.rel = "noopener noreferrer";
+
+                const image = document.createElement("img");
+                image.className = "chatMessageImage";
+                image.src = message.imageUrl;
+                image.alt = "Image shared in chat";
+                image.loading = "lazy";
+
+                image.onerror = () => {
+                    image.alt = "Image could not be loaded";
+                };
+
+                imageLink.appendChild(image);
+                article.appendChild(imageLink);
+            }
+
+            /* Delete own messages */
 
             if (isOwnMessage) {
                 const deleteButton = document.createElement("button");
@@ -321,12 +497,10 @@ function initializeChat() {
                 deleteButton.type = "button";
                 deleteButton.className = "chatDeleteButton";
                 deleteButton.textContent = "Delete";
-                deleteButton.setAttribute(
-                    "aria-label",
-                    "Delete your message"
-                );
 
                 deleteButton.addEventListener("click", async () => {
+                    if (!currentUser) return;
+
                     deleteButton.disabled = true;
                     setStatus("Deleting message...");
 
@@ -337,10 +511,7 @@ function initializeChat() {
 
                         setStatus("Message deleted");
                     } catch (error) {
-                        console.error(
-                            "Could not delete message:",
-                            error
-                        );
+                        console.error("Message deletion failed:", error);
 
                         setStatus("Could not delete message");
                         deleteButton.disabled = false;
@@ -350,15 +521,15 @@ function initializeChat() {
                 article.appendChild(deleteButton);
             }
 
-            chatMessages.appendChild(article);
-        });
+            elements.messages.appendChild(article);
+        }
 
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        elements.messages.scrollTop = elements.messages.scrollHeight;
     }
 
-    /* --------------------------------------------------------
-       REAL-TIME MESSAGE LISTENER
-    -------------------------------------------------------- */
+    /* ========================================================
+       REAL-TIME MESSAGES
+    ======================================================== */
 
     function stopListening() {
         if (stopMessagesListener) {
@@ -368,8 +539,8 @@ function initializeChat() {
 
         lastMessageIds.clear();
         firstMessageLoad = true;
-        unreadCount = 0;
 
+        unreadCount = 0;
         updateUnreadBadge();
     }
 
@@ -380,6 +551,7 @@ function initializeChat() {
 
         stopMessagesListener = onValue(
             messagesQuery,
+
             snapshot => {
                 if (!currentUser || !profile) return;
 
@@ -391,7 +563,7 @@ function initializeChat() {
                     if (
                         message &&
                         typeof message.createdAt === "number" &&
-                        Date.now() - message.createdAt < CHAT_LIFETIME
+                        Date.now() - message.createdAt < CONFIG.MESSAGE_LIFETIME
                     ) {
                         currentIds.add(item.key);
                     }
@@ -413,98 +585,266 @@ function initializeChat() {
                 renderMessages(snapshot);
                 setStatus("Connected");
             },
-            error => {
-                console.error(
-                    "Could not load chat messages:",
-                    error
-                );
 
-                setStatus(
-                    "Chat unavailable. Check Firebase permissions."
-                );
+            error => {
+                console.error("Message listener failed:", error);
+
+                setStatus("Chat unavailable. Check Firebase permissions.");
             }
         );
     }
 
-    /* --------------------------------------------------------
-       SEND MESSAGE
-    -------------------------------------------------------- */
+    /* ========================================================
+       ONLINE PRESENCE
+    ======================================================== */
 
-    chatMessageInput.addEventListener("input", updateSendButtonState);
+    function startPresence() {
+        if (!currentUser) return;
 
-    chatForm.addEventListener("submit", async event => {
+        const userPresenceRef = ref(
+            database,
+            `presence/${currentUser.uid}`
+        );
+
+        const presenceData = {
+            username: profile.username,
+            online: true,
+            lastChanged: serverTimestamp()
+        };
+
+        set(userPresenceRef, presenceData)
+            .then(() => {
+                onDisconnect(userPresenceRef).set({
+                    username: profile.username,
+                    online: false,
+                    lastChanged: serverTimestamp()
+                });
+            })
+            .catch(error => {
+                console.warn("Presence setup failed:", error);
+            });
+
+        stopPresenceListener = onValue(
+            ref(database, "presence"),
+
+            snapshot => {
+                let onlineCount = 0;
+
+                snapshot.forEach(userSnapshot => {
+                    if (userSnapshot.val()?.online === true) {
+                        onlineCount++;
+                    }
+                });
+
+                onlineIndicator.textContent =
+                    `${onlineCount} online`;
+
+            },
+
+            error => {
+                console.warn("Presence listener failed:", error);
+            }
+        );
+    }
+
+    function stopPresence() {
+        if (stopPresenceListener) {
+            stopPresenceListener();
+            stopPresenceListener = null;
+        }
+
+        if (currentUser) {
+            remove(
+                ref(database, `presence/${currentUser.uid}`)
+            ).catch(() => {});
+        }
+
+        onlineIndicator.textContent = "";
+    }
+
+    /* ========================================================
+       TYPING INDICATORS
+    ======================================================== */
+
+    function startTypingListener() {
+        if (!currentUser) return;
+
+        stopTypingListener = onValue(
+            ref(database, "chatTyping"),
+
+            snapshot => {
+                const typingUsers = [];
+
+                snapshot.forEach(userSnapshot => {
+                    const data = userSnapshot.val();
+
+                    if (
+                        userSnapshot.key !== currentUser.uid &&
+                        data?.typing === true &&
+                        data.username
+                    ) {
+                        typingUsers.push(data.username);
+                    }
+                });
+
+                if (typingUsers.length === 1) {
+                    typingIndicator.textContent =
+                        `${typingUsers[0]} is typing...`;
+                } else if (typingUsers.length > 1) {
+                    typingIndicator.textContent =
+                        "Several people are typing...";
+                } else {
+                    typingIndicator.textContent = "";
+                }
+            },
+
+            error => {
+                console.warn("Typing listener failed:", error);
+            }
+        );
+    }
+
+    function updateTypingStatus() {
+        if (!currentUser || !profile) return;
+
+        const typingRef = ref(
+            database,
+            `chatTyping/${currentUser.uid}`
+        );
+
+        const hasText = elements.input.value.trim().length > 0;
+
+        if (hasText) {
+            set(typingRef, {
+                username: profile.username,
+                typing: true
+            }).catch(() => {});
+
+            clearTimeout(typingTimeout);
+
+            typingTimeout = setTimeout(() => {
+                remove(typingRef).catch(() => {});
+            }, 2500);
+        } else {
+            clearTimeout(typingTimeout);
+            remove(typingRef).catch(() => {});
+        }
+    }
+
+    function stopTyping() {
+        clearTimeout(typingTimeout);
+
+        if (currentUser) {
+            remove(
+                ref(database, `chatTyping/${currentUser.uid}`)
+            ).catch(() => {});
+        }
+
+        if (stopTypingListener) {
+            stopTypingListener();
+            stopTypingListener = null;
+        }
+
+        typingIndicator.textContent = "";
+    }
+
+    elements.input.addEventListener("input", () => {
+        updateSendButtonState();
+        updateTypingStatus();
+    });
+
+    /* ========================================================
+       SEND MESSAGES
+    ======================================================== */
+
+    elements.form.addEventListener("submit", async event => {
         event.preventDefault();
 
-        if (!currentUser || !profile) {
-            setStatus("Please sign in to chat");
+        if (!currentUser || !profile || isSending) {
             return;
         }
 
         const userId = currentUser.uid;
-        const name = String(profile.username || "").trim();
-        const rank = String(profile.rank || "Member").trim();
-        const text = chatMessageInput.value
+
+        const text = elements.input.value
             .trim()
-            .slice(0, MAX_MESSAGE_LENGTH);
+            .slice(0, CONFIG.MAX_MESSAGE_LENGTH);
 
-        if (!name) {
-            setStatus("Your Meld username is missing");
-            return;
-        }
+        const imageFile = selectedImage;
 
-        if (!text) {
+        if (!text && !imageFile) {
             updateSendButtonState();
             return;
         }
 
-        chatSendButton.disabled = true;
-        setStatus("Sending...");
+        isSending = true;
+        updateSendButtonState();
+
+        setStatus(imageFile ? "Uploading image..." : "Sending...");
 
         try {
-            await push(ref(database, "chatMessages"), {
-                name,
-                rank,
-                text,
+            let imageUrl = null;
+
+            if (imageFile) {
+                imageUrl = await uploadChatImage(imageFile, userId);
+            }
+
+            await push(messagesRef, {
                 userId,
+                name: profile.username,
+                rank: profile.rank || "Member",
+                text,
+                imageUrl,
                 createdAt: serverTimestamp()
             });
 
-            chatMessageInput.value = "";
+            elements.input.value = "";
+
+            clearSelectedImage();
+            stopTyping();
+
             setStatus("Connected");
 
             if (chatIsOpen) {
-                chatMessageInput.focus();
+                elements.input.focus();
             }
+
         } catch (error) {
-            console.error(
-                "Could not send chat message:",
-                error
-            );
+            console.error("Message sending failed:", error);
 
             setStatus(
-                "Message failed to send. Check Firebase rules."
+                "Could not send message. Check your Firebase rules and Storage permissions."
             );
         } finally {
+            isSending = false;
             updateSendButtonState();
         }
     });
 
-    /* --------------------------------------------------------
-       SIGN-IN / SIGN-OUT AND PROFILE LOADING
-    -------------------------------------------------------- */
+    /* ========================================================
+       AUTHENTICATION AND PROFILE
+    ======================================================== */
 
     onAuthStateChanged(auth, async user => {
         const session = ++authSessionNumber;
 
         stopListening();
+        stopPresence();
+        stopTyping();
 
         currentUser = user;
         profile = null;
 
-        chatNameInput.value = "";
-        chatNameInput.disabled = true;
-        chatMessageInput.disabled = true;
-        chatSendButton.disabled = true;
+        elements.name.value = "";
+        elements.name.disabled = true;
+
+        elements.input.value = "";
+        elements.input.disabled = true;
+
+        elements.send.disabled = true;
+        imageButton.disabled = true;
+
+        clearSelectedImage();
 
         if (!user) {
             showLoginPrompt();
@@ -527,9 +867,7 @@ function initializeChat() {
 
             if (!profileSnapshot.exists()) {
                 showLoginPrompt();
-                setStatus(
-                    "Finish setting up your Meld profile"
-                );
+                setStatus("Finish setting up your Meld profile");
                 return;
             }
 
@@ -541,27 +879,28 @@ function initializeChat() {
                 !savedProfile.username.trim()
             ) {
                 showLoginPrompt();
-                setStatus(
-                    "Your Meld profile needs a username"
-                );
+                setStatus("Your Meld profile needs a username");
                 return;
             }
 
             profile = savedProfile;
 
-            chatNameInput.value = profile.username;
-            chatNameInput.disabled = false;
+            elements.name.value = profile.username;
+            elements.name.disabled = false;
 
-            chatMessageInput.disabled = false;
+            elements.input.disabled = false;
+            imageButton.disabled = false;
+
             updateSendButtonState();
 
             setStatus("Connecting to chat...");
+
             startMessagesListener();
+            startPresence();
+            startTypingListener();
+
         } catch (error) {
-            console.error(
-                "Could not load Meld profile:",
-                error
-            );
+            console.error("Profile loading failed:", error);
 
             if (session !== authSessionNumber) return;
 
@@ -570,17 +909,18 @@ function initializeChat() {
         }
     });
 
-    /* --------------------------------------------------------
+    /* ========================================================
        DRAGGABLE CHAT WINDOW
-    -------------------------------------------------------- */
+    ======================================================== */
 
-    const dragHandle = chatPanel.querySelector(".chatHeader");
+    const dragHandle = elements.panel.querySelector(".chatHeader");
 
     if (dragHandle) {
         dragHandle.style.cursor = "grab";
         dragHandle.style.touchAction = "none";
 
         let dragging = false;
+
         let startX = 0;
         let startY = 0;
         let startLeft = 0;
@@ -591,19 +931,21 @@ function initializeChat() {
                 return;
             }
 
-            const rect = chatPanel.getBoundingClientRect();
+            const rect = elements.panel.getBoundingClientRect();
 
             dragging = true;
 
             startX = event.clientX;
             startY = event.clientY;
+
             startLeft = rect.left;
             startTop = rect.top;
 
-            chatPanel.style.left = `${rect.left}px`;
-            chatPanel.style.top = `${rect.top}px`;
-            chatPanel.style.right = "auto";
-            chatPanel.style.bottom = "auto";
+            elements.panel.style.left = `${rect.left}px`;
+            elements.panel.style.top = `${rect.top}px`;
+
+            elements.panel.style.right = "auto";
+            elements.panel.style.bottom = "auto";
 
             dragHandle.style.cursor = "grabbing";
 
@@ -615,32 +957,26 @@ function initializeChat() {
 
             const maxLeft = Math.max(
                 0,
-                window.innerWidth - chatPanel.offsetWidth
+                window.innerWidth - elements.panel.offsetWidth
             );
 
             const maxTop = Math.max(
                 0,
-                window.innerHeight - chatPanel.offsetHeight
+                window.innerHeight - elements.panel.offsetHeight
             );
 
             const left = Math.min(
                 maxLeft,
-                Math.max(
-                    0,
-                    startLeft + event.clientX - startX
-                )
+                Math.max(0, startLeft + event.clientX - startX)
             );
 
             const top = Math.min(
                 maxTop,
-                Math.max(
-                    0,
-                    startTop + event.clientY - startY
-                )
+                Math.max(0, startTop + event.clientY - startY)
             );
 
-            chatPanel.style.left = `${left}px`;
-            chatPanel.style.top = `${top}px`;
+            elements.panel.style.left = `${left}px`;
+            elements.panel.style.top = `${top}px`;
         });
 
         function stopDragging() {
@@ -650,11 +986,23 @@ function initializeChat() {
 
         dragHandle.addEventListener("pointerup", stopDragging);
         dragHandle.addEventListener("pointercancel", stopDragging);
-        dragHandle.addEventListener(
-            "lostpointercapture",
-            stopDragging
-        );
+        dragHandle.addEventListener("lostpointercapture", stopDragging);
     }
 
-    console.log("Meld Chat initialized.");
+    /* ========================================================
+       CLEANUP
+    ======================================================== */
+
+    window.addEventListener("beforeunload", () => {
+        stopTyping();
+        stopListening();
+
+        if (currentUser) {
+            remove(
+                ref(database, `presence/${currentUser.uid}`)
+            ).catch(() => {});
+        }
+    });
+
+    console.log("Meld Chat initialized successfully.");
 }
