@@ -1344,9 +1344,9 @@ const randomAdText = document.getElementById("randomAdText");
 
 const adList = [
     {
-        title: "Try Safe Bucket",
+        title: "Try Meld",
         text: "Quick access to games, tools, websites, and more.",
-        button: "Open Safe Bucket",
+        button: "Open Meld",
         url: "index.html"
     },
     {
@@ -1371,8 +1371,8 @@ const adList = [
         title: "Explore Anime",
         text: "Find anime content through Safe Bucket.",
         button: "Open Anime",
-        url: "https://mkissa.to/"
-    }
+        url: "https://meld-code.github.io/Meld/ComingSoon.html"
+    },
 ];
 
 let currentAd = null;
@@ -2003,7 +2003,7 @@ let renderTutorialStep = function () {};
 
     const steps = [
         {
-            title: "Welcome to Safe Bucket!",
+            title: "Welcome to Meld!",
             description:
                 "This quick tour shows you the main features. " +
                 "The orange border highlights the feature being explained.",
