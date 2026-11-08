@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#101210">
 <meta name="description" content="Your personal game library. Browse and play games in one place.">
-<title>Game Hub</title>
+<title>Meld Games</title>
 <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
@@ -1258,14 +1258,19 @@
     background: #9cffad;
   }
   
-  .gameCharacter {
-      position: absolute;
-      height: 50px;
-      width: auto;
-      top: 0px;
-      right: 0px;
-
-  }
+  .gameCharacter { 
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    z-index: 4;
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: none;
+   }
 
 /* Random Game library card */
 .random-game-card {
@@ -1644,7 +1649,7 @@ animation-duration: .01ms !important;
 <header class="topbar">
   <div class="brand">
     <div class="brand-mark">
-      <img src="Images/MeldLogo.png" alt="Safe Bucket logo">
+      <img src="Images/MeldLogo.png" alt="Meld Logo">
     </div>
 <span>Meld <span>Games</span></span>
 
@@ -1669,12 +1674,12 @@ animation-duration: .01ms !important;
 </header>
 <main>
   <section
-    class="featured-banner"
-    id="featuredBanner"
-    aria-label="Featured games"
-  >
-    <div class="featured-fallback" aria-hidden="true"></div>
-<video
+  class="featured-banner"
+  id="featuredBanner"
+  aria-label="Featured games"
+>
+  <div class="featured-fallback" aria-hidden="true"></div>
+  <video
   class="featured-video active"
   id="featuredVideoOne"
   autoplay
@@ -1689,92 +1694,85 @@ animation-duration: .01ms !important;
   id="featuredVideoTwo"
   muted
   playsinline
-  preload="metadata"
   aria-hidden="true"
 ></video>
 
-<div class="featured-overlay"></div>
+<img class="gameCharacter" src="./Images/Chameleon.png" alt="Meld Chameleon" onload="console.log('Chameleon image loaded')" onerror="console.error('Chameleon image failed to load:', this.src)">
 
-<div class="featured-content" id="featuredContent">
-  <div class="featured-kicker">Featured game</div>
+  <div class="featured-overlay"></div>
+  <div class="featured-content" id="featuredContent">
+    <div class="featured-kicker">Featured game</div>
+    <h1 id="featuredTitle">Featured Games</h1>
+<p id="featuredDescription">
+  Discover something new to play.
+</p>
 
-  <h1 id="featuredTitle">Featured Games</h1>
+<div class="featured-actions">
+  <button
+    class="featured-button primary"
+    id="featuredPlayButton"
+    type="button"
+  >
+    <i class="fa-solid fa-play"></i>
+    <span>Play Game</span>
+  </button>
 
-  <p id="featuredDescription">
-    Discover something new to play.
-  </p>
+  <button
+    class="featured-button secondary"
+    id="featuredBrowseButton"
+    type="button"
+  >
+    <i class="fa-solid fa-compass"></i>
+    <span>Browse Library</span>
+  </button>
 
-  <div class="featured-actions">
-    <button
-      class="featured-button primary"
-      id="featuredPlayButton"
-      type="button"
-    >
-      <i class="fa-solid fa-play"></i>
-      <span>Play Game</span>
-    </button>
+  <a
+    class="featured-button secondary youtube-button"
+    href="https://www.youtube.com/"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Visit YouTube"
+  >
+    <i class="fa-brands fa-youtube" aria-hidden="true"></i>
+  </a>
+</div>
 
-    <button
-      class="featured-button secondary"
-      id="featuredBrowseButton"
-      type="button"
-    >
-      <i class="fa-solid fa-compass"></i>
-      <span>Browse Library</span>
-    </button>
-
-    <a
-      class="featured-button secondary youtube-button"
-      href="https://www.youtube.com/"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Visit YouTube"
-    >
-      <i class="fa-brands fa-youtube" aria-hidden="true"></i>
-    </a>
   </div>
-</div>
+  <div
+    class="featured-dots"
+    id="featuredDots"
+    aria-label="Choose featured game"
+  ></div>
+  <div class="featured-controls">
+    <button
+      class="featured-control"
+      id="featuredPauseButton"
+      type="button"
+      aria-label="Pause slideshow"
+      aria-pressed="false"
+    >
+      <i class="fa-solid fa-pause"></i>
+    </button>
+<button
+  class="featured-control"
+  id="featuredPreviousButton"
+  type="button"
+  aria-label="Previous featured game"
+>
+  <i class="fa-solid fa-chevron-left"></i>
+</button>
 
-<div
-  class="featured-dots"
-  id="featuredDots"
-  aria-label="Choose featured game"
-></div>
+<button
+  class="featured-control"
+  id="featuredNextButton"
+  type="button"
+  aria-label="Next featured game"
+>
+  <i class="fa-solid fa-chevron-right"></i>
+</button>
 
-<div class="featured-controls">
-  <button
-    class="featured-control"
-    id="featuredPauseButton"
-    type="button"
-    aria-label="Pause slideshow"
-    aria-pressed="false"
-  >
-
-  <img class="gameCharacter" src="Chameleon.png">
-
-    <i class="fa-solid fa-pause"></i>
-  </button>
-
-  <button
-    class="featured-control"
-    id="featuredPreviousButton"
-    type="button"
-    aria-label="Previous featured game"
-  >
-    <i class="fa-solid fa-chevron-left"></i>
-  </button>
-
-  <button
-    class="featured-control"
-    id="featuredNextButton"
-    type="button"
-    aria-label="Next featured game"
-  >
-    <i class="fa-solid fa-chevron-right"></i>
-  </button>
-</div>
-
-  </section>
+  </div>
+</section>
   <div class="page">
     <section class="library-page" id="libraryPage">
       <div class="heading-row">
@@ -2110,7 +2108,7 @@ animation-duration: .01ms !important;
       a: "#6e3b25",
       b: "#171d1a",
       category: "Action",
-      description: "An open-world driving and action game.",
+      description: "Experience the action-packed open world of Los Santos in GTA 5! Explore a massive city, drive incredible vehicles, complete missions, and experience an exciting criminal adventure. Switch between three unique characters and discover everything this vast open world has to offer.",
       isTopRated: true
     },
     {
@@ -2121,18 +2119,18 @@ animation-duration: .01ms !important;
       a: "#263c57",
       b: "#111521",
       category: "Adventure",
-      description: "Explore a mysterious underground kingdom.",
+      description: "Explore the mysterious underground kingdom of Hallowwnest in Hollow Knight! Battle dangerous creatures, discorver hidden areas, unlock powerful abilities, and uncover the secrets of a forgotten kingdom. Embark on an atmospheric adventure filled with challenging enemies, epic bosses, and exciting exploration.",
       isTopRated: true
     },
     {
-      name: "Minecraft 1.26.2",
+      name: "Minecraft 26.2",
       url: "https://eaglercraft-26-2-u1-cdn.u2471966200.workers.dev/eaglercraft-26.2-u1.html?v=u1-20260930",
       image: "Images/ML.png",
-      icon: "fa-cube",
+      icon: "fa-cubes",
       a: "#577b42",
       b: "#19291d",
-      category: "Minecraft",
-      description: "Build, explore, and survive in a block-based world.",
+      category: "Sandbox",
+      description: "Explore a massive block-based world in Minecraft! Gather Resources, craft tools, build incredible structures, and survive against dangerous mobs. Create your own adventures and let your imagination run wild!",
       isTopRated: true
     },
     {
@@ -2142,29 +2140,29 @@ animation-duration: .01ms !important;
       icon: "fa-cubes",
       a: "#477a65",
       b: "#14251e",
-      category: "Minecraft",
-      description: "A Minecraft 1.8.8 browser build."
+      category: "Sandbox",
+      description: "Play Minecraft 1.8.8 with a twist! Explore, build, and survive in a classic version of Minecraft with access to modified gameplay features. Enjoy familiar block-building adventures with a different experience! and use cheats to give yourself an advantage against other users."
     },
     {
       name: "Roblox",
       url: "https://angst.clawschools.org/embed.html#https://nowgg.fun/apps/a/19900/b.html",
       image: "Images/RBL.png",
-      icon: "fa-shapes",
+      icon: "fa-gamepad",
       a: "#707579",
       b: "#1a1c20",
-      category: "Platform",
-      description: "Explore a platform of community-made experiences.",
+      category: "Adventure",
+      description: "Explore millions of player-created experiences in Roblox! Play exciting games, discover unique worlds, customize your avatar, and connect with friends. From adventures and simulators to obbys and competitive challenges, there's always something new to play!",
       isTopRated: true
     },
     {
       name: "Minecraft 1.8.8",
       url: "https://meld-code.github.io/MC/",
       image: "Images/ML.png",
-      icon: "fa-cube",
+      icon: "fa-cubes",
       a: "#77914c",
       b: "#202b19",
-      category: "Minecraft",
-      description: "Play a classic Minecraft browser build."
+      category: "Sandbox",
+      description: "Jump into the classic Minecraft 1.8.8 experience! Explore a blocky world, gather resources, craft items, build amazing structures, and survive against dangerous mobs. Enjoy classic gameplay, iconic combat, and endless creative possibilites!"
     },
     {
       name: "Rocket Soccer Derby",
@@ -2174,17 +2172,17 @@ animation-duration: .01ms !important;
       a: "#3d7f8c",
       b: "#15242d",
       category: "Sports",
-      description: "Combine cars and soccer in an arcade sports game."
+      description: "Jump into Rocket Soccer Derby, where soccer meets high-spped racing! Drive powerful cars, compete in exciting soccer matches, score incredible goals, and outply your opponents. Take control of the field and become the ultimate Rocket Soccer champion!"
     },
     {
       name: "Cluster Rush",
       url: "https://db.duckmath.org/html/cluster_rush/",
       image: "Images/ClusterRush.png",
-      icon: "fa-truck-monster",
+      icon: "fa-truck",
       a: "#c57d36",
       b: "#37231b",
-      category: "Arcade",
-      description: "An arcade challenge across moving trucks.",
+      category: "Action",
+      description: "Jump into Cluster Rush, a fast-paced platforming game where you must leap between moving trucks, avoid obstacles, and stay on top of the convoy. Test your reflexes, master your timing and see how far you can make it without falling!",
       isUpdated: true
     },
     {
@@ -2194,18 +2192,18 @@ animation-duration: .01ms !important;
       icon: "fa-brain",
       a: "#a64d77",
       b: "#321a34",
-      category: "Arcade",
-      description: "A chaotic, meme-inspired game."
+      category: "Simulator",
+      description: "Jump into Steal a Brainrot, a chaotic multiplayer game where you collect hilarious Brainrot characters, build your collection, and earn money. Buy rare characters, steal from other player, protect your base, and grow yur brainrot empire!"
     },
     {
-      name: "Among Us",
+      name: "Fan-Made Amoung Us ",
       url: "https://db.duckmath.org/html/among_us/",
       image: "Images/AU.png",
       icon: "fa-user-astronaut",
       a: "#b54d4d",
       b: "#351b26",
-      category: "Party",
-      description: "Find the impostor in a social deduction game.",
+      category: "Strategy",
+      description: "Experience a fan-made version of Amoung Us! Work together with crewmates, complete tasks, and uncover the imposters hiding amoung you. Use teamwork, deceptio, and clever strategies to survive and win!",
       isUpdated: true
     },
     {
@@ -2216,7 +2214,7 @@ animation-duration: .01ms !important;
       a: "#3c7f59",
       b: "#152c22",
       category: "Sports",
-      description: "Fast-paced table tennis.",
+      description: "Grab your paddle and jump onto exciting table tennis matches in Ping Pong Go! Challenge opponents, master your timing, return powerful shots, and compete to become a ping pong champion. Test your reflexes and see how many matches your can win!",
       isTopRated: true
     },
     {
@@ -2227,27 +2225,27 @@ animation-duration: .01ms !important;
       a: "#a87845",
       b: "#33231a",
       category: "Sports",
-      description: "A retro-style college football game."
+      description: "Take charge of your own college football team in Retro Bowl College! Recruit talented players, manage your roster, call the plays, and lead your team through an exciting college football season. Build a championship-winning program and fight your way to the top!"
     },
     {
       name: "Minecraft 1.5.2",
       url: "https://catfoolyou.github.io/Eagler-Online/",
       image: "Images/ML.png",
-      icon: "fa-cube",
+      icon: "fa-cubes",
       a: "#6c8751",
       b: "#202c1a",
-      category: "Minecraft",
-      description: "A classic version of Minecraft in your browser."
+      category: "Sandbox",
+      description: "Experience classic Minecraft 1.5.2! Explore a blocky world, gather resources, craft items, build amazing structures, and survive against dangerous mobs. Enjoy the nostalgic gameplay of one of Minecraft's classic versions!"
     },
     {
       name: "Minecraft Classic",
       url: "https://db.duckmath.org/html/minecraft_classic/",
       image: "Images/ML.png",
-      icon: "fa-cubes-stacked",
+      icon: "fa-cubes",
       a: "#6e9856",
       b: "#23331d",
-      category: "Minecraft",
-      description: "A classic block-building experience."
+      category: "Sandbox",
+      description: "Go back to where it all began with Minecraft Classic! Build whatever you can imagine using simple blocks, explore your creativity, and create unique structures in this nostalgic version of Minecraft."
     },
     {
       name: "Skate 3",
@@ -2257,54 +2255,54 @@ animation-duration: .01ms !important;
       a: "#9c6a43",
       b: "#2b211b",
       category: "Sports",
-      description: "A skateboarding-inspired browser game.",
+      description: "Hit the streets in Skate 3 and become a skateboarding legend! Explore an open world, perform incredible tricks, land massive combos, and challenge yourself to master every obstacle. Grab your board and show off your skills!",
       isTopRated: true
     },
     {
       name: "60 Seconds",
       url: "https://meld-code.github.io/files/60Seconds.html",
       image: "Images/60Seconds.png",
-      icon: "fa-house-chimney-user",
+      icon: "fa-hourglass-half",
       a: "#9c6a43",
       b: "#2b211b",
-      category: "House",
-      description: "60 Seconds idk what this game is."
+      category: "Strategy",
+      description: "Survive a nuclear apocalypse in 60 Seconds! Make quick decisions, collect supplies, and prepare your family for life inside a fallout shelter. Manage your resources, face unexpected challenges, and see how long you can survive!"
     },
     {
       name: "8 Ball Pool",
       url: "https://meld-code.github.io/files/8BallPool.html",
       image: "Images/8BallPool.png",
-      icon: "fa-bowling-ball",
+      icon: "fa-circle-dot",
       a: "#9c6a43",
       b: "#2b211b",
-      category: "8 Ball",
-      description: "A fun pool game."
+      category: "Sports",
+      description: "Rack up the balls and get ready for 8 Ball Pool! Aim carefully, plan your shots, and use your skills to sink every ball. Challenge opponents, master the table, and prove you're a pool champion!"
     },
     {
       name: "Baldi's Basics",
       url: "https://meld-code.github.io/files/BaldiBasics.html",
       image: "",
-      icon: "fa-book",
+      icon: "fa-school",
       a: "#9c6a43",
       b: "#2b211b",
-      category: "School",
-      description: "Baldi's Basics."
+      category: "Horror",
+      description: "Enter a strange schoolhouse in Baldi's Basics! Collect notebooks, solve math problems, and explore the hallways while avoiding Baldi and other unusual characters. Stay alert, find your way around, and try to escape the school!"
     },
     {
-      name: "CS16",
+      name: "Counter Strike 1.6",
       url: "https://meld-code.github.io/files/CS16.html",
       image: "",
-      icon: "fa-gun",
+      icon: "fa-crosshairs",
       a: "#9c6a43",
       b: "#2b211b",
-      category: "Fps",
-      description: "A fun shooter game."
+      category: "Action",
+      description: "Experience the classic Counter-Strike 1.6! Compete in intense team-based matches, test your reflexes, and work with your teammates to complete objectives."
     },
     {
       name: "Call Of Battle",
       url: "https://meld-code.github.io/files/CallOfBattle.html",
       image: "",
-      icon: "fa-gun",
+      icon: "fa-",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Fps",
@@ -2314,11 +2312,11 @@ animation-duration: .01ms !important;
       name: "Celeste",
       url: "https://meld-code.github.io/files/Celeste.html",
       image: "Images/Celeste.png",
-      icon: "fa-wand-sparkles",
+      icon: "fa-mountain",
       a: "#9c6a43",
       b: "#2b211b",
-      category: "RPG",
-      description: "A world game."
+      category: "Platformer",
+      description: "Climb the mysterious Celeste Mountain! Jump across dangerous obstacles, master difficult levels, and help Madeline reach the summit."
     },
     {
       name: "Cheese Chompers",
@@ -2334,11 +2332,11 @@ animation-duration: .01ms !important;
       name: "Chicken War",
       url: "https://meld-code.github.io/files/ChickenWar.html",
       image: "",
-      icon: "fa-gun",
+      icon: "fa-egg",
       a: "#9c6a43",
       b: "#2b211b",
-      category: "",
-      description: "A fun chicken shooter game."
+      category: "Action",
+      description: "Get ready for an exciting chicken-themed battle! Take on opponents, overcome challenges, and see if you can come out on top."
     },
     {
       name: "Crash Out Crew",
@@ -2358,7 +2356,7 @@ animation-duration: .01ms !important;
       a: "#9c6a43",
       b: "#2b211b",
       category: "Sports",
-      description: "A soccer game."
+      description: "Step onto the football pitch! Take your shots, compete against different teams, and test your penalty-taking skills."
     },
     {
       name: "Death Run 3D",
@@ -2367,8 +2365,8 @@ animation-duration: .01ms !important;
       icon: "fa-person-running",
       a: "#9c6a43",
       b: "#2b211b",
-      category: "Skill",
-      description: "A fast-paced dodging game."
+      category: "Arcade",
+      description: "Put your reflexes to the ultimate test! Race through dangerous tunnels, dodge incoming obstacles, and see how far you can survive."
     },
     {
       name: "PokeBonk",
@@ -2385,22 +2383,22 @@ animation-duration: .01ms !important;
       name: "BunnyHop",
       url: "https://bunnyhop.lol",
       image: "Images/BunnyHop.png",
-      icon: "fa-carrot",
+      icon: "fa-arrow-up",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Skill",
-      description: "B Hop.",
+      description: "Test your movement skills! Master your timing, maintain your momentum, and navigate challenging courses.",
       isNew: true
     },
     {
       name: "Clutcher",
       url: "https://www.clutcher.io",
       image: "Images/Clutcher.png",
-      icon: "fa-gun",
+      icon: "fa-trophy",
       a: "#9c6a43",
       b: "#2b211b",
-      category: "Fps",
-      description: "A gun game.",
+      category: "Skill",
+      description: "Put your skills to the test! Take on challenging situations, sharpen your reflexes, and see if you can pull off the perfect play.",
       isNew: true
     },
     {
@@ -2411,7 +2409,7 @@ animation-duration: .01ms !important;
       a: "#9c6a43",
       b: "#2b211b",
       category: "Open World",
-      description: "An open-world game.",
+      description: "Embark on an exciting adventure! Explore mysterious worlds, overcome challenging obstacles, and discover secrets in a colorful pixel-art adventure.",
       isNew: true
     },
     {
@@ -2422,7 +2420,7 @@ animation-duration: .01ms !important;
       a: "#9c6a43",
       b: "#2b211b",
       category: "Fps",
-      description: "A gun game.",
+      description: "Test your accuracy in an action-packed gaming experience! Take on challenging levels, improve your precision, and see how well you can perform.",
       isNew: true
     },
     {
@@ -2433,7 +2431,7 @@ animation-duration: .01ms !important;
       a: "#9c6a43",
       b: "#2b211b",
       category: "Pokemon",
-      description: "A fun Pokemon battle game.",
+      description: "Enter a world of creature battles! Discover unique Pokémon-inspired adventures, challenge opponents, and test your abilities in exciting arena battles.",
       isTopRated: true
     },
     {
@@ -2444,7 +2442,7 @@ animation-duration: .01ms !important;
       a: "#9c6a43",
       b: "#2b211b",
       category: "Racing",
-      description: "A fun racing game.",
+      description: "Race through exciting tracks! Choose your favorite characters, compete against rivals, collect power-ups, and use your racing skills to cross the finish line first.",
       isNew: true
     },
     {
@@ -2455,7 +2453,7 @@ animation-duration: .01ms !important;
       a: "#9c6a43",
       b: "#2b211b",
       category: "Fps",
-      description: "A fun gun game.",
+      description: "Jump into a fast-paced multiplayer game! Compete against players from around the world, explore different maps, and challenge yourself in exciting online matches.",
       isNew: true
     },
     {
@@ -2477,7 +2475,7 @@ animation-duration: .01ms !important;
       a: "#9c6a43",
       b: "#2b211b",
       category: "Fps",
-      description: "A fun gun game.",
+      description: "Enjoy a fun doodle-style arcade experience! Take on challenging levels, overcome obstacles, and see how far you can progress.",
       isTopRated: true
     },
     {
@@ -2488,7 +2486,7 @@ animation-duration: .01ms !important;
       a: "#9c6a43",
       b: "#2b211b",
       category: "Driving",
-      description: "A fun driving game.",
+      description: "Get behind the wheel! Explore different environments, control your vehicle, and take on challenges as you put your driving skills to the test.",
       isNew: true
     },
     {
@@ -2576,7 +2574,7 @@ animation-duration: .01ms !important;
       a: "#9c6a43",
       b: "#2b211b",
       category: "Mind",
-      description: "A fun Tetris game.",
+      description: "Put your puzzle-solving skills to the test! Arrange colorful jelly-shaped pieces, complete rows, and aim for the highest score.",
       isNew: true
     },
     {
@@ -2587,20 +2585,152 @@ animation-duration: .01ms !important;
       a: "#9c6a43",
       b: "#2b211b",
       category: "Driving",
-      description: "A fun driving game.",
+      description: "Hit the road! Enjoy an exciting driving experience, explore beautiful environments, and put your driving skills to the test.",
       isNew: true
     },
     {
-      name: "MyBlock",
-      url: "https://meld-code.github.io/Mb3",
-      image: "Images/CiphAnonStudios.png",
-      icon: "fa-person",
+      name: "Among Us Legacy",
+      url: "https://wasm.rip/files/amongus/legacy/",
+      image: "Images/AU.png",
+      icon: "fa-user-astronaut",
       a: "#9c6a43",
       b: "#2b211b",
-      category: "Owner",
-      description: "A Roblox Project made by CiphAnon Studios - ToonyTime.",
+      category: "Strategy",
+      description: "Join your crewmates aboard a spaceship and work together to complete tasks while trying to uncover the imposters hiding among you. Use teamwork, deception, and clever strategies to survive, expose the imposters, and win the game!",
+      isNew: true
+    },
+    {
+      name: "Among Us",
+      url: "https://wasm.rip/files/amongus/latest/",
+      image: "Images/AU.png",
+      icon: "fa-user-astronaut",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Strategy",
+      description: "Join your crewmates aboard a spaceship and work together to complete tasks while trying to uncover the imposters hiding among you. Use teamwork, deception, and clever strategies to survive, expose the imposters, and win the game!",
       isTopRated: true
-    }
+    },
+    {
+      name: "Cluster Truck",
+      url: "https://wasm.rip/files/ClusterTruck/clustertruck.html",
+      image: "Images/ClusterRush.png",
+      icon: "fa-truck",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Action",
+      description: "Jump into Cluster Rush, a fast-paced platforming game where you must leap between moving trucks, avoid obstacles, and stay on top of the convoy. Test your reflexes, master your timing and see how far you can make it without falling!",
+      isNew: true
+    },
+    {
+      name: "CupHead",
+      url: "https://wasm.rip/files/cuphead/index.html",
+      image: "Images/.png",
+      icon: "fa-cup",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Action",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Granny 3",
+      url: "https://wasm.rip/files/granny/granny3.html",
+      image: "Images/.png",
+      icon: "fa-house",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Horror",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "GTA 3",
+      url: "https://wasm.rip/files/gta3/index.html",
+      image: "Images/GTA5.png",
+      icon: "fa-car",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "Action",
+      description: "Experience the action-packed open world of Los Santos in GTA 3! Explore a massive city, drive incredible vehicles, complete missions, and experience an exciting criminal adventure. Switch between three unique characters and discover everything this vast open world has to offer.",
+      isNew: true
+    },
+    {
+      name: "How To Fish ",
+      url: "https://wasm.rip/files/HowToFish/HowToFish.html",
+      image: "Images/.png",
+      icon: "fa-fish",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Inscryption",
+      url: "https://wasm.rip/files/inscryption/index.html",
+      image: "Images/.png",
+      icon: "fa-",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Lethal",
+      url: "https://wasm.rip/files/lethal/index.html",
+      image: "Images/.png",
+      icon: "fa-",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "lethal",
+      url: "https://wasm.rip/files/miside/miside.html",
+      image: "Images/.png",
+      icon: "fa-",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "OneShot",
+      url: "https://wasm.rip/files/oneshot-wme/index.html",
+      image: "Images/.png",
+      icon: "fa-",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Peak",
+      url: "https://wasm.rip/files/peak/PEAK.html",
+      image: "Images/.png",
+      icon: "fa-mountain",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Stardew Valley",
+      url: "https://wasm.rip/files/stardewvalley/index.html",
+      image: "Images/.png",
+      icon: "fa-mountain",
+      a: "#9c6a43",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
   ];
   
   const featuredSlides = [
