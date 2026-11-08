@@ -1260,10 +1260,10 @@
   
   .gameCharacter {
 position: absolute;
-top: 100px;
-right: 50px;
-width: 1000px;
-height: 1000px;
+top: -225px;
+right: -320px;
+width: 1300px;
+height: 1300px;
 object-fit: contain;
 z-index: 4;
 display: block;
@@ -1271,6 +1271,7 @@ visibility: visible;
 opacity: 1;
 pointer-events: none;
 transform: scaleX(-1);
+filter: drop-shadow(0 0 25px #000000); 
 }
 
 /* Random Game library card */
@@ -1684,6 +1685,48 @@ border: 0;
 border-radius: 0;
 background: #000;
 }
+
+/* Fullscreen overlay image and exit button */
+#playerShell:fullscreen .frame-wrap,
+#playerShell:-webkit-full-screen .frame-wrap {
+position: relative;
+}
+.fullscreen-overlay-image {
+position: absolute;
+z-index: 5;
+top: 16px;
+left: 16px;
+width: 120px;
+max-height: 120px;
+object-fit: contain;
+pointer-events: none;
+}
+.fullscreen-exit-button {
+position: absolute;
+z-index: 6;
+top: 16px;
+right: 16px;
+padding: 10px 14px;
+border: 1px solid #ffffff55;
+border-radius: 9px;
+background: #111d;
+color: white;
+cursor: pointer;
+font: inherit;
+}
+.fullscreen-exit-button:hover {
+background: #333e;
+}
+#playerShell:fullscreen .fullscreen-overlay-image,
+#playerShell:fullscreen .fullscreen-exit-button,
+#playerShell:-webkit-full-screen .fullscreen-overlay-image,
+#playerShell:-webkit-full-screen .fullscreen-exit-button {
+display: block;
+}
+.fullscreen-overlay-image,
+.fullscreen-exit-button {
+display: none;
+}
 </style>
 </head>
 <body>
@@ -1969,6 +2012,19 @@ background: #000;
             allow="fullscreen; autoplay; gamepad; clipboard-read; clipboard-write"
             referrerpolicy="strict-origin-when-cross-origin"
           ></iframe>
+
+          <img
+class="fullscreen-overlay-image"
+src="Images/MeldLogo.png"
+alt="Meld Games"
+          >
+          <button
+  class="fullscreen-exit-button"
+  id="fullscreenExitButton"
+  type="button"
+>
+  Exit fullscreen
+</button>
 
           <div
             class="loading-cover"
@@ -2692,7 +2748,7 @@ background: #000;
       a: "#9c6a43",
       b: "#2b211b",
       category: "Action",
-      description: "Experience the action-packed open world of Los Santos in GTA 3! Explore a massive city, drive incredible vehicles, complete missions, and experience an exciting criminal adventure. Switch between three unique characters and discover everything this vast open world has to offer.",
+      description: "CupHead is a classic run-and-gun action game inspired by 1930s cartoons. Play as CupHead or Mugman as you explore strange worlds, battle challenging bosses, and collect powerful abilities. with hand-drawn animation, jazz music, and intense gameplay, every level is a unique adventure!",
       isTopRated: true
     },
     {
@@ -2703,7 +2759,7 @@ background: #000;
       a: "#9c6a43",
       b: "#2b211b",
       category: "",
-      description: "",
+      description: "Get ready for a fishing adventure like no other! Explore mysterious islands, catch all kinds of fish, complete quests, and discover new areas. Earn rewards, collect rare catches, and see how far your fishing adventure can take you!",
       isTopRated: true
     },
     {
@@ -2778,17 +2834,47 @@ background: #000;
     {
       name: "Roblox",
       video: "RobloxPage.mp4",
-      description: "Explore a platform of community-made experiences."
+      description: "Explore millions of player-created experiences in Roblox! Play exciting games, discover unique worlds, customize your avatar, and connect with friends. From adventures and simulators to obbys and competitive challenges, there's always something new to play!"
     },
     {
-      name: "Minecraft 1.26.2",
+      name: "Minecraft 26.2",
       video: "Minecraft.mp4",
-      description: "Build, explore, and survive in a block-based world."
+      description: "Explore a massive block-based world in Minecraft! Gather Resources, craft tools, build incredible structures, and survive against dangerous mobs. Create your own adventures and let your imagination run wild!"
     },
     {
       name: "GTA 5",
       video: "GTA5.mp4",
-      description: "Explore a huge open world full of action."
+      description: "Experience the action-packed open world of Los Santos in GTA 5! Explore a massive city, drive incredible vehicles, complete missions, and experience an exciting criminal adventure. Switch between three unique characters and discover everything this vast open world has to offer."
+    },
+    {
+      name: "Hollow Knigh",
+      video: "GTA5.mp4",
+      description: "Explore the mysterious underground kingdom of Hallowwnest in Hollow Knight! Battle dangerous creatures, discorver hidden areas, unlock powerful abilities, and uncover the secrets of a forgotten kingdom. Embark on an atmospheric adventure filled with challenging enemies, epic bosses, and exciting exploration."
+    },
+    {
+      name: "CupHead",
+      video: "GTA5.mp4",
+      description: "CupHead is a classic run-and-gun action game inspired by 1930s cartoons. Play as CupHead or Mugman as you explore strange worlds, battle challenging bosses, and collect powerful abilities. with hand-drawn animation, jazz music, and intense gameplay, every level is a unique adventure!"
+    },
+    {
+      name: "Skate 3",
+      video: "GTA5.mp4",
+      description: "Hit the streets in Skate 3 and become a skateboarding legend! Explore an open world, perform incredible tricks, land massive combos, and challenge yourself to master every obstacle. Grab your board and show off your skills!"
+    },
+    {
+      name: "Among Us",
+      video: "GTA5.mp4",
+      description: "Join your crewmates aboard a spaceship and work together to complete tasks while trying to uncover the imposters hiding among you. Use teamwork, deception, and clever strategies to survive, expose the imposters, and win the game!"
+    },
+    {
+      name: "How To Fish",
+      video: "GTA5.mp4",
+      description: "Get ready for a fishing adventure like no other! Explore mysterious islands, catch all kinds of fish, complete quests, and discover new areas. Earn rewards, collect rare catches, and see how far your fishing adventure can take you!"
+    },
+    {
+      name: "Peak",
+      video: "GTA5.mp4",
+      description: "The ultimate climbing challenge awaits! Tam up with your friends and make your way up a dangerous mountain filled with obstacles, hidden paths, and unexpected challenges. Work together, manage your stamina, and reach the summit. Can you make it to the top?"
     }
   ];
   
@@ -2835,6 +2921,9 @@ background: #000;
   
   let loadTimer = null;
   let loadToken = 0;
+
+  let fullscreenEscapeCount = 0;
+  let fullscreenEscapeTimer = null;
   
   let featuredIndex = 0;
   let activeFeaturedVideo = 0;
@@ -2846,6 +2935,7 @@ background: #000;
   let randomPickerTimer = null;
   let randomPickerFrame = null;
   let randomPickerAnimationToken = 0;
+  let stopRandomReelSound = () => {};
   
   function readFavorites() {
     try {
@@ -3343,7 +3433,9 @@ audio.close().catch(() => {});
     if (!eligibleGames.length) return;
   
     stopRandomReelAnimation();
-    const stopReelSound = playReelSound(6200);
+    stopRandomReelSound();
+    stopRandomReelSound = playReelSound(6200);
+
     randomPickerGame = null;
   
     const picker = $("randomPicker");
@@ -3452,7 +3544,9 @@ audio.close().catch(() => {});
   
   function closeRandomPicker() {
     stopRandomReelAnimation();
-    stopReelSound();
+    stopRandomReelSound();
+    stopRandomReelSound = () => {};
+
   
     const picker = $("randomPicker");
     if (!picker) return;
@@ -3782,18 +3876,12 @@ audio.close().catch(() => {});
   /* Featured controls */
   
   featuredPlayButton.addEventListener("click", () => {
-    const featuredName = featuredSlides[featuredIndex].name;
-  
-    const game = games.find(item => {
-      if (featuredName === "Minecraft") {
-        return item.name === "Minecraft 1.26.2";
-      }
-  
-      return item.name === featuredName;
-    });
-  
-    if (game) openGame(game);
-  });
+const featuredName = featuredSlides[featuredIndex].name;
+const game = games.find(item =>
+item.name.trim() === featuredName.trim()
+);
+if (game) openGame(game);
+});
   
   featuredBrowseButton.addEventListener("click", () => {
     libraryPage.scrollIntoView({ behavior: "smooth" });
@@ -3882,6 +3970,25 @@ audio.close().catch(() => {});
       closeRandomPicker();
     }
   });
+
+  $("fullscreenExitButton").addEventListener("click", async () => {
+if (document.fullscreenElement) {
+await document.exitFullscreen();
+}
+});
+document.addEventListener("keydown", event => {
+if (event.key !== "Escape" || !document.fullscreenElement) return;
+fullscreenEscapeCount++;
+clearTimeout(fullscreenEscapeTimer);
+fullscreenEscapeTimer = setTimeout(() => {
+fullscreenEscapeCount = 0;
+}, 1200);
+if (fullscreenEscapeCount >= 2) {
+fullscreenEscapeCount = 0;
+clearTimeout(fullscreenEscapeTimer);
+document.exitFullscreen().catch(() => {});
+}
+});
   
   /* Keyboard controls */
   
