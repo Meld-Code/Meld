@@ -8,8 +8,6 @@ Add a suggestions tab or a button with a google form with a way users can sugges
 
 Add a level system with quests to get exp and at certain levels u gain a certain rank or privileges other users dont get
 
-Add a partners tab with other unblockers
-
 Add website themes
 
 Add ur pumpkin mascot thing and make it give tutorials on things when a user first opens it
@@ -20,11 +18,7 @@ Add a version # at the bottom
 
 Add a tools thing where it has different tools people might need like downloader, about:blank opener, data:text.html opener, source code viewer, etc.
 
-For the games page a button that takes u to a random game if bored
-
 A total site visits thing with milestones and u add smth new every milestone
-
-note pad saved with local storage
 
 my own version of roblox
 
