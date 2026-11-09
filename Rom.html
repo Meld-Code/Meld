@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SafeBucket Games</title>
+
+<style>
+body {
+    background: #111;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 30px 15px;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+#game {
+    width: 100%;
+    max-width: 1000px;
+    height: 600px;
+    margin: 25px auto;
+    background: #000;
+}
+
+button, input {
+    padding: 12px;
+    margin: 10px;
+    border-radius: 8px;
+}
+
+button {
+    background: #635bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#status {
+    color: #aaa;
+}
+</style>
+</head>
+
+<body>
+
+<h1>SafeBucket Games</h1>
+<p>Choose a game file to start playing.</p>
+
+<input
+    type="file"
+    id="rom"
+    accept=".nes,.smc,.sfc,.gba,.gb,.gbc,.z64,.n64"
+/>
+
+<br>
+
+<button onclick="startGame()">Play Game</button>
+
+<p id="status">Waiting for game...</p>
+
+<div id="game"></div>
+
+<script>
+async function startGame() {
+
+    const file = document.getElementById("rom").files[0];
+    const status = document.getElementById("status");
+
+    if (!file) {
+        status.textContent = "Please select a game first.";
+        return;
+    }
+
+    const extension = file.name.split(".").pop().toLowerCase();
+
+    const systems = {
+        nes: "nes",
+        smc: "snes",
+        sfc: "snes",
+        gba: "gba",
+        gb: "gb",
+        gbc: "gbc",
+        z64: "n64",
+        n64: "n64"
+    };
+
+    const core = systems[extension];
+
+    if (!core) {
+        status.textContent = "Unsupported game format.";
+        return;
+    }
+
+    status.textContent = "Loading " + file.name + "...";
+
+    document.getElementById("game").innerHTML = "";
+
+    // EmulatorJS configuration
+    window.EJS_player = "#game";
+    window.EJS_core = core;
+    window.EJS_gameUrl = file;
+    window.EJS_gameName = file.name;
+    window.EJS_pathtodata =
+        "https://cdn.emulatorjs.org/stable/data/";
+
+    window.EJS_startOnLoaded = true;
+
+    // Load emulator
+    const script = document.createElement("script");
+
+    script.src =
+        "https://cdn.emulatorjs.org/stable/data/loader.js";
+
+    script.onload = () => {
+        status.textContent = "Emulator loaded.";
+    };
+
+    script.onerror = () => {
+        status.textContent = "Could not load emulator.";
+    };
+
+    document.body.appendChild(script);
+}
+</script>
+
+</body>
+</html>
