@@ -1,6 +1,5 @@
 /* ============================================================
-SAFE BUCKET â€” GREEN GAME HUB THEME
-Existing classes and functionality preserved
+Meld CSS Everything, oh God, I need to make more files....
 ============================================================ */
     
 :root {
@@ -1673,8 +1672,9 @@ Existing classes and functionality preserved
     pointer-events: auto;
     }
     .partnersPanel {
-    position: relative;
-    width: min(470px, 100%);
+    position: fixed;
+    width: min(900px, 100%);
+    height: min(475px, 100%);
     padding: 28px;
     
     border: 1px solid #45533d;
@@ -1771,6 +1771,45 @@ Existing classes and functionality preserved
     font-size: 10px;
     line-height: 1.5;
     }
+
+    .partnerGrid {
+        display: grid;
+        grid-template-columns: repeat(5, 210px);
+        gap: 12px;
+      }
+      
+      .partnerButton {
+        position: absolute;
+        width: 148px;
+        height: 148px;
+        padding: 8px;
+        
+        overflow: hidden;
+        
+        border: 1px solid #45533d;
+        border-radius: 16px;
+        
+        background:
+            linear-gradient(145deg, #34412b, #171d17);
+        
+        box-shadow:
+            0 18px 40px #0009,
+            inset 0 1px 0 #ffffff16;
+        
+        transform-origin: center;
+        
+        user-select: none;
+        touch-action: none;
+        cursor: grab;
+        pointer-events: auto;
+        
+        transition:
+            border-color .2s ease,
+            box-shadow .2s ease,
+            transform .2s ease;
+        
+      }
+      
 
 
     /* ============================================================
@@ -3428,8 +3467,8 @@ PROFILE AND LEADERBOARD â€” MOBILE
 }
 
 .browserTabIcon {
-  width: 17px;
-  height: 17px;
+  width: 21px;
+  height: 21px;
   object-fit: contain;
   border-radius: 4px;
 }
