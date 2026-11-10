@@ -12,9 +12,8 @@ import {
   remove
 } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
 
-/* ============================================================
-   MELD ANNOUNCEMENTS
-   ============================================================ */
+/*
+   MELD ANNOUNCEMENTS */
 
 const OWNER_UID = "OH6Jo3MnREgxfEGyVRxivcsuF582";
 
@@ -42,10 +41,9 @@ let hideTimer;
 let removeTimer;
 let permissionListener = null;
 
-/* ============================================================
+/*
    STYLE
-   Designed to match the Safe Bucket green game hub theme
-   ============================================================ */
+ */
 
 const style = document.createElement("style");
 
@@ -61,9 +59,9 @@ style.textContent = `
       sans-serif;
   }
 
-  /* ============================================================
+  /* 
      LIVE ANNOUNCEMENT POPUP
-     ============================================================ */
+      */
 
   #meldAnnouncementPopup {
     position: fixed;
@@ -142,9 +140,9 @@ style.textContent = `
     z-index: 1;
   }
 
-  /* ============================================================
+  /* 
      ANNOUNCEMENT BUTTON
-     ============================================================ */
+    */
 
   #meldAnnouncementButton {
     position: fixed;
@@ -206,9 +204,9 @@ style.textContent = `
     outline-offset: 3px;
   }
 
-  /* ============================================================
+  /* 
      ANNOUNCEMENT PANEL
-     ============================================================ */
+     */
 
   #meldAnnouncementPanel {
     position: fixed;
@@ -440,9 +438,9 @@ style.textContent = `
     letter-spacing: .2px;
   }
 
-  /* ============================================================
+  /* 
      MOBILE
-     ============================================================ */
+     */
 
   @media (max-width: 700px) {
     #meldAnnouncementPopup {
@@ -503,9 +501,9 @@ style.textContent = `
 
 document.head.appendChild(style);
 
-/* ============================================================
+/* 
    FLOATING ANNOUNCEMENT
-   ============================================================ */
+   */
 
 const popup = document.createElement("div");
 popup.id = "meldAnnouncementPopup";
@@ -569,9 +567,9 @@ function displayAnnouncement(data) {
   }, remaining);
 }
 
-/* ============================================================
+/* 
    ANNOUNCEMENT PANEL
-   ============================================================ */
+    */
 
 const button = document.createElement("button");
 button.id = "meldAnnouncementButton";
@@ -830,9 +828,9 @@ panel.querySelector("#meldAnnRevoke").addEventListener("click", () => {
   changePermission(false);
 });
 
-/* ============================================================
+/* 
    AUTHENTICATION AND PERMISSIONS
-   ============================================================ */
+   */
 
 onAuthStateChanged(auth, user => {
   if (permissionListener) {
@@ -874,9 +872,9 @@ onAuthStateChanged(auth, user => {
   );
 });
 
-/* ============================================================
+/* 
    REAL-TIME ANNOUNCEMENTS
-   ============================================================ */
+   */
 
 onValue(
   currentRef,
