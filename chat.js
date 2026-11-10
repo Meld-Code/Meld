@@ -29,9 +29,9 @@ import {
   getDownloadURL
 } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-storage.js";
 
-/* ============================================================
+/* 
    FIREBASE
-============================================================ */
+ */
 
 const firebaseConfig = {
   apiKey: "AIzaSyCkJJcpdLfWH8XZBuT8tgOkOKuj6ZtEzcY",
@@ -195,9 +195,9 @@ function initializeChat() {
   if (elements.imageInput) elements.imageInput.accept = CONFIG.ALLOWED_IMAGE_TYPES.join(",");
   if (elements.voicePanel) elements.voicePanel.hidden = true;
 
-  /* ========================================================
+  /* 
      GENERAL HELPERS
-  ======================================================== */
+  */
 
   function setNotice(message) {
     if (elements.roomDescription) elements.roomDescription.textContent = message;
@@ -354,9 +354,9 @@ function initializeChat() {
     cleanupRoomListeners();
   }
 
-  /* ========================================================
+  /*
      IMAGE COMPOSER
-  ======================================================== */
+  */
 
   function clearSelectedImage() {
     const preview = elements.imagePreview?.querySelector("img");
@@ -414,9 +414,9 @@ function initializeChat() {
     return getDownloadURL(destination);
   }
 
-  /* ========================================================
+  /* 
      ROOM METADATA AND DEFAULT COMMUNITY
-  ======================================================== */
+  */
 
   async function setIfMissing(path, value) {
     const target = ref(database, path);
@@ -424,8 +424,7 @@ function initializeChat() {
     try {
       snapshot = await get(target);
     } catch (error) {
-      // Rules intentionally hide rooms that do not exist yet. The first
-      // create-only write is still permitted; we verify it below if it races.
+
       if (!isPermissionDenied(error)) throw error;
     }
     if (snapshot?.exists()) return snapshot.val();
@@ -492,9 +491,9 @@ function initializeChat() {
     return server;
   }
 
-  /* ========================================================
+  /* 
      SERVER AND CHANNEL NAVIGATION
-  ======================================================== */
+ */
 
   function renderServers() {
     if (!elements.serverList) return;
@@ -725,9 +724,9 @@ function initializeChat() {
     }
   }
 
-  /* ========================================================
+  /* 
      MESSAGES
-  ======================================================== */
+ */
 
   function renderMessages() {
     const wasNearBottom = elements.messages.scrollHeight - elements.messages.scrollTop - elements.messages.clientHeight < 90;
@@ -971,9 +970,9 @@ function initializeChat() {
     }
   });
 
-  /* ========================================================
+  /* 
      PRESENCE AND MEMBERS
-  ======================================================== */
+ */
 
   function updateCurrentUserCard() {
     if (!profile) return;
@@ -1077,9 +1076,9 @@ function initializeChat() {
     renderGroup(elements.offlineMembers, offline, "No offline members.");
   }
 
-  /* ========================================================
+  /* 
      FRIENDS AND DIRECT MESSAGES
-  ======================================================== */
+ */
 
   async function readUser(uid) {
     if (uid === currentUser?.uid) return profile;
@@ -1214,8 +1213,7 @@ function initializeChat() {
 
   async function declineFriendRequest(senderUid) {
     try {
-      // Remove the sender's pending index while the incoming request still exists,
-      // then remove the incoming request itself.
+      
       await remove(ref(database, `chatSentRequests/${senderUid}/${currentUser.uid}`));
       await remove(ref(database, `friendRequests/${currentUser.uid}/${senderUid}`));
     } catch (error) {
@@ -1226,8 +1224,7 @@ function initializeChat() {
 
   async function acceptFriendRequest(otherUid) {
     try {
-      // The second reciprocal friend record is authorized by the still-existing
-      // incoming request, so remove request records only after both writes succeed.
+
       await set(ref(database, `friends/${currentUser.uid}/${otherUid}`), true);
       await set(ref(database, `friends/${otherUid}/${currentUser.uid}`), true);
       await remove(ref(database, `chatSentRequests/${otherUid}/${currentUser.uid}`));
@@ -1322,9 +1319,9 @@ function initializeChat() {
     }, error => console.warn("Direct messages could not load:", error));
   }
 
-  /* ========================================================
+  /* 
      USER SETTINGS AND VIEWS
-  ======================================================== */
+ */
 
   function showModal(modal) {
     if (modal) modal.hidden = false;
@@ -1464,9 +1461,9 @@ function initializeChat() {
   elements.voiceMute?.addEventListener("click", () => setNotice("Voice calling is not configured yet."));
   elements.voiceDeafen?.addEventListener("click", () => setNotice("Voice calling is not configured yet."));
 
-  /* ========================================================
+  /* 
      USER SERVER AND FRIEND LIST LISTENERS
-  ======================================================== */
+ */
 
   function watchUserServers() {
     stopListener(userServersListener);
@@ -1491,9 +1488,9 @@ function initializeChat() {
     });
   }
 
-  /* ========================================================
+  /* 
      AUTHENTICATION
-  ======================================================== */
+ */
 
   onAuthStateChanged(auth, async user => {
     const sequence = ++authSequence;
@@ -1552,9 +1549,9 @@ function initializeChat() {
     }
   });
 
-  /* ========================================================
+  /* 
      PAGE CLEANUP
-  ======================================================== */
+ */
 
   window.addEventListener("beforeunload", () => {
     cleanupUserListeners();
