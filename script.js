@@ -1,13 +1,8 @@
-/* ============================================================
-   CIPHANON SAFE BROWSER — SCRIPT.JS
-   Welcome, shortcuts, physics, collisions, browser, Control
-   Center, information, date/time, ads, cursor, hover videos,
-   settings, tutorial and analytics compatibility.
-============================================================ */
+
 
 "use strict";
 
-/* ========================= ANALYTICS ========================= */
+/* ANALYTICS  */
 
 function trackEvent(eventName, eventData = {}) {
     if (window.firebaseAnalytics &&
@@ -18,7 +13,7 @@ function trackEvent(eventName, eventData = {}) {
     }
 }
 
-/* ========================= SAFE STORAGE ======================= */
+/*  SAFE STORAGE  */
 
 function readStorage(key, fallback = null) {
     try {
@@ -38,7 +33,7 @@ function writeStorage(key, value) {
     }
 }
 
-/* ========================= WELCOME ============================ */
+/*  WELCOME  */
 
 const welcome = document.getElementById("welcome");
 const enterSafeBucket = document.getElementById("enterSafeBucket");
@@ -66,7 +61,7 @@ if (welcome && enterSafeBucket) {
     });
 }
 
-/* ========================= MAIN ELEMENTS ====================== */
+/* MAIN ELEMENTS */
 
 const world = document.getElementById("world");
 const blocks = [...document.querySelectorAll(".block")];
@@ -99,7 +94,7 @@ function closeBrowserWindow() {
 
 closeBrowser?.addEventListener("click", closeBrowserWindow);
 
-/* ========================= PHYSICS SETTINGS =================== */
+/*  PHYSICS SETTINGS  */
 
 const MOVING_BLOCKS_KEY = "safeBucketMovingBlocks";
 
@@ -211,7 +206,7 @@ function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
 
-/* ========================= CREATE OBJECTS ===================== */
+/*  CREATE OBJECTS  */
 
 function createObject(el, index) {
     const size = getSize(el);
@@ -282,7 +277,7 @@ blocks.forEach((el, index) => {
     setupDragging(obj);
 });
 
-/* ========================= COMPACT LAYOUT ===================== */
+/*  COMPACT LAYOUT  */
 
 function applyCompactLayout() {
     if (world) {
@@ -339,7 +334,7 @@ function applyCompactLayout() {
     }
 }
 
-/* ========================= MOVING LAYOUT ====================== */
+/*  MOVING LAYOUT  */
 
 function applyMovingLayout() {
     if (world) {
@@ -366,10 +361,6 @@ function applyMovingLayout() {
         });
     }
 
-    /*
-     * Restore original block dimensions before measuring.
-     */
-
     for (const obj of objects) {
         const el = obj.el;
         const original = originalBlockStyles.get(el);
@@ -395,7 +386,6 @@ function applyMovingLayout() {
         }
     }
 
-    // Force the browser to calculate the restored layout.
     if (world) {
         void world.offsetHeight;
     }
@@ -436,7 +426,7 @@ function applyMovingLayout() {
         obj.previousY = obj.y;
     }
 
-    // Alternate boundary correction and collision resolution.
+
     for (let pass = 0; pass < 16; pass++) {
         for (const obj of objects) {
             keepInside(obj);
@@ -451,7 +441,7 @@ function applyMovingLayout() {
     }
 }
 
-/* ========================= SET MOVING BLOCKS ================== */
+/*  SET MOVING BLOCKS  */
 
 function setMovingBlocksEnabled(enabled, save = true) {
     movingBlocksEnabled = Boolean(enabled);
@@ -491,21 +481,15 @@ function setMovingBlocksEnabled(enabled, save = true) {
     });
 }
 
-/*
- * UPDATED CHECKBOX BEHAVIOR:
- * 1. Save and immediately apply the selected layout.
- * 2. Reload only the browser iframe if it has a loaded URL.
- * 3. Do not reload the main Safe Bucket page.
- */
+
 
 movingBlocksToggle?.addEventListener("change", () => {
     const enabled = movingBlocksToggle.checked;
 
-    // Apply the new layout and save the preference.
-    // If storage is unavailable, the layout still changes.
+
     setMovingBlocksEnabled(enabled);
 
-    // Reload only the iframe, not the entire page.
+
     if (browserFrame) {
         const currentURL = browserFrame.src;
 
@@ -519,7 +503,7 @@ movingBlocksToggle?.addEventListener("change", () => {
     }
 });
 
-/* ========================= COLLISION POLYGONS ================= */
+/*  COLLISION POLYGONS  */
 
 function roundedPolygon(obj) {
     const w = obj.width;
@@ -655,7 +639,7 @@ function polygonCollision(polyA, polyB) {
     };
 }
 
-/* ========================= COLLISION RESOLUTION ================ */
+/*  COLLISION RESOLUTION  */
 
 function resolveCollision(a, b, collision) {
     if (!collision) return;
@@ -678,7 +662,6 @@ function resolveCollision(a, b, collision) {
         0
     );
 
-    // Separate overlapping blocks.
     if (correctionDepth > 0) {
         if (!a.dragging && !b.dragging) {
             const shareA = b.mass / totalMass;
@@ -708,8 +691,6 @@ function resolveCollision(a, b, collision) {
         normal
     );
 
-    // If the blocks are already separating, positional correction
-    // is enough.
     if (velocityAlongNormal >= 0) return;
 
     const invMassA = a.dragging ? 0 : 1 / a.mass;
@@ -736,7 +717,6 @@ function resolveCollision(a, b, collision) {
         b.vy += impulse.y * invMassB;
     }
 
-    // Tangential friction.
     const tangent = {
         x: -normal.y,
         y: normal.x
@@ -789,7 +769,7 @@ function solveAllCollisions() {
     }
 }
 
-/* ========================= SCREEN BOUNDARIES ================== */
+/*  SCREEN BOUNDARIES  */
 
 function keepInside(obj) {
     if (!movingBlocksEnabled) return;
@@ -811,7 +791,6 @@ function keepInside(obj) {
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
 
-    // Handle blocks larger than the viewport.
     if (maxX - minX >= screenWidth) {
         obj.x += screenWidth / 2 - (minX + maxX) / 2;
     } else {
@@ -853,7 +832,7 @@ function keepInside(obj) {
     }
 }
 
-/* ========================= FLOATING =========================== */
+/*  FLOATING  */
 
 function limitVelocity(obj) {
     const speed = Math.hypot(obj.vx, obj.vy);
@@ -889,7 +868,7 @@ function keepFloating(obj, time) {
     }
 }
 
-/* ========================= DRAGGING =========================== */
+/*  DRAGGING  */
 
 function setupDragging(obj) {
     const el = obj.el;
@@ -955,7 +934,7 @@ function setupDragging(obj) {
             obj.moved = true;
         }
 
-        // Track the previous position for release velocity.
+
         obj.previousX = obj.x;
         obj.previousY = obj.y;
 
@@ -982,7 +961,7 @@ function setupDragging(obj) {
 
         el.classList.remove("dragging");
 
-        // Give the block a small, bounded throw when released.
+
         obj.vx = clamp(
             (obj.x - obj.previousX) * 0.22,
             -PHYSICS.maxSpeed,
@@ -1035,7 +1014,7 @@ function openShortcut(el) {
     openBrowser(url);
 }
 
-/* ========================= RENDERING ========================== */
+/*  RENDERING  */
 
 function normalizeAngle(angle) {
     return Math.atan2(Math.sin(angle), Math.cos(angle));
@@ -1071,7 +1050,7 @@ function render(obj) {
         `rotate(${obj.angle}rad) scale(${scale})`;
 }
 
-/* ========================= MAIN PHYSICS LOOP ================== */
+/*  MAIN PHYSICS LOOP  */
 
 let lastTime = performance.now();
 
@@ -1116,7 +1095,7 @@ function physicsLoop(time) {
             limitVelocity(obj);
         }
 
-        // Resolve collisions and correct boundaries repeatedly.
+
         for (let pass = 0; pass < 8; pass++) {
             solveAllCollisions();
 
@@ -1136,7 +1115,7 @@ function physicsLoop(time) {
 
 requestAnimationFrame(physicsLoop);
 
-/* ========================= RESIZE ============================= */
+/*  RESIZE  */
 
 window.addEventListener("resize", () => {
     for (const obj of objects) {
@@ -1168,7 +1147,7 @@ window.addEventListener("resize", () => {
     }
 });
 
-/* ========================= SEARCH / URL ======================= */
+/*  SEARCH / URL  */
 
 function getDestination(value) {
     value = value.trim();
@@ -1244,7 +1223,7 @@ if (browserForwardButton && browserFrame) {
     });
 }
 
-/* ========================= INFO PANEL ======================== */
+/*  INFO PANEL  */
 
 const infoButton = document.getElementById("infoButton");
 const infoOverlay = document.getElementById("infoOverlay");
@@ -1270,7 +1249,7 @@ document.addEventListener("keydown", event => {
     }
 });
 
-/* ========================= PARTNERS PANEL ======================== */
+/*  PARTNERS PANEL  */
 
 const partnersButton = document.getElementById("partnersButton");
 const partnersOverlay = document.getElementById("partnersOverlay");
@@ -1296,7 +1275,7 @@ document.addEventListener("keydown", event => {
     }
 });
 
-/* ========================= DATE / TIME ======================== */
+/*  DATE / TIME  */
 
 const currentTime = document.getElementById("currentTime");
 const currentDate = document.getElementById("currentDate");
@@ -1334,7 +1313,7 @@ function updateDateTime() {
 updateDateTime();
 window.setInterval(updateDateTime, 1000);
 
-/* ========================= RANDOM ADS ========================= */
+/*  RANDOM ADS  */
 
 const randomAd = document.getElementById("randomAd");
 const closeRandomAd = document.getElementById("closeRandomAd");
@@ -1359,7 +1338,7 @@ const adList = [
         title: "Visit CiphAnon Studios",
         text: "Explore more projects created by CiphAnon Studios.",
         button: "Visit Studio",
-        url: "https://ciphanonstudios.github.io/CiphAnonStudios-v12"
+        url: ""
     },
     {
         title: "Check Out Minecraft",
@@ -1453,7 +1432,7 @@ randomAdButton?.addEventListener("click", () => {
 
 scheduleRandomAd();
 
-/* ========================= CONTROL CENTER ===================== */
+/*  CONTROL CENTER  */
 
 (() => {
     const panel = document.getElementById("controlPanel");
@@ -1819,7 +1798,7 @@ scheduleRandomAd();
     setStatus("Controls ready");
 })();
 
-/* ========================= CUSTOM CURSOR ====================== */
+/*  CUSTOM CURSOR  */
 
 const cursor = document.getElementById("custom-cursor");
 
@@ -1830,7 +1809,7 @@ if (cursor) {
     });
 }
 
-/* ========================= HOVER VIDEOS ======================= */
+/*  HOVER VIDEOS  */
 
 const backgroundVideo = document.getElementById("backgroundVideo");
 
@@ -1879,7 +1858,7 @@ blocks.forEach(block => {
     });
 });
 
-/* ========================= SETTINGS PANEL ===================== */
+/*  SETTINGS PANEL  */
 
 (() => {
     const settingsBtn = document.getElementById("settingsBtn");
@@ -1931,7 +1910,7 @@ blocks.forEach(block => {
     window.closeSafeBucketSettings = hideSettings;
 })();
 
-/* ========================= TUTORIAL =========================== */
+/*  TUTORIAL  */
 
 const tutorialState = {
     isOpen: false,
@@ -2006,7 +1985,7 @@ let renderTutorialStep = function () {};
             title: "Welcome to Meld!",
             description:
                 "This quick tour shows you the main features. " +
-                "The orange border highlights the feature being explained.",
+                "The Lime border highlights the feature being explained.",
             target: "#searchForm",
             fallback: "#world"
         },
@@ -2205,7 +2184,7 @@ let renderTutorialStep = function () {};
             width: `${Math.max(0, width)}px`,
             height: `${Math.max(0, height)}px`,
             boxSizing: "border-box",
-            border: "3px solid #ff6a00",
+            border: "3px solid #72fc4c",
             borderRadius: "12px",
             boxShadow:
                 "0 0 0 9999px rgba(0,0,0,.62), " +
@@ -2505,9 +2484,8 @@ let renderTutorialStep = function () {};
     }
 })();
 
-/* ========================= INITIALIZE ========================= */
+/*  INITIALIZE  */
 
-// Read the saved setting and apply the correct layout on page load.
 
 setMovingBlocksEnabled(movingBlocksEnabled, false);
 
@@ -2537,7 +2515,7 @@ homeButton?.addEventListener("click", () => {
   }
 });
 
-// Movies page warning script
+// Movies page warning
 (() => {
 const moviesBlock = [...document.querySelectorAll(".block")]
 .find(block => block.dataset.name === "Movies");
