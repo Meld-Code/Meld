@@ -89,19 +89,13 @@
    }
    
    .brand-mark {
-    width: 34px;
-    height: 34px;
-    display: grid;
     place-items: center;
-    color: #10150a;
-    background: var(--green);
-    border-radius: 9px;
-    font-size: 16px;
+
    }
    
    .brand-mark img {
-    max-width: 27px;
-    max-height: 27px;
+    max-width: 50px;
+    max-height: 50px;
     object-fit: contain;
    }
    
@@ -146,11 +140,7 @@
     flex: 1;
    }
    
-   .library-label {
-    color: var(--muted);
-    font-size: 12px;
-    white-space: nowrap;
-   }
+   
    
    /* Featured banner */
    
@@ -525,19 +515,7 @@
     pointer-events: none;
    }
    
-   .cover::after {
-    content: "";
-    position: absolute;
-    right: -30%;
-    bottom: -22%;
-    width: 120%;
-    height: 65%;
-    z-index: 1;
-    border: 1px solid #ffffff1c;
-    border-radius: 50%;
-    transform: rotate(-25deg);
-    pointer-events: none;
-   }
+   
    
    .cover-image {
     position: absolute;
@@ -558,9 +536,12 @@
     position: relative;
     z-index: 2;
     font-size: clamp(34px, 4.4vw, 62px);
-    color: #ffffffec;
+    color: rgba(118, 189, 52, 0.651);
     text-shadow: 0 8px 24px #0008;
     transition: transform .2s ease;
+
+
+
    }
    
    .game-card:hover .cover-symbol {
@@ -792,7 +773,7 @@
    }
    
    #playerStatus.waiting {
-    color: #e8d69c;
+    color: #76b900;
    }
    
    .toolbar-spacer {
@@ -903,12 +884,12 @@
     border: 1px solid #4b4a2e;
     border-radius: 9px;
     background: #262517;
-    color: #d8d2a8;
+    color: #76b900;
     font-size: 12px;
    }
    
    .player-note strong {
-    color: #f4e8a6;
+    color: #76b900;
    }
    
    .sidebar {
@@ -1044,10 +1025,6 @@
     .topbar {
     gap: 17px;
     }
-   
-    .library-label {
-    display: none;
-    }
    }
    
    @media (max-width: 600px) {
@@ -1063,8 +1040,8 @@
     }
    
     .brand-mark {
-    width: 31px;
-    height: 31px;
+    width: 21px;
+    height: 21px;
     }
    
     .nav-button {
@@ -1104,9 +1081,7 @@
     align-items: start;
     }
    
-    .header-count {
-    display: none;
-    }
+  
    
     .toolbar {
     gap: 8px;
@@ -1391,11 +1366,11 @@ width: max-content;
 height: 100%;
 will-change: transform;
 }
-
+/* Hide the center marker: the middle card is highlighted by brightness only */
 .random-reel-selection {
 display: none !important;
 }
-
+/* Reel card uses library-style card proportions and appearance */
 .random-reel-item {
 --reel-scale: .72;
 --reel-opacity: .2;
@@ -1574,41 +1549,7 @@ cursor: pointer;
 .random-picker-close:hover {
 background: #ffffff22;
 }
-/* Particle burst */
-.random-particles {
-position: absolute;
-inset: 0;
-z-index: 1;
-overflow: hidden;
-pointer-events: none;
-}
-.random-particle {
-position: absolute;
-left: 50%;
-top: 50%;
-width: 7px;
-height: 7px;
-border-radius: 2px;
-background: var(--green-light);
-box-shadow: 0 0 12px #a3e635;
-animation: particle-burst 850ms ease-out forwards;
-}
-@keyframes particle-burst {
-from {
-opacity: 1;
-transform: translate(-50%, -50%) scale(1);
-}
-to {
-opacity: 0;
-transform:
-translate(
-calc(-50% + var(--particle-x)),
-calc(-50% + var(--particle-y))
-)
-rotate(220deg)
-scale(.2);
-}
-}
+
 /* Mobile */
 @media (max-width: 600px) {
 .random-picker {
@@ -1639,12 +1580,7 @@ top: 10px;
 right: 10px;
 }
 }
-@media (prefers-reduced-motion: reduce) {
-.random-picker-content.popping,
-.random-particle {
-animation-duration: .01ms !important;
-}
-}
+
 
 /* In fullscreen, show only the game iframe */
 #playerShell:fullscreen {
@@ -1727,13 +1663,22 @@ display: block;
 .fullscreen-exit-button {
 display: none;
 }
+
+.RandomTobnyi {
+  position: absolute;
+  height: 800px;
+  width: 920px;
+  left:-475px;
+  top:-25px;
+  z-index: 9;
+}
 </style>
 </head>
 <body>
 <header class="topbar">
   <div class="brand">
     <div class="brand-mark">
-      <img src="Images/MeldLogo.png" alt="Meld Logo">
+      <img src="Icons/Meld.png" alt="Meld Logo">
     </div>
 <span>Meld <span>Games</span></span>
 
@@ -1752,9 +1697,6 @@ display: none;
 
   </nav>
   <div class="topbar-spacer"></div>
-  <div class="library-label">
-    <i class="fa-solid fa-layer-group"></i>&nbsp; Games Library
-  </div>
 </header>
 <main>
   <section
@@ -1785,7 +1727,7 @@ display: none;
 
   <div class="featured-overlay"></div>
   <div class="featured-content" id="featuredContent">
-    <div class="featured-kicker">Featured game</div>
+    <div class="featured-kicker">Most Popular games!</div>
     <h1 id="featuredTitle">Featured Games</h1>
 <p id="featuredDescription">
   Discover something new to play.
@@ -1861,11 +1803,11 @@ display: none;
     <section class="library-page" id="libraryPage">
       <div class="heading-row">
         <div>
-          <div class="eyebrow">Your collection</div>
+          <div class="eyebrow">Meld Games</div>
       <h2 id="pageTitle">Game Library</h2>
 
       <p class="subtitle" id="pageSubtitle">
-        All your games, together in one place.
+        All games together in one place.
       </p>
     </div>
 
@@ -1884,7 +1826,7 @@ display: none;
       <input
         id="search"
         type="search"
-        placeholder="Search your library..."
+        placeholder="Search a Game..."
         autocomplete="off"
         aria-label="Search games"
       >
@@ -2015,7 +1957,7 @@ display: none;
 
           <img
 class="fullscreen-overlay-image"
-src="Images/MeldLogo.png"
+src="Icons/Meld.png"
 alt="Meld Games"
           >
           <button
@@ -2023,7 +1965,7 @@ alt="Meld Games"
   id="fullscreenExitButton"
   type="button"
 >
-  Exit fullscreen
+  Exit
 </button>
 
           <div
@@ -2091,9 +2033,7 @@ alt="Meld Games"
           Game not appearing?
         </strong>
 
-        Some game websites block embedded playback.
-        If that happens, this player cannot force them
-        to run inside Meld Games. Try reloading once.
+        Some Games might not allow embedded playback. If that happens try to reload the page once.
       </div>
     </div>
 
@@ -2160,13 +2100,13 @@ alt="Meld Games"
   >
     <i class="fa-solid fa-xmark"></i>
   </button>
-  <div class="random-particles" id="randomParticles" aria-hidden="true"></div>
   <div class="random-picker-content">
     <div class="random-picker-kicker">Meld Games</div>
     <h2 id="randomPickerTitle">Random Game</h2>
     <p class="random-picker-help" id="randomPickerHelp">
       Picking a game from your library…
     </p>
+    <img class="RandomTobnyi" src="Images/TobnyiSit.png">
 <div class="random-stage" id="randomStage">
   <div class="random-orbit" aria-hidden="true"></div>
   <div id="randomOrbitCards" aria-hidden="true"></div>
@@ -2201,7 +2141,7 @@ alt="Meld Games"
       name: "GTA 5",
       url: "https://gta.deloskiyt.pl/",
       image: "Images/GTA5L.png",
-      icon: "fa-car",
+      icon: "fa-circle-play",
       a: "#6e3b25",
       b: "#171d1a",
       category: "Action",
@@ -2212,7 +2152,7 @@ alt="Meld Games"
       name: "Hollow Knight",
       url: "https://play.1gdata.com/15i2c21c/index.html",
       image: "Images/HollowKnight.png",
-      icon: "fa-bug",
+      icon: "fa-circle-play",
       a: "#263c57",
       b: "#111521",
       category: "Adventure",
@@ -2223,7 +2163,7 @@ alt="Meld Games"
       name: "Minecraft 26.2",
       url: "https://eaglercraft-26-2-u1-cdn.u2471966200.workers.dev/eaglercraft-26.2-u1.html?v=u1-20260930",
       image: "Images/ML.png",
-      icon: "fa-cubes",
+      icon: "fa-circle-play",
       a: "#577b42",
       b: "#19291d",
       category: "Sandbox",
@@ -2234,7 +2174,7 @@ alt="Meld Games"
       name: "Hacked Minecraft 1.8.8",
       url: "https://meld-code.github.io/MC/DragonX_V2_International%20(1)%20(1)%20(3).html",
       image: "Images/ML.png",
-      icon: "fa-cubes",
+      icon: "fa-circle-play",
       a: "#477a65",
       b: "#14251e",
       category: "Sandbox",
@@ -2244,7 +2184,7 @@ alt="Meld Games"
       name: "Roblox",
       url: "https://angst.clawschools.org/embed.html#https://nowgg.fun/apps/a/19900/b.html",
       image: "Images/RBL.png",
-      icon: "fa-gamepad",
+      icon: "fa-circle-play",
       a: "#707579",
       b: "#1a1c20",
       category: "Adventure",
@@ -2255,7 +2195,7 @@ alt="Meld Games"
       name: "Minecraft 1.8.8",
       url: "https://meld-code.github.io/MC/",
       image: "Images/ML.png",
-      icon: "fa-cubes",
+      icon: "fa-circle-play",
       a: "#77914c",
       b: "#202b19",
       category: "Sandbox",
@@ -2265,7 +2205,7 @@ alt="Meld Games"
       name: "Rocket Soccer Derby",
       url: "https://db.duckmath.org/html/rocket_soccer_derby/",
       image: "Images/RSDL.png",
-      icon: "fa-futbol",
+      icon: "fa-circle-play",
       a: "#3d7f8c",
       b: "#15242d",
       category: "Sports",
@@ -2275,7 +2215,7 @@ alt="Meld Games"
       name: "Cluster Rush",
       url: "https://db.duckmath.org/html/cluster_rush/",
       image: "Images/ClusterRush.png",
-      icon: "fa-truck",
+      icon: "fa-circle-play",
       a: "#c57d36",
       b: "#37231b",
       category: "Action",
@@ -2286,7 +2226,7 @@ alt="Meld Games"
       name: "Steal A Brainrot",
       url: "https://db.duckmath.org/html/steal_a_brainrot_2/",
       image: "Images/SABB.png",
-      icon: "fa-brain",
+      icon: "fa-circle-play",
       a: "#a64d77",
       b: "#321a34",
       category: "Simulator",
@@ -2296,7 +2236,7 @@ alt="Meld Games"
       name: "Fan-Made Amoung Us ",
       url: "https://db.duckmath.org/html/among_us/",
       image: "Images/AU.png",
-      icon: "fa-user-astronaut",
+      icon: "fa-circle-play",
       a: "#b54d4d",
       b: "#351b26",
       category: "Strategy",
@@ -2307,7 +2247,7 @@ alt="Meld Games"
       name: "Ping Pong Go",
       url: "https://tataedu23.github.io/g66/class-924/",
       image: "Images/PPG.png",
-      icon: "fa-table-tennis-paddle-ball",
+      icon: "fa-circle-play",
       a: "#3c7f59",
       b: "#152c22",
       category: "Sports",
@@ -2318,7 +2258,7 @@ alt="Meld Games"
       name: "Retro Bowl College",
       url: "https://db.duckmath.org/html/retro_bowl_college/",
       image: "Images/RetroBowlCollege.png",
-      icon: "fa-football",
+      icon: "fa-circle-play",
       a: "#a87845",
       b: "#33231a",
       category: "Sports",
@@ -2328,7 +2268,7 @@ alt="Meld Games"
       name: "Minecraft 1.5.2",
       url: "https://catfoolyou.github.io/Eagler-Online/",
       image: "Images/ML.png",
-      icon: "fa-cubes",
+      icon: "fa-circle-play",
       a: "#6c8751",
       b: "#202c1a",
       category: "Sandbox",
@@ -2338,7 +2278,7 @@ alt="Meld Games"
       name: "Minecraft Classic",
       url: "https://db.duckmath.org/html/minecraft_classic/",
       image: "Images/ML.png",
-      icon: "fa-cubes",
+      icon: "fa-circle-play",
       a: "#6e9856",
       b: "#23331d",
       category: "Sandbox",
@@ -2348,7 +2288,7 @@ alt="Meld Games"
       name: "Skate 3",
       url: "https://skate.aaddpp.lol/",
       image: "Images/Skate3.png",
-      icon: "fa-person-skating",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Sports",
@@ -2359,7 +2299,7 @@ alt="Meld Games"
       name: "60 Seconds",
       url: "https://meld-code.github.io/files/60Seconds.html",
       image: "Images/60Seconds.png",
-      icon: "fa-hourglass-half",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Strategy",
@@ -2369,7 +2309,7 @@ alt="Meld Games"
       name: "8 Ball Pool",
       url: "https://meld-code.github.io/files/8BallPool.html",
       image: "Images/8BallPool.png",
-      icon: "fa-circle-dot",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Sports",
@@ -2379,7 +2319,7 @@ alt="Meld Games"
       name: "Baldi's Basics",
       url: "https://meld-code.github.io/files/BaldiBasics.html",
       image: "",
-      icon: "fa-school",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Horror",
@@ -2389,7 +2329,7 @@ alt="Meld Games"
       name: "Counter Strike 1.6",
       url: "https://meld-code.github.io/files/CS16.html",
       image: "",
-      icon: "fa-crosshairs",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Action",
@@ -2399,7 +2339,7 @@ alt="Meld Games"
       name: "Call Of Battle",
       url: "https://meld-code.github.io/files/CallOfBattle.html",
       image: "",
-      icon: "fa-",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Fps",
@@ -2409,7 +2349,7 @@ alt="Meld Games"
       name: "Celeste",
       url: "https://meld-code.github.io/files/Celeste.html",
       image: "Images/Celeste.png",
-      icon: "fa-mountain",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Platformer",
@@ -2419,7 +2359,7 @@ alt="Meld Games"
       name: "Cheese Chompers",
       url: "https://meld-code.github.io/files/CheeseChompers.html",
       image: "Images/CheeseChompers.png",
-      icon: "fa-cheese",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "RPG",
@@ -2429,7 +2369,7 @@ alt="Meld Games"
       name: "Chicken War",
       url: "https://meld-code.github.io/files/ChickenWar.html",
       image: "",
-      icon: "fa-egg",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Action",
@@ -2439,7 +2379,7 @@ alt="Meld Games"
       name: "Crash Out Crew",
       url: "https://meld-code.github.io/files/CrashOutCrew.html",
       image: "",
-      icon: "fa-car-side",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Car",
@@ -2449,7 +2389,7 @@ alt="Meld Games"
       name: "Death Penalty World Cup",
       url: "https://meld-code.github.io/files/DeathPenaltyWorldCup.html",
       image: "",
-      icon: "fa-futbol",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Sports",
@@ -2459,7 +2399,7 @@ alt="Meld Games"
       name: "Death Run 3D",
       url: "https://meld-code.github.io/files/DeathRun.html",
       image: "Images/DeathRun.png",
-      icon: "fa-person-running",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Arcade",
@@ -2469,7 +2409,7 @@ alt="Meld Games"
       name: "PokeBonk",
       url: "https://pokebonk.com",
       image: "Images/PokeBonk.png",
-      icon: "fa-bowling-ball",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Pokemon",
@@ -2480,7 +2420,7 @@ alt="Meld Games"
       name: "BunnyHop",
       url: "https://bunnyhop.lol",
       image: "Images/BunnyHop.png",
-      icon: "fa-arrow-up",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Skill",
@@ -2491,7 +2431,7 @@ alt="Meld Games"
       name: "Clutcher",
       url: "https://www.clutcher.io",
       image: "Images/Clutcher.png",
-      icon: "fa-trophy",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Skill",
@@ -2502,7 +2442,7 @@ alt="Meld Games"
       name: "Messenger",
       url: "https://messenger.abeto.com",
       image: "Images/.png",
-      icon: "fa-globe",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Open World",
@@ -2513,7 +2453,7 @@ alt="Meld Games"
       name: "DeadShot",
       url: "https://deadshot.io/",
       image: "Images/.png",
-      icon: "fa-gun",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Fps",
@@ -2524,7 +2464,7 @@ alt="Meld Games"
       name: "Poke Arena 2D",
       url: "https://pokearena2d.com",
       image: "Images/.png",
-      icon: "fa-bowling-ball",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Pokemon",
@@ -2535,7 +2475,7 @@ alt="Meld Games"
       name: "MarioKart 8",
       url: "https://mariokart8.online",
       image: "Images/MarioKart8.png",
-      icon: "fa-car-burst",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Racing",
@@ -2546,7 +2486,7 @@ alt="Meld Games"
       name: "Kour",
       url: "https://kour.io",
       image: "Images/Kour.png",
-      icon: "fa-gun",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Fps",
@@ -2557,7 +2497,7 @@ alt="Meld Games"
       name: "Tide Water",
       url: "https://dgreenheck.github.io/tidewater/",
       image: "Images/.png",
-      icon: "fa-fish",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Fishing",
@@ -2568,7 +2508,7 @@ alt="Meld Games"
       name: "Doodle Shooter",
       url: "https://doodleshooter.vercel.app/",
       image: "Images/.png",
-      icon: "fa-gun",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Fps",
@@ -2579,7 +2519,7 @@ alt="Meld Games"
       name: "Car Game",
       url: "https://whiteout.plgb.chatgpt.site/",
       image: "Images/.png",
-      icon: "fa-car",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Driving",
@@ -2590,7 +2530,7 @@ alt="Meld Games"
       name: "Jelly Baby",
       url: "https://jelly.scottsun.io/",
       image: "Images/.png",
-      icon: "fa-jar",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Simulator",
@@ -2601,7 +2541,7 @@ alt="Meld Games"
       name: "No Merci Michel",
       url: "https://no.merci-michel.com/",
       image: "Images/.png",
-      icon: "fa-arm",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "2 Player",
@@ -2612,7 +2552,7 @@ alt="Meld Games"
       name: "Tree Stump",
       url: "https://screen.toys/firewood/",
       image: "Images/.png",
-      icon: "fa-tree",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Tree Stump",
@@ -2623,7 +2563,7 @@ alt="Meld Games"
       name: "Tiny Skys",
       url: "https://tinyskies.vercel.app/",
       image: "Images/TinySkys.png",
-      icon: "fa-plane",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Flying",
@@ -2634,7 +2574,7 @@ alt="Meld Games"
       name: "Star Wars Model",
       url: "https://mameson.com/experiment/glsl/fluffed_2/fluffed_2.html",
       image: "Images/StarWarsModel.png",
-      icon: "fa-cloud",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Model",
@@ -2645,7 +2585,7 @@ alt="Meld Games"
       name: "Kit Racing",
       url: "https://mrdoob.github.io/Starter-Kit-Racing/",
       image: "Images/.png",
-      icon: "fa-car",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Driving",
@@ -2656,7 +2596,7 @@ alt="Meld Games"
       name: "Chibi Game",
       url: "https://worawork.vercel.app/",
       image: "Images/.png",
-      icon: "fa-doll",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Open World",
@@ -2667,7 +2607,7 @@ alt="Meld Games"
       name: "Jelly Tetris",
       url: "https://holtsetio.com/lab/tetris/",
       image: "Images/JellyTetris.png",
-      icon: "fa-square",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Mind",
@@ -2678,7 +2618,7 @@ alt="Meld Games"
       name: "Horizon Drive",
       url: "https://www.shopify.com/ca/editions/summer2025/drive",
       image: "Images/HorizonDrive.png",
-      icon: "fa-car",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Driving",
@@ -2689,7 +2629,7 @@ alt="Meld Games"
       name: "Among Us Legacy",
       url: "https://wasm.rip/files/amongus/legacy/",
       image: "Images/AU.png",
-      icon: "fa-user-astronaut",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Strategy",
@@ -2700,7 +2640,7 @@ alt="Meld Games"
       name: "Among Us",
       url: "https://wasm.rip/files/amongus/latest/",
       image: "Images/AU.png",
-      icon: "fa-user-astronaut",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Strategy",
@@ -2711,7 +2651,7 @@ alt="Meld Games"
       name: "Cluster Truck",
       url: "https://wasm.rip/files/ClusterTruck/clustertruck.html",
       image: "Images/ClusterRush.png",
-      icon: "fa-truck",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Action",
@@ -2722,7 +2662,7 @@ alt="Meld Games"
       name: "CupHead",
       url: "https://wasm.rip/files/cuphead/index.html",
       image: "Images/.png",
-      icon: "fa-cup",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Action",
@@ -2733,7 +2673,7 @@ alt="Meld Games"
       name: "Granny 3",
       url: "https://wasm.rip/files/granny/granny3.html",
       image: "Images/.png",
-      icon: "fa-house",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Horror",
@@ -2744,7 +2684,7 @@ alt="Meld Games"
       name: "GTA 3",
       url: "https://wasm.rip/files/gta3/index.html",
       image: "Images/GTA5.png",
-      icon: "fa-car",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "Action",
@@ -2755,7 +2695,7 @@ alt="Meld Games"
       name: "How To Fish ",
       url: "https://wasm.rip/files/HowToFish/HowToFish.html",
       image: "Images/.png",
-      icon: "fa-fish",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "",
@@ -2766,7 +2706,7 @@ alt="Meld Games"
       name: "Inscryption",
       url: "https://wasm.rip/files/inscryption/index.html",
       image: "Images/.png",
-      icon: "fa-",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "",
@@ -2777,7 +2717,7 @@ alt="Meld Games"
       name: "Lethal",
       url: "https://wasm.rip/files/lethal/index.html",
       image: "Images/.png",
-      icon: "fa-",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "",
@@ -2788,7 +2728,7 @@ alt="Meld Games"
       name: "Miside",
       url: "https://wasm.rip/files/miside/miside.html",
       image: "Images/.png",
-      icon: "fa-",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "",
@@ -2799,7 +2739,7 @@ alt="Meld Games"
       name: "OneShot",
       url: "https://wasm.rip/files/oneshot-wme/index.html",
       image: "Images/.png",
-      icon: "fa-",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "",
@@ -2810,7 +2750,7 @@ alt="Meld Games"
       name: "Peak",
       url: "https://wasm.rip/files/peak/PEAK.html",
       image: "Images/.png",
-      icon: "fa-mountain",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "",
@@ -2821,7 +2761,7 @@ alt="Meld Games"
       name: "Stardew Valley",
       url: "https://wasm.rip/files/stardewvalley/index.html",
       image: "Images/.png",
-      icon: "fa-mountain",
+      icon: "fa-circle-play",
       a: "#9c6a43",
       b: "#2b211b",
       category: "",
@@ -3131,7 +3071,7 @@ alt="Meld Games"
     card.className = "game-card random-game-card";
     card.tabIndex = 0;
     card.setAttribute("role", "button");
-    card.setAttribute("aria-label", "Choose a random game");
+    card.setAttribute("aria-label", " random game");
   
     const cover = document.createElement("div");
     cover.className = "cover";
@@ -3142,7 +3082,7 @@ alt="Meld Games"
   
     const label = document.createElement("span");
     label.className = "cover-label";
-    label.textContent = "LET FATE DECIDE";
+    label.textContent = "Roll A Random Game!";
   
     cover.append(icon, label);
   
@@ -3260,7 +3200,7 @@ alt="Meld Games"
     track.className = "random-reel-track";
     track.id = "randomReelTrack";
   
-    
+    // No visible center box: the middle card is identified by brightness and size.
     reelWindow.appendChild(track);
     stage.appendChild(reelWindow);
   
@@ -3340,34 +3280,6 @@ alt="Meld Games"
     });
   }
   
-  function burstRandomParticles() {
-    const particles = $("randomParticles");
-    if (!particles) return;
-  
-    particles.replaceChildren();
-  
-    for (let index = 0; index < 34; index++) {
-      const particle = document.createElement("span");
-      particle.className = "random-particle";
-  
-      const angle = Math.random() * Math.PI * 2;
-      const distance = 90 + Math.random() * 210;
-  
-      particle.style.setProperty(
-        "--particle-x",
-        `${Math.cos(angle) * distance}px`
-      );
-      particle.style.setProperty(
-        "--particle-y",
-        `${Math.sin(angle) * distance}px`
-      );
-      particle.style.animationDelay = `${Math.random() * 120}ms`;
-  
-      particles.appendChild(particle);
-    }
-  
-    setTimeout(() => particles.replaceChildren(), 1100);
-  }
   
   function stopRandomReelAnimation() {
     clearTimeout(randomPickerTimer);
@@ -3397,7 +3309,7 @@ if (stopped) return;
 const elapsed = audio.currentTime - startTime;
 if (elapsed >= duration / 1000) return;
 
-
+// Ticks start fast, then gradually slow down like a slot-machine reel.
 const progress = elapsed / (duration / 1000);
 const delay = 0.035 + progress * progress * 0.19;
 const now = audio.currentTime;
@@ -3593,7 +3505,7 @@ audio.close().catch(() => {});
     loadingSpinner.hidden = false;
     loadingTitle.textContent = "Loading game";
     loadingText.textContent =
-      "Please wait while the game page loads inside Game Hub.";
+      "Please wait while the game page loads inside Meld.";
     retryButton.hidden = true;
     setStatus("Loading game...");
   }
@@ -3602,7 +3514,7 @@ audio.close().catch(() => {});
     loadingSpinner.hidden = true;
     loadingTitle.textContent = "Game may not be embeddable";
     loadingText.textContent =
-      "This site may block embedded play, or it may be taking too long to respond. Try reloading. Some sites cannot run inside an iframe.";
+      "This site may block embedded play, or it may be taking too long to respond. Try reloading. Some sites might not run.";
     retryButton.hidden = false;
     setStatus("Unable to confirm gameplay", "waiting");
   }
