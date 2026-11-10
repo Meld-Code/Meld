@@ -198,17 +198,6 @@ header {
     place-items: center;
     width: 34px;
     height: 34px;
-
-    border: 1px solid rgba(183, 243, 92, .38);
-    border-radius: 10px;
-
-    background: ;
-    color: #101708;
-    font-size: 14px;
-    font-weight: 950;
-    box-shadow:
-        0 5px 15px rgba(118, 185, 0, .2),
-        inset 0 1px 0 rgba(255, 255, 255, .3);
 }
 
 .logo {
@@ -267,16 +256,16 @@ nav button:active {
 }
 
 #signout {
-    border-color: rgba(255, 116, 125, .3);
-    background: rgba(69, 27, 31, .72);
-    color: #ffabb1;
+    border-color: rgba(53, 75, 43, .9);
+    background: var(--green-light);
+    color: rgba(53, 75, 43, .9);
 }
 
 #signout:hover {
-    border-color: var(--red);
-    background: rgba(93, 35, 41, .85);
-    color: #ffc0c4;
-    box-shadow: 0 0 0 3px rgba(255, 98, 110, .11);
+    border-color: var(--green);
+    background:rgba(53, 75, 43, .9);
+    color: var(--green-light);
+    box-shadow: 0 0 0 3px rgba(53, 75, 43, .9);
 }
 
 #signout:disabled {
@@ -410,7 +399,7 @@ main {
 
     background:
         linear-gradient(115deg, rgba(118, 185, 0, .3), transparent 48%),
-        linear-gradient(160deg, #263a20, #101810 70%);
+        linear-gradient(160deg, #263a20, rgba(118, 185, 0, .3));
 }
 
 
@@ -466,7 +455,7 @@ main {
 }
 
 .avatar:hover {
-    transform: translateY(-5px) rotate(-2deg);
+    transform: translateY(-5px) rotate(-4deg);
     border-color: var(--green-light);
     box-shadow:
         0 22px 42px rgba(0, 0, 0, .55),
@@ -536,10 +525,7 @@ main {
     text-transform: uppercase;
 }
 
-.rank::before {
-    content: "★";
-    font-size: 10px;
-}
+
 
 /* Statistics */
 
@@ -910,6 +896,31 @@ footer {
         scroll-behavior: auto !important;
     }
 }
+
+.comingSoonTitle {
+    position: absolute;
+    height: 30px;
+    width: auto;
+    top: -10px;
+    left: 600px;
+    rotate: 20deg;
+    color: var(--green-light);
+    font-size: clamp(26px, 2.2vw, 21px);
+    font-weight: 900;
+    letter-spacing: -.4px;
+    overflow-wrap: anywhere;
+    font-variant-numeric: tabular-nums;
+
+}
+
+.profileImg1 {
+    position: absolute;
+    height: 200px;
+    width: auto;
+    top: 5px;
+    left: -35px;
+    box-shadow: black;
+}
 </style>
 </head>
 <body>
@@ -917,7 +928,7 @@ footer {
 <div class="glow glow-two"></div>
 <header>
     <a class="brand" href="./index.html">
-        <span class="brand-mark">M</span>
+        <span class="brand-mark"></span>
         <span class="logo">Meld</span>
     </a>
 <nav>
@@ -940,11 +951,13 @@ footer {
 </div>
 
 <section class="card profile-card">
-    <div class="profile-cover"></div>
+    <div class="profile-cover">
+        <img class="profileImg1" src="Images/Chameleon.png">
+    </div>
 
     <div class="profile-body">
         <div class="avatar" id="avatar">?</div>
-
+<div class="comingSoonTitle">More Coming Soon</div>
         <div class="profile-info">
             <div class="username" id="username">
                 Loading profile...
@@ -959,7 +972,7 @@ footer {
     </div>
 </section>
 
-<section class="card">
+<br>
     <div class="card-heading">
         <div>
             <h2>Account Overview</h2>
@@ -988,9 +1001,9 @@ footer {
             <div class="stat-value" id="gameCount">0</div>
         </div>
     </div>
-</section>
 
-<section class="card">
+<br>
+
     <div class="card-heading">
         <div>
             <h2>Favorite Games</h2>
@@ -1001,7 +1014,7 @@ footer {
     <div class="games" id="games">
         <span class="empty-games">Loading games...</span>
     </div>
-</section>
+
 
 <p id="message" role="status">
     Connecting to your account...
