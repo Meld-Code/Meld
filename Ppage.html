@@ -1391,11 +1391,11 @@ width: max-content;
 height: 100%;
 will-change: transform;
 }
-/* Hide the center marker: the middle card is highlighted by brightness only */
+
 .random-reel-selection {
 display: none !important;
 }
-/* Reel card uses library-style card proportions and appearance */
+
 .random-reel-item {
 --reel-scale: .72;
 --reel-opacity: .2;
@@ -3260,7 +3260,7 @@ alt="Meld Games"
     track.className = "random-reel-track";
     track.id = "randomReelTrack";
   
-    // No visible center box: the middle card is identified by brightness and size.
+    
     reelWindow.appendChild(track);
     stage.appendChild(reelWindow);
   
@@ -3397,7 +3397,7 @@ if (stopped) return;
 const elapsed = audio.currentTime - startTime;
 if (elapsed >= duration / 1000) return;
 
-// Ticks start fast, then gradually slow down like a slot-machine reel.
+
 const progress = elapsed / (duration / 1000);
 const delay = 0.035 + progress * progress * 0.19;
 const now = audio.currentTime;
