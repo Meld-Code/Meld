@@ -1,6 +1,6 @@
-/* ============================================================
-All Index.html Meld Files. Oh God, I need to make more files.....
-============================================================ */
+/* 
+this is so long Oh God, I need to make more files in the future.....
+ */
     
 :root {
     color-scheme: dark;
@@ -68,9 +68,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     outline: 2px solid var(--accent-light);
     outline-offset: 3px;
     }
-    /* ============================================================
+    /* 
     SETTINGS BUTTON AND PANEL
-    ============================================================ */
+     */
     .settingsButton {
     position: fixed;
     top: 21px;
@@ -265,9 +265,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     outline: 2px solid var(--accent-light);
     outline-offset: 3px;
     }
-    /* ============================================================
+    /* 
     WELCOME SCREEN
-    ============================================================ */
+     */
     .welcome {
     position: fixed;
     inset: 0;
@@ -726,9 +726,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     text-transform: uppercase;
     
     }
-    /* ============================================================
+    /* 
     BACKGROUND
-    ============================================================ */
+    */
     .bg {
     position: fixed;
     inset: 0;
@@ -828,9 +828,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     
     }
-    /* ============================================================
+    /* 
     CENTER AND HERO
-    ============================================================ */
+  */
     .center {
     position: absolute;
     top: 50%;
@@ -875,9 +875,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     filter: drop-shadow(0 12px 24px #0008);
     
     }
-    /* ============================================================
+    /* 
     SEARCH
-    ============================================================ */
+    */
     .search {
     width: 100%;
     height: 62px;
@@ -966,9 +966,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     transform: translateY(-1px);
     box-shadow: 0 8px 20px #76b90055;
     }
-    /* ============================================================
+    /* 
     PHYSICS WORLD AND BLOCKS
-    ============================================================ */
+ */
     .world {
     position: fixed;
     inset: 0;
@@ -1145,9 +1145,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
         inset 0 1px 0 #ffffff20;
     
     }
-    /* ============================================================
+    /* 
     BROWSER OVERLAY
-    ============================================================ */
+    */
     .browser {
     position: fixed;
     inset: 14px;
@@ -1241,9 +1241,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     background: #fff;
     
     }
-    /* ============================================================
+    /* 
     FOOTER AND SHORTCUTS
-    ============================================================ */
+     */
     .hint {
     position: fixed;
     bottom: 19px;
@@ -1272,9 +1272,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     color: var(--muted);
     
     }
-    /* ============================================================
+    /* 
     LOADING SCREEN
-    ============================================================ */
+     */
     .loadingScreen {
     position: fixed;
     inset: 0;
@@ -1424,9 +1424,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     }
     
     }
-    /* ============================================================
+    /* 
     INFORMATION PANEL
-    ============================================================ */
+     */
     .infoButton {
     position: fixed;
     right: 18px;
@@ -1598,9 +1598,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     }
 
 
-	/* ============================================================
+	/* 
     PARTNERS PANEL
-    ============================================================ */
+ */
     .partnersButton {
     position: fixed;
     right: 70px;
@@ -1812,9 +1812,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
       
 
 
-    /* ============================================================
+    /* 
     DATE AND TIME
-    ============================================================ */
+     */
     .dateTime {
     position: fixed;
     left: 18px;
@@ -1871,9 +1871,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     .dateTime:hover strong {
     color: var(--accent-light);
     }
-    /* ============================================================
+    /* 
     RANDOM AD SYSTEM
-    ============================================================ */
+     */
     .randomAd {
     position: fixed;
     left: 50%;
@@ -1982,9 +1982,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     transform: translateY(-2px);
     box-shadow: 0 8px 20px #76b90044;
     }
-    /* ============================================================
+    /* 
     CIPHANON CONTROL PANEL
-    ============================================================ */
+     */
     #controlPanelToggle {
     min-width: 40px;
     height: 38px;
@@ -2271,9 +2271,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     opacity: .85;
     
     }
-    /* ============================================================
+    /* 
     ONLINE VISITOR COUNTER
-    ============================================================ */
+     */
     .online-counter {
     position: fixed;
     top: 25px;
@@ -2316,9 +2316,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     color: var(--accent-light);
     font-weight: 800;
     }
-    /* ============================================================
+    /*
     DISCORD BUTTON
-    ============================================================ */
+     */
     .discordButton {
     position: fixed;
     right: 18px;
@@ -2355,9 +2355,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     transform: translateY(-2px) scale(1.05);
     box-shadow: 0 8px 20px #5865f255;
     }
-    /* ============================================================
+    /*
     DECORATIVE BANNER
-    ============================================================ */
+   */
     .bannerBlock {
     position: absolute;
     right: -90px;
@@ -2379,9 +2379,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     transform: rotate(50deg);
     
     }
-    /* ============================================================
+    /* 
     CUSTOM CURSOR
-    ============================================================ */
+     */
     html,
     body,
     body * {
@@ -2405,9 +2405,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     box-shadow: 0 0 14px #a3e63599;
     
     }
-    /* ============================================================
+    /* 
     MOBILE RESPONSIVE STYLES
-    ============================================================ */
+     */
     @media (max-width: 700px) {
     .settingsButton {
     top: 10px;
@@ -2595,9 +2595,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     }
     
     }
-    /* ============================================================
-    SAFE BUCKET TUTORIAL
-    ============================================================ */
+    /* 
+    Meld TUTORIAL
+     */
     #tutorialPrompt[hidden],
     #tutorialOverlay[hidden],
     #tutorialSpotlightLayer[hidden] {
@@ -2815,9 +2815,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     transition: width .25s ease;
     
     }
-    /* ============================================================
+    /* 
     TUTORIAL SPOTLIGHT
-    ============================================================ */
+  */
     .tutorial-spotlight-layer {
     position: fixed;
     inset: 0;
@@ -2939,9 +2939,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     }
     
     }
-    /* ============================================================
+    /* 
     COMPACT BLOCK MODE
-    ============================================================ */
+*/
     .world.compact {
     position: fixed;
     inset: auto 0 auto 0;
@@ -3032,9 +3032,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     font-size: 9px;
     letter-spacing: 1.5px;
     }
-    /* ============================================================
+    /* 
     RESPONSIVE TUTORIAL AND BLOCKS
-    ============================================================ */
+     */
     @media (max-width: 700px) {
     .tutorial-overlay {
     padding: 14px;
@@ -3119,9 +3119,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
     }
     
     }
-    /* ============================================================
+    /* 
     REDUCED MOTION
-    ============================================================ */
+     */
     @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -3168,9 +3168,9 @@ All Index.html Meld Files. Oh God, I need to make more files.....
 }
 
 
-/* ============================================================
+/* 
 PROFILE AND LEADERBOARD BUTTONS
-============================================================ */
+ */
 .topLeftButtons {
     position: fixed;
     top: 21px;
@@ -3334,9 +3334,9 @@ PROFILE AND LEADERBOARD BUTTONS
 
 }
 
-/* ============================================================
-PROFILE AND LEADERBOARD â€” MOBILE
-============================================================ */
+/* 
+PROFILE AND LEADERBOARD MOBILE
+ */
 @media (max-width: 700px) {
     .topLeftButtons {
         top: 10px;
@@ -3400,9 +3400,9 @@ PROFILE AND LEADERBOARD â€” MOBILE
     }
 
 }
-/* =========================================
+/* 
    REALISTIC BUILT-IN BROWSER CHROME
-========================================= */
+ */
 
 .browser {
   position: fixed;
@@ -3705,26 +3705,11 @@ PROFILE AND LEADERBOARD â€” MOBILE
   .browserExtraButtons .browserMenuButton {
     display: none;
   }
-}
+}  
 
-
-
-
-
-
-
-
-
-
-
-
-
-  
-    
-
-/* ============================================================
+/* 
    CHAT BUTTON
-============================================================ */
+ */
 
 .chatButton {
     position: fixed;
@@ -3813,9 +3798,9 @@ PROFILE AND LEADERBOARD â€” MOBILE
     display: none !important;
 }
 
-/* ============================================================
+/*
    CHAT PANEL
-============================================================ */
+*/
 
 .chatPanel {
     position: fixed;
@@ -3863,9 +3848,9 @@ PROFILE AND LEADERBOARD â€” MOBILE
     }
 }
 
-/* ============================================================
+/* 
    CHAT HEADER
-============================================================ */
+ */
 
 .chatHeader {
     min-height: 68px;
@@ -3924,9 +3909,9 @@ PROFILE AND LEADERBOARD â€” MOBILE
     border-color: rgba(166, 255, 104, .4);
 }
 
-/* ============================================================
+/* 
    ONLINE STATUS
-============================================================ */
+ */
 
 .chatOnlineIndicator {
     display: block;
@@ -3951,9 +3936,9 @@ PROFILE AND LEADERBOARD â€” MOBILE
     box-shadow: 0 0 8px #a6ff6866;
 }
 
-/* ============================================================
+/*
    MESSAGES CONTAINER
-============================================================ */
+ */
 
 .chatMessages {
     flex: 1;
@@ -3990,9 +3975,9 @@ PROFILE AND LEADERBOARD â€” MOBILE
     line-height: 1.6;
 }
 
-/* ============================================================
+/*
    MESSAGE CARDS
-============================================================ */
+ */
 
 .chatMessage {
     width: fit-content;
@@ -4081,9 +4066,9 @@ PROFILE AND LEADERBOARD â€” MOBILE
     white-space: pre-wrap;
 }
 
-/* ============================================================
+/* 
    MESSAGE IMAGES
-============================================================ */
+ */
 
 .chatMessageImage {
     display: block;
@@ -4112,9 +4097,9 @@ PROFILE AND LEADERBOARD â€” MOBILE
     border-color: rgba(166, 255, 104, .5);
 }
 
-/* ============================================================
+/* 
    DELETE MESSAGE
-============================================================ */
+ */
 
 .chatDeleteButton {
     margin-top: 8px;
@@ -4139,9 +4124,9 @@ PROFILE AND LEADERBOARD â€” MOBILE
     border-color: rgba(232, 91, 91, .5);
 }
 
-/* ============================================================
+/*
    TYPING INDICATOR
-============================================================ */
+*/
 
 .chatTypingIndicator {
     min-height: 0;
@@ -4156,9 +4141,9 @@ PROFILE AND LEADERBOARD â€” MOBILE
     display: none;
 }
 
-/* ============================================================
+/* 
    CHAT FORM
-============================================================ */
+ */
 
 .chatForm {
     display: flex;
@@ -4171,9 +4156,9 @@ PROFILE AND LEADERBOARD â€” MOBILE
     background: rgba(10, 15, 12, .75);
 }
 
-/* ============================================================
+/* 
    USERNAME INPUT
-============================================================ */
+ */
 
 .chatNameInput {
     width: 100%;
@@ -4192,9 +4177,9 @@ PROFILE AND LEADERBOARD â€” MOBILE
     font-size: .78rem;
 }
 
-/* ============================================================
+/* 
    MESSAGE INPUT
-============================================================ */
+ */
 
 .chatMessageRow {
     display: flex;
@@ -4234,9 +4219,9 @@ PROFILE AND LEADERBOARD â€” MOBILE
         0 0 0 3px rgba(166, 255, 104, .08);
 }
 
-/* ============================================================
+/* 
    SEND BUTTON
-============================================================ */
+ */
 
 .chatSendButton {
     width: 44px;
@@ -4275,9 +4260,9 @@ PROFILE AND LEADERBOARD â€” MOBILE
     cursor: not-allowed;
 }
 
-/* ============================================================
+/* 
    IMAGE UPLOAD TOOLBAR
-============================================================ */
+ */
 
 .chatToolbar {
     display: flex;
@@ -4314,9 +4299,9 @@ PROFILE AND LEADERBOARD â€” MOBILE
     cursor: not-allowed;
 }
 
-/* ============================================================
+/* 
    IMAGE PREVIEW
-============================================================ */
+ */
 
 .chatImagePreview {
     display: flex;
@@ -4361,9 +4346,9 @@ PROFILE AND LEADERBOARD â€” MOBILE
     background: rgba(232, 91, 91, .12);
 }
 
-/* ============================================================
+/* 
    RESPONSIVE DESIGN
-============================================================ */
+ */
 
 @media (max-width: 700px) {
     .chatButton {
@@ -4416,9 +4401,9 @@ PROFILE AND LEADERBOARD â€” MOBILE
     }
 }
 
-/* ============================================================
+/* 
    ACCESSIBILITY
-============================================================ */
+ */
 
 .chatPanel button:focus-visible,
 .chatButton:focus-visible,
@@ -4449,9 +4434,9 @@ PROFILE AND LEADERBOARD â€” MOBILE
   height: auto;
 }
 
-/* ============================================================
+/* 
 MOVIE PAGE WARNING
-============================================================ */
+ */
 .moviesWarningOverlay {
 position: fixed;
 inset: 0;
@@ -4564,10 +4549,9 @@ padding: 22px;
 
 }
 
-/* ============================================================
-   MELD CHAT â€” DISCORD-STYLE LAYOUT
-   Overrides the retired compact chat-window styles above.
-============================================================ */
+/* 
+   MELD CHAT DISCORD-STYLE LAYOUT
+ */
 
 .chatPanel {
     position: fixed;
