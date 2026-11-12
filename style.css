@@ -2,7 +2,7 @@
 this is so long Oh God, I need to make more files in the future.....
  */
     
-:root {
+ :root {
     color-scheme: dark;
     --bg: #101210;
     --panel: #191c19;
@@ -915,12 +915,12 @@ this is so long Oh God, I need to make more files in the future.....
     
     }
     .searchIcon {
-    width: 45px;
+    width: 35px;
     display: grid;
     place-items: center;
     
     color: var(--accent-light);
-    font-size: 19px;
+    font-size: 35px;
     
     }
     .search input {
@@ -1166,7 +1166,7 @@ this is so long Oh God, I need to make more files in the future.....
     }
     .browser.open {
     display: flex;
-        z-index: 99999999999999;
+        z-index: 10000;
     animation: browserIn .25s ease;
     }
     @keyframes browserIn {
@@ -2391,7 +2391,7 @@ this is so long Oh God, I need to make more files in the future.....
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 999999999999999999999999;
+    z-index: 2147483647;
     width: 15px;
     height: 15px;
     
