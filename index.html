@@ -310,37 +310,190 @@
 
   
   <!-- INFO PANEL -->
-  <div class="infoOverlay" id="infoOverlay" hidden>
-    <div class="infoPanel" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
-      <button class="infoClose" id="infoClose" type="button" aria-label="Close information">✕</button>
+<div class="infoOverlay" id="infoOverlay" aria-hidden="true">
+  <div
+    class="infoPanel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="infoTitle"
+    tabindex="-1"
+  >
+    <header class="infoHeader">
+      <img id="myGif" src="TobnyiFire.gif" alt="Animation">
+      <div>
+        <span class="infoEyebrow">Meld infomation</span>
+        <h2 id="infoTitle">About Meld</h2>
+        <p>here is everything you need to know about meld</p>
+      </div>
+  <button
+    class="infoClose"
+    id="infoClose"
+    type="button"
+    aria-label="Close information"
+  >✕</button>
+</header>
 
-      <h2 id="infoTitle">About Meld</h2>
-      <p>A simple homepage for quick access to games, websites, search, and other tools.</p>
+<nav class="infoTabs" role="tablist" aria-label="Information sections">
+  <button
+    class="infoTab active"
+    id="infoTab-info"
+    type="button"
+    role="tab"
+    aria-selected="true"
+    aria-controls="infoPage-info"
+    data-info-page="info"
+  >Info</button>
 
-        <div class="infoItem">
-          <strong>Physics Blocks</strong>
-          <span>Drag the blocks around the screen and watch them collide, bounce, rotate, and respond to gravity when moving blocks are enabled.</span>
+  <button
+    class="infoTab"
+    id="infoTab-team"
+    type="button"
+    role="tab"
+    aria-selected="false"
+    aria-controls="infoPage-team"
+    data-info-page="team"
+    tabindex="-1"
+  >Team</button>
 
-        <div class="infoItem">
-          <strong>Reset Rotation</strong>
+  <button
+    class="infoTab"
+    id="infoTab-ranks"
+    type="button"
+    role="tab"
+    aria-selected="false"
+    aria-controls="infoPage-ranks"
+    data-info-page="ranks"
+    tabindex="-1"
+  >Ranks</button>
+
+  <button
+    class="infoTab"
+    id="infoTab-updates"
+    type="button"
+    role="tab"
+    aria-selected="false"
+    aria-controls="infoPage-updates"
+    data-info-page="updates"
+    tabindex="-1"
+  >Updates</button>
+</nav>
+
+<main class="infoContent">
+  <section
+    class="infoPage active"
+    id="infoPage-info"
+    role="tabpanel"
+    aria-labelledby="infoTab-info"
+    data-info-section="info"
+  >
+  <h3><i class="fa-solid fa-info"></i>&nbsp;Info</h3>
+    <p>Learn about the features available on the Meld .</p>
+
+    <div class="infoCards">
+      <!--<article class="infoItem">
+        <span class="infoIcon" aria-hidden="true">▦</span>
+        <div>
+          <strong>Physics blocks</strong>
+          <span>Drag blocks around the screen. When moving blocks are enabled, they collide, bounce, rotate, and respond to gravity.</span>
+        </div>
+      </article>
+
+      <article class="infoItem">
+        <span class="infoIcon" aria-hidden="true">⟳</span>
+        <div>
+          <strong>Reset rotation</strong>
           <span>Press and hold a block for 2.5 seconds without dragging it to return it upright.</span>
         </div>
+      </article>
 
-        <div class="infoItem">
-          <strong>Open Sites</strong>
-          <span>Click a block normally to open its assigned website.</span>
+      <article class="infoItem">
+        <span class="infoIcon" aria-hidden="true">↗</span>
+        <div>
+          <strong>Open sites</strong>
+          <span>Click a block to open its assigned website.</span>
         </div>
+      </article>
 
-        <div class="infoItem">
+      <article class="infoItem">
+        <span class="infoIcon" aria-hidden="true">⌕</span>
+        <div>
           <strong>Search</strong>
           <span>Type a search term or website into the search bar and press Go.</span>
         </div>
-      </div>
+      </article> -->
     </div>
-    <img id="myGif" src="TobnyiFire.gif" alt="Animation">
+  </section>
+
+  <section
+    class="infoPage"
+    id="infoPage-team"
+    role="tabpanel"
+    aria-labelledby="infoTab-team"
+    data-info-section="team"
+    hidden
+  >
+    <h3><i class="fa-solid fa-users"></i>&nbsp;The Meld team</h3>
+    <p>Meet the people and group behind Meld.</p>
+
+    <!--<div class="infoCards">
+      <article class="infoItem">
+        <span class="infoIcon" aria-hidden="true">✦</span>
+        <div>
+          <strong>CiphAnon Studios</strong>
+          <span>Meld is a project created by CiphAnon Studios.</span>
+        </div>
+      </article>
+    </div>-->
+  </section>
+
+ <section
+    class="infoPage"
+    id="infoPage-ranks"
+    role="tabpanel"
+    aria-labelledby="infoTab-ranks"
+    data-info-section="ranks"
+    hidden
+  >
+    <h3><i class="fa-solid fa-award"></i>&nbsp;Ranks</h3>
+    <p>Meld has a large list of different ranks claimable to the comunity to earn.</p>
+
+    <!--<div class="infoCards">
+      <article class="infoItem">
+        <span class="infoIcon" aria-hidden="true">★</span>
+        <div>
+          <strong>Rank information</strong>
+          <span>Add rank names, descriptions, or requirements for your community here.</span>
+        </div>
+      </article>
+    </div>-->
+  </section>
+
+  <section
+    class="infoPage"
+    id="infoPage-updates"
+    role="tabpanel"
+    aria-labelledby="infoTab-updates"
+    data-info-section="updates"
+    hidden
+  >
+    <h3><i class="fa-solid fa-cloud-arrow-up"></i>&nbsp;Updates</h3>
+    <p>Check back here for Meld news and changes to either Meld Or Meld Bookmark.</p>
+
+    <!--<div class="infoCards">
+      <article class="infoItem">
+        <span class="infoIcon" aria-hidden="true">↻</span>
+        <div>
+          <strong>Latest updates</strong>
+          <span>Add release notes and announcements here when new updates are available.</span>
+        </div>
+      </article>-->
+    </div>
+  </section>
+</main>
+
   </div>
-
-
+ <!-- <img id="myGif" src="TobnyiFire.gif" alt="Animation"> -->
+</div>
 <!-- MELD CHAT BUTTON -->
 <button
   id="chatButton"
