@@ -32,62 +32,24 @@ html, body {
 
 #destination {
     position: absolute;
-    top: 55px;
-    left: 0;
+    inset: 0;
     width: 100%;
-    height: calc(100% - 55px);
+    height: 100%;
     border: none;
     background: white;
-}
-
-#toolbar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 55px;
-    width: 100%;
-    background: #151515;
-    display: flex;
-    align-items: center;
-    padding: 0 18px;
-    gap: 15px;
-    z-index: 5;
-    border-bottom: 1px solid #292929;
-}
-
-#logo {
-    color: #ff7518;
-    font-size: 19px;
-    font-weight: 800;
-    letter-spacing: 2px;
-}
-
-#reload {
-    margin-left: auto;
-    background: #252525;
-    color: white;
-    border: 1px solid #383838;
-    border-radius: 7px;
-    padding: 9px 15px;
-    cursor: pointer;
-    font-size: 13px;
-}
-
-#reload:hover {
-    background: #ff7518;
 }
 
 #loading {
     position: fixed;
     inset: 0;
-    background: #101010;
     z-index: 10;
+    background: #101010;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 18px;
-    transition: opacity .4s ease;
+    gap: 20px;
+    transition: opacity .5s ease;
 }
 
 #loading.hidden {
@@ -95,24 +57,24 @@ html, body {
     pointer-events: none;
 }
 
-.loading-logo {
-    color: #ff7518;
-    font-size: 35px;
+.logo {
+    font-size: 36px;
     font-weight: 900;
     letter-spacing: 5px;
+    color: #b6ff00;
 }
 
-.loading-text {
-    color: #888;
-    font-size: 12px;
-    letter-spacing: 2px;
+.subtitle {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #777;
 }
 
 .spinner {
-    width: 32px;
-    height: 32px;
-    border: 3px solid #303030;
-    border-top-color: #ff7518;
+    width: 35px;
+    height: 35px;
+    border: 3px solid #292929;
+    border-top-color: #b6ff00;
     border-radius: 50%;
     animation: spin .8s linear infinite;
 }
@@ -130,52 +92,38 @@ html, body {
     src="https://amethyst.zone/browse">
 </iframe>
 
-<div id="toolbar">
-    <div id="logo">MELD PROXY</div>
-    <button id="reload" onclick="reloadFrame()">↻ Reload</button>
-</div>
-
 <iframe
     id="destination"
-    src="https://amethyst.zone/scram/service/https%3A%2F%2Fwww.google.com"
-    onload="loaded()">
+    src="about:blank">
 </iframe>
 
 <div id="loading">
-    <div class="loading-logo">MELD</div>
+    <div class="logo">MELD</div>
     <div class="spinner"></div>
-    <div class="loading-text">INITIALIZING PROXY...</div>
+    <div class="subtitle">INITIALIZING PROXY</div>
 </div>
 
 <script>
 const destination = document.getElementById("destination");
 const loading = document.getElementById("loading");
 
-let loadTimeout;
+const target =
+"https://amethyst.zone/scram/service/https%3A%2F%2Fwww.google.com";
 
-function loaded() {
-    clearTimeout(loadTimeout);
+// Immediately load the destination underneath the overlay
+destination.src = target;
 
-    loading.classList.add("hidden");
-
-    setTimeout(() => {
-        loading.style.display = "none";
-    }, 450);
-}
-
-function reloadFrame() {
-    loading.style.display = "flex";
-    loading.classList.remove("hidden");
-
-    destination.src = destination.src;
-
-    loadTimeout = setTimeout(() => {
+// Once the iframe fires its load event, hide the overlay
+destination.addEventListener("load", () => {
+    if (destination.src !== "about:blank") {
         loading.classList.add("hidden");
+
         setTimeout(() => {
             loading.style.display = "none";
-        }, 450);
-    }, 15000);
-}
+        }, 500);
+    }
+});
+
 </script>
 
 </body>
