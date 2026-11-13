@@ -13,11 +13,16 @@
     box-sizing: border-box;
 }
 
+:root {
+    --lime: #b6ff00;
+    --bg: #090b08;
+}
+
 html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: #101010;
+    background: var(--bg);
     font-family: Arial, sans-serif;
 }
 
@@ -39,65 +44,345 @@ html, body {
     background: white;
 }
 
+/* LOADING SCREEN */
+
 #loading {
     position: fixed;
     inset: 0;
     z-index: 10;
-    background: #101010;
+    overflow: hidden;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 20px;
-    transition: opacity .5s ease;
+    background:
+        radial-gradient(ellipse at 50% 40%,
+        rgba(182,255,0,.10), transparent 42%),
+        #090b08;
+    transition: opacity .65s ease, visibility .65s ease;
 }
 
 #loading.hidden {
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
 }
 
-.logo {
-    color: #b6ff00;
-    font-size: 36px;
-    font-weight: 900;
-    letter-spacing: 5px;
+/* BACKGROUND */
+
+.grid-bg {
+    position: absolute;
+    inset: 0;
+    opacity: .12;
+    background-image:
+        linear-gradient(rgba(182,255,0,.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(182,255,0,.15) 1px, transparent 1px);
+    background-size: 55px 55px;
+    mask-image: radial-gradient(ellipse, black, transparent 75%);
 }
 
-.subtitle {
-    color: #777;
-    font-size: 11px;
-    letter-spacing: 3px;
-}
-
-.spinner {
-    width: 35px;
-    height: 35px;
-    border: 3px solid #292929;
-    border-top-color: #b6ff00;
+.glow {
+    position: absolute;
+    width: 400px;
+    height: 400px;
     border-radius: 50%;
-    animation: spin .8s linear infinite;
+    background: var(--lime);
+    filter: blur(170px);
+    opacity: .07;
+    animation: glow 5s ease-in-out infinite alternate;
 }
 
-@keyframes spin {
+@keyframes glow {
+    from { transform: scale(.8); opacity: .04; }
+    to { transform: scale(1.3); opacity: .12; }
+}
+
+/* MAIN CONTENT */
+
+.content {
+    position: relative;
+    z-index: 2;
+    width: 90%;
+    max-width: 430px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* LOGO */
+
+.logo-art {
+    position: relative;
+    width: 112px;
+    height: 112px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+}
+
+.logo-ring {
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(182,255,0,.3);
+    border-radius: 30px;
+    transform: rotate(45deg);
+    animation: ring 12s linear infinite;
+}
+
+.logo-ring.inner {
+    inset: 12px;
+    border-color: rgba(182,255,0,.6);
+    border-radius: 23px;
+    animation-direction: reverse;
+    animation-duration: 9s;
+}
+
+@keyframes ring {
+    to { transform: rotate(405deg); }
+}
+
+.logo-symbol {
+    width: 65px;
+    height: 65px;
+    filter: drop-shadow(0 0 15px rgba(182,255,0,.5));
+    position: relative;
+    z-index: 2;
+}
+
+/* BRAND */
+
+.brand {
+    color: white;
+    font-size: 43px;
+    font-weight: 900;
+    letter-spacing: 9px;
+    padding-left: 9px;
+}
+
+.brand span {
+    color: var(--lime);
+}
+
+.tagline {
+    color: #73796c;
+    font-size: 10px;
+    letter-spacing: 4px;
+    margin-top: 11px;
+    text-transform: uppercase;
+}
+
+/* STATUS PANEL */
+
+.status-panel {
+    width: 100%;
+    margin-top: 43px;
+    padding: 21px;
+    background: rgba(255,255,255,.025);
+    border: 1px solid rgba(182,255,0,.13);
+    border-radius: 14px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 10px 50px rgba(0,0,0,.25);
+}
+
+.status-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 17px;
+}
+
+.status-label {
+    color: #b9c0ae;
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--lime);
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+.dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--lime);
+    box-shadow: 0 0 10px var(--lime);
+    animation: pulse 1.3s infinite;
+}
+
+@keyframes pulse {
+    50% { opacity: .25; }
+}
+
+.status-message {
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+    margin-bottom: 16px;
+}
+
+/* PROGRESS BAR */
+
+.progress-track {
+    width: 100%;
+    height: 4px;
+    background: #242820;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 35%;
+    height: 100%;
+    background: var(--lime);
+    border-radius: 20px;
+    box-shadow: 0 0 12px var(--lime);
+    animation: progress 2s ease-in-out infinite;
+}
+
+@keyframes progress {
+    0% { transform: translateX(-110%); }
+    100% { transform: translateX(390%); }
+}
+
+.status-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 13px;
+    color: #62685b;
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+/* DECORATION */
+
+.orbit {
+    position: absolute;
+    width: 340px;
+    height: 340px;
+    border: 1px solid rgba(182,255,0,.06);
+    border-radius: 50%;
+    animation: orbit 35s linear infinite;
+}
+
+.orbit::before {
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background: var(--lime);
+    box-shadow: 0 0 15px var(--lime);
+    border-radius: 50%;
+    top: 30px;
+    left: 50px;
+}
+
+@keyframes orbit {
     to { transform: rotate(360deg); }
+}
+
+/* FOOTER */
+
+.footer {
+    position: absolute;
+    bottom: 27px;
+    color: #555b4d;
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+.footer span {
+    color: var(--lime);
 }
 </style>
 </head>
 
 <body>
 
-<!-- Step 2: Initialize Amethyst -->
+<!-- STEP 2: AMETHYST INITIALIZER -->
 <iframe id="initializer" src="about:blank"></iframe>
 
-<!-- Step 3 and 4: Destination -->
+<!-- STEP 3 + 4: DESTINATION -->
 <iframe id="destination" src="about:blank"></iframe>
 
-<!-- Step 1: Loading screen -->
+<!-- STEP 1: LOADING SCREEN -->
 <div id="loading">
-    <div class="logo">MELD</div>
-    <div class="spinner"></div>
-    <div class="subtitle" id="status">INITIALIZING PROXY</div>
+
+    <div class="grid-bg"></div>
+    <div class="glow"></div>
+    <div class="orbit"></div>
+
+    <div class="content">
+
+        <div class="logo-art">
+            <div class="logo-ring"></div>
+            <div class="logo-ring inner"></div>
+
+            <!-- Custom MELD symbol -->
+            <svg class="logo-symbol"
+                 viewBox="0 0 100 100"
+                 fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+
+                <path d="M18 75V25L50 55L82 25V75"
+                      stroke="#b6ff00"
+                      stroke-width="10"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+
+                <path d="M36 75V55L50 68L64 55V75"
+                      stroke="white"
+                      stroke-width="5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      opacity=".9"/>
+            </svg>
+        </div>
+
+        <div class="brand">MELD<span>.</span></div>
+
+        <div class="tagline">
+            Your gateway to the internet
+        </div>
+
+        <div class="status-panel">
+
+            <div class="status-top">
+                <div class="status-label">SYSTEM STATUS</div>
+
+                <div class="status-indicator">
+                    <div class="dot"></div>
+                    CONNECTING
+                </div>
+            </div>
+
+            <div class="status-message" id="status">
+                Initializing proxy connection...
+            </div>
+
+            <div class="progress-track">
+                <div class="progress-fill"></div>
+            </div>
+
+            <div class="status-footer">
+                <span id="step">INITIALIZATION</span>
+                <span>MELD PROXY</span>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="footer">
+        POWERED BY <span>CIPHANON STUDIOS</span>
+    </div>
+
 </div>
 
 <script>
@@ -105,53 +390,63 @@ const initializer = document.getElementById("initializer");
 const destination = document.getElementById("destination");
 const loading = document.getElementById("loading");
 const status = document.getElementById("status");
+const step = document.getElementById("step");
 
 const target =
 "https://amethyst.zone/scram/service/https%3A%2F%2Fwww.google.com";
 
-let destinationLoaded = false;
-let reloadDone = false;
+let firstLoad = false;
 let finished = false;
 
-// Step 5: Hide loading screen
+// STEP 5: Hide loading screen
 function finishLoading() {
     if (finished) return;
     finished = true;
 
-    loading.classList.add("hidden");
+    status.textContent = "Connection initialized!";
+    step.textContent = "COMPLETE";
 
     setTimeout(() => {
-        loading.style.display = "none";
-    }, 500);
+        loading.classList.add("hidden");
+    }, 350);
 }
 
-// Step 3 and 4
+// STEP 3 + 4: Load destination, then reload it
 destination.onload = () => {
-    if (!destinationLoaded) {
-        // First destination load completed
-        destinationLoaded = true;
 
-        status.textContent = "RELOADING DESTINATION";
+    if (!firstLoad) {
 
-        // Step 4: Reload the actual iframe
-        reloadDone = true;
+        firstLoad = true;
+
+        status.textContent = "Refreshing destination...";
+        step.textContent = "RELOADING";
+
+        // Reload destination underneath loading screen
         destination.src = target;
 
-    } else if (reloadDone) {
-        // Second destination load completed
+    } else {
+
         finishLoading();
+
     }
 };
 
-// Step 2: Load Amethyst first
+// STEP 2: Initialize Amethyst
 initializer.onload = () => {
-    status.textContent = "CONNECTING TO DESTINATION";
 
-    // Step 3: Load the real destination
+    status.textContent = "Connecting to destination...";
+    step.textContent = "CONNECTING";
+
+    // STEP 3: Load real destination
     destination.src = target;
+
 };
 
-// Start the sequence
+// STEP 1: Show loading screen immediately
+status.textContent = "Initializing proxy connection...";
+step.textContent = "INITIALIZATION";
+
+// Start sequence
 initializer.src = "https://amethyst.zone/browse";
 
 </script>
