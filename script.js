@@ -1223,30 +1223,80 @@ if (browserForwardButton && browserFrame) {
     });
 }
 
-/*  INFO PANEL  */
-
+/* INFO PANEL */
 const infoButton = document.getElementById("infoButton");
 const infoOverlay = document.getElementById("infoOverlay");
+const infoPanel = infoOverlay?.querySelector(".infoPanel");
 const infoClose = document.getElementById("infoClose");
-
-infoButton?.addEventListener("click", () => {
-    infoOverlay?.classList.add("open");
-});
-
-infoClose?.addEventListener("click", () => {
-    infoOverlay?.classList.remove("open");
-});
-
+function openInfoPanel() {
+if (!infoOverlay) return;
+infoOverlay.classList.add("open");
+infoOverlay.setAttribute("aria-hidden", "false");
+infoButton?.setAttribute("aria-expanded", "true");
+infoClose?.focus();
+}
+function closeInfoPanel() {
+if (!infoOverlay) return;
+infoOverlay.classList.remove("open");
+infoOverlay.setAttribute("aria-hidden", "true");
+infoButton?.setAttribute("aria-expanded", "false");
+infoButton?.focus();
+}
+infoButton?.addEventListener("click", openInfoPanel);
+infoClose?.addEventListener("click", closeInfoPanel);
 infoOverlay?.addEventListener("click", event => {
-    if (event.target === infoOverlay) {
-        infoOverlay.classList.remove("open");
-    }
+if (event.target === infoOverlay) {
+closeInfoPanel();
+}
+});
+document.addEventListener("keydown", event => {
+if (!infoOverlay?.classList.contains("open")) return;
+if (event.key === "Escape") {
+closeInfoPanel();
+return;
+}
+/* Let users switch tabs with the left and right arrow keys. */
+const currentTab = document.activeElement?.closest(".infoTab");
+if (!currentTab) return;
+const tabs = [...infoOverlay.querySelectorAll(".infoTab")];
+const currentIndex = tabs.indexOf(currentTab);
+if (event.key === "ArrowRight") {
+event.preventDefault();
+tabs[(currentIndex + 1) % tabs.length]?.click();
+tabs[(currentIndex + 1) % tabs.length]?.focus();
+} else if (event.key === "ArrowLeft") {
+event.preventDefault();
+const nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+tabs[nextIndex]?.click();
+tabs[nextIndex]?.focus();
+}
+});
+/* INFO PANEL TABS */
+const infoTabs = infoOverlay?.querySelectorAll(".infoTab") ?? [];
+const infoPages = infoOverlay?.querySelectorAll(".infoPage") ?? [];
+infoTabs.forEach(tab => {
+tab.addEventListener("click", () => {
+const selectedPage = tab.dataset.infoPage;
+infoTabs.forEach(button => {
+  const isSelected = button === tab;
+
+  button.classList.toggle("active", isSelected);
+  button.setAttribute("aria-selected", String(isSelected));
+  button.tabIndex = isSelected ? 0 : -1;
 });
 
-document.addEventListener("keydown", event => {
-    if (event.key === "Escape") {
-        infoOverlay?.classList.remove("open");
-    }
+infoPages.forEach(page => {
+  const isSelected = page.dataset.infoSection === selectedPage;
+
+  page.hidden = !isSelected;
+  page.classList.toggle("active", isSelected);
+});
+
+/* Keep the panel's scroll position at the top when changing sections. */
+const infoContent = infoPanel?.querySelector(".infoContent");
+if (infoContent) infoContent.scrollTop = 0;
+
+});
 });
 
 /*  PARTNERS PANEL  */
