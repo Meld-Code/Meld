@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Amethyst Pro. Loader</title>
+<title>Meld Proxy</title>
 
 <style>
 * {
@@ -17,7 +17,8 @@ html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: #111;
+    background: #101010;
+    font-family: Arial, sans-serif;
 }
 
 #initializer {
@@ -30,26 +31,152 @@ html, body {
 }
 
 #destination {
+    position: absolute;
+    top: 55px;
+    left: 0;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 55px);
     border: none;
+    background: white;
+}
+
+#toolbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 55px;
+    width: 100%;
+    background: #151515;
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    gap: 15px;
+    z-index: 5;
+    border-bottom: 1px solid #292929;
+}
+
+#logo {
+    color: #ff7518;
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+#reload {
+    margin-left: auto;
+    background: #252525;
+    color: white;
+    border: 1px solid #383838;
+    border-radius: 7px;
+    padding: 9px 15px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+#reload:hover {
+    background: #ff7518;
+}
+
+#loading {
+    position: fixed;
+    inset: 0;
+    background: #101010;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    transition: opacity .4s ease;
+}
+
+#loading.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loading-logo {
+    color: #ff7518;
+    font-size: 35px;
+    font-weight: 900;
+    letter-spacing: 5px;
+}
+
+.loading-text {
+    color: #888;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #303030;
+    border-top-color: #ff7518;
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 </style>
 </head>
 
 <body>
 
-<!-- Invisible Amethyst iframe -->
 <iframe
     id="initializer"
-    src="https://amethyst.zone/browse"
-></iframe>
+    src="https://amethyst.zone/browse">
+</iframe>
 
-<!-- Visible destination iframe -->
+<div id="toolbar">
+    <div id="logo">MELD PROXY</div>
+    <button id="reload" onclick="reloadFrame()">↻ Reload</button>
+</div>
+
 <iframe
     id="destination"
     src="https://amethyst.zone/scram/service/https%3A%2F%2Fwww.google.com"
-></iframe>
+    onload="loaded()">
+</iframe>
+
+<div id="loading">
+    <div class="loading-logo">MELD</div>
+    <div class="spinner"></div>
+    <div class="loading-text">INITIALIZING PROXY...</div>
+</div>
+
+<script>
+const destination = document.getElementById("destination");
+const loading = document.getElementById("loading");
+
+let loadTimeout;
+
+function loaded() {
+    clearTimeout(loadTimeout);
+
+    loading.classList.add("hidden");
+
+    setTimeout(() => {
+        loading.style.display = "none";
+    }, 450);
+}
+
+function reloadFrame() {
+    loading.style.display = "flex";
+    loading.classList.remove("hidden");
+
+    destination.src = destination.src;
+
+    loadTimeout = setTimeout(() => {
+        loading.classList.add("hidden");
+        setTimeout(() => {
+            loading.style.display = "none";
+        }, 450);
+    }, 15000);
+}
+</script>
 
 </body>
 </html>
