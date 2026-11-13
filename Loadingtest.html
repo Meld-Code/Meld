@@ -58,16 +58,16 @@ html, body {
 }
 
 .logo {
+    color: #b6ff00;
     font-size: 36px;
     font-weight: 900;
     letter-spacing: 5px;
-    color: #b6ff00;
 }
 
 .subtitle {
+    color: #777;
     font-size: 11px;
     letter-spacing: 3px;
-    color: #777;
 }
 
 .spinner {
@@ -87,42 +87,72 @@ html, body {
 
 <body>
 
-<iframe
-    id="initializer"
-    src="https://amethyst.zone/browse">
-</iframe>
+<!-- Step 2: Initialize Amethyst -->
+<iframe id="initializer" src="about:blank"></iframe>
 
-<iframe
-    id="destination"
-    src="about:blank">
-</iframe>
+<!-- Step 3 and 4: Destination -->
+<iframe id="destination" src="about:blank"></iframe>
 
+<!-- Step 1: Loading screen -->
 <div id="loading">
     <div class="logo">MELD</div>
     <div class="spinner"></div>
-    <div class="subtitle">INITIALIZING PROXY</div>
+    <div class="subtitle" id="status">INITIALIZING PROXY</div>
 </div>
 
 <script>
+const initializer = document.getElementById("initializer");
 const destination = document.getElementById("destination");
 const loading = document.getElementById("loading");
+const status = document.getElementById("status");
 
 const target =
 "https://amethyst.zone/scram/service/https%3A%2F%2Fwww.google.com";
 
-// Immediately load the destination underneath the overlay
-destination.src = target;
+let destinationLoaded = false;
+let reloadDone = false;
+let finished = false;
 
-// Once the iframe fires its load event, hide the overlay
-destination.addEventListener("load", () => {
-    if (destination.src !== "about:blank") {
-        loading.classList.add("hidden");
+// Step 5: Hide loading screen
+function finishLoading() {
+    if (finished) return;
+    finished = true;
 
-        setTimeout(() => {
-            loading.style.display = "none";
-        }, 500);
+    loading.classList.add("hidden");
+
+    setTimeout(() => {
+        loading.style.display = "none";
+    }, 500);
+}
+
+// Step 3 and 4
+destination.onload = () => {
+    if (!destinationLoaded) {
+        // First destination load completed
+        destinationLoaded = true;
+
+        status.textContent = "RELOADING DESTINATION";
+
+        // Step 4: Reload the actual iframe
+        reloadDone = true;
+        destination.src = target;
+
+    } else if (reloadDone) {
+        // Second destination load completed
+        finishLoading();
     }
-});
+};
+
+// Step 2: Load Amethyst first
+initializer.onload = () => {
+    status.textContent = "CONNECTING TO DESTINATION";
+
+    // Step 3: Load the real destination
+    destination.src = target;
+};
+
+// Start the sequence
+initializer.src = "https://amethyst.zone/browse";
 
 </script>
 
