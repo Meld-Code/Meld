@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Page</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      position: relative;
+      isolation: isolate;
+      min-height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      color: white;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #10131c;
+    }
+
+    /* Full-screen, endlessly repeating diagonal image pattern */
+    .moving-image-overlay {
+      position: fixed;
+      z-index: 0;
+      inset: -100%;
+      pointer-events: none;
+      opacity: 0.45;
+      background-image: url("./Discord/loop.png");
+      background-repeat: repeat;
+      background-size: 180px 180px;
+      animation: moveImagePattern 12s linear infinite;
+      transform: rotate(-12deg);
+    }
+
+    @keyframes moveImagePattern {
+      from {
+        background-position: 0 0;
+      }
+
+      to {
+        background-position: 180px 180px;
+      }
+    }
+
+    .back-button {
+      position: fixed;
+      z-index: 2;
+      top: 18px;
+      left: 18px;
+      padding: 9px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 7px;
+      color: white;
+      background: rgba(25, 25, 25, 0.8);
+      font: inherit;
+      text-decoration: none;
+    }
+
+    .page-title {
+      position: absolute;
+      z-index: 2;
+      top: 24px;
+      left: 50%;
+      width: min(70vw, 700px);
+      margin: 0;
+      transform: translateX(-50%);
+      text-align: center;
+      font-size: clamp(1.5rem, 4vw, 3rem);
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+    }
+
+    .main-image {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      left: 50%;
+      width: min(80vw, 700px);
+      max-height: 65vh;
+      object-fit: contain;
+      transform: translate(-50%, -50%);
+      border-radius: 14px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .moving-image-overlay {
+        animation-duration: 60s;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="moving-image-overlay" aria-hidden="true"></div>
+<a class="back-button" href="javascript:history.back()">← Back</a>
+  <h1 class="page-title">Your Page Title</h1>
+<img
+class="main-image"
+src="./discord/background.png"
+alt="Main image"
+
+
+</body>
+</html>
