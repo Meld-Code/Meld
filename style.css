@@ -887,7 +887,7 @@ this is so long Oh God, I need to make more files in the future.....
     gap: 8px;
     
     border: 1px solid #45533d;
-    border-radius: 12px;
+    border-radius: 25px;
     
     background: rgba(25, 31, 24, .92);
     
@@ -945,7 +945,7 @@ this is so long Oh God, I need to make more files in the future.....
     height: 48px;
     padding: 0 20px;
     border: 1px solid var(--accent);
-    border-radius: 9px;
+    border-radius: 15px;
     
     background: var(--accent);
     color: #10150a;
