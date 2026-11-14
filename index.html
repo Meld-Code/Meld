@@ -982,14 +982,8 @@
   <div class="browser" id="browser">
     <div class="browserChrome">
 
-      <div class="browserTabRow">
-        <div class="browserTab active">
-          <img src="Icons/Meld.png" alt="" class="browserTabIcon">
-          <span class="browserTabTitle">Meld Browser</span>
-          <button class="browserTabClose" id="closeBrowser" type="button" aria-label="Close browser">×</button>
-        </div>
-
-        <button class="newTabButton" type="button" aria-label="New tab">+</button>
+      <div class="browserTabRow" id="browserTabRow">
+        <button class="newTabButton" id="newBrowserTab" type="button" aria-label="New tab" title="New tab">+</button>
       </div>
 
       <div class="browserNavigationRow">
@@ -1016,7 +1010,7 @@
 
           <input id="browserAddress" class="browserAddressInput" type="text" value="meld://browser" autocomplete="off" spellcheck="false" aria-label="Address bar">
 
-          <button class="addressActionButton" type="button" aria-label="Bookmark page" title="Bookmark page">
+          <button class="addressActionButton" id="bookmarkCurrentPage" type="button" aria-label="Bookmark page" title="Bookmark page">
             <i class="fa-regular fa-star" aria-hidden="true"></i>
           </button>
         </div>
@@ -1026,8 +1020,8 @@
             <i class="fa-solid fa-skull" aria-hidden="true"></i>
           </button>
 
-          <button class="browserButton browserMenuButton" type="button" aria-label="Browser menu" title="Browser menu">
-            <i class="fa-solid fa-ellipsis-vertical" aria-hidden="true"></i>
+          <button class="browserButton browserMenuButton" id="showBookmarks" type="button" aria-label="Bookmarks" title="Bookmarks">
+            <i class="fa-solid fa-bookmark" aria-hidden="true"></i>
           </button>
         </div>
       </div>
@@ -1092,7 +1086,13 @@
     </div>
 
     <!-- PAGE CONTENT -->
-    <iframe id="browserFrame" title="Meld Browser" referrerpolicy="strict-origin-when-cross-origin" allow="fullscreen"></iframe>
+    <div id="browserViewport" class="browserViewport">
+      <iframe id="browserFrame" title="Meld Browser" referrerpolicy="strict-origin-when-cross-origin" allow="fullscreen"></iframe>
+    </div>
+    <div id="browserBookmarks" class="browserBookmarks" hidden>
+      <div class="browserBookmarksHeader"><strong>Bookmarks</strong><button id="closeBookmarks" type="button" aria-label="Close bookmarks">×</button></div>
+      <div id="browserBookmarkList" class="browserBookmarkList"></div>
+    </div>
   </div>
 
   <!-- ONLINE VISITOR TRACKER -->
