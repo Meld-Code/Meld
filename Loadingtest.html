@@ -27,6 +27,7 @@ html, body {
     height: 1px;
     opacity: 0;
     pointer-events: none;
+    border: none;
 }
 
 #destination {
@@ -45,9 +46,10 @@ html, body {
     background: #101010;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    transition: opacity .4s ease;
+    align-items: center;
+    gap: 20px;
+    transition: opacity .5s ease;
 }
 
 #loading.hidden {
@@ -56,24 +58,21 @@ html, body {
 }
 
 .logo {
-    font-size: 38px;
-    font-weight: 900;
-    letter-spacing: 6px;
     color: #b6ff00;
-    text-shadow: 0 0 25px #b6ff0040;
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: 5px;
 }
 
 .subtitle {
     color: #777;
-    font-size: 12px;
-    margin-top: 12px;
-    letter-spacing: 2px;
+    font-size: 11px;
+    letter-spacing: 3px;
 }
 
 .spinner {
-    width: 27px;
-    height: 27px;
-    margin-top: 32px;
+    width: 35px;
+    height: 35px;
     border: 3px solid #292929;
     border-top-color: #b6ff00;
     border-radius: 50%;
@@ -93,46 +92,56 @@ html, body {
 <iframe id="destination" src="about:blank"></iframe>
 
 <div id="loading">
-    <div class="logo">MELD</div>
-    <div class="subtitle">PROXY CONNECTION</div>
+    <img src="Icons/Meld.png">
+    <div class="logo">Meld Proxy</div>
     <div class="spinner"></div>
+    <div class="subtitle" id="status">INITIALIZING PROXY</div>
 </div>
 
 <script>
 const initializer = document.getElementById("initializer");
 const destination = document.getElementById("destination");
 const loading = document.getElementById("loading");
+const status = document.getElementById("status");
 
 const target =
 "https://amethyst.zone/scram/service/https%3A%2F%2Fwww.google.com";
 
-let firstLoad = false;
+let destinationLoaded = false;
+let reloadDone = false;
 let finished = false;
 
-// Step 5: Hide loading screen
 function finishLoading() {
     if (finished) return;
     finished = true;
 
     loading.classList.add("hidden");
+
+    setTimeout(() => {
+        loading.style.display = "none";
+    }, 500);
 }
 
-// Step 3 and 4: Load, then reload destination
 destination.onload = () => {
-    if (!firstLoad) {
-        firstLoad = true;
+    if (!destinationLoaded) {
+        destinationLoaded = true;
+
+        status.textContent = "RELOADING DESTINATION";
+
+        reloadDone = true;
         destination.src = target;
-    } else {
+
+    } else if (reloadDone) {
         finishLoading();
     }
 };
 
-// Step 2: Initialize Amethyst
 initializer.onload = () => {
+    status.textContent = "CONNECTING TO DESTINATION";
+
     destination.src = target;
 };
 
-// Step 1: Start loading
 initializer.src = "https://amethyst.zone/browse";
 
 </script>
