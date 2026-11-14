@@ -76,23 +76,204 @@ const browserBackButton = document.getElementById("backButton");
 const browserForwardButton = document.getElementById("forwardButton");
 const movingBlocksToggle = document.getElementById("movingBlocksToggle");
 
+const browserTabRow = document.getElementById("browserTabRow");
+const browserViewport = document.getElementById("browserViewport");
+const browserAddress = document.getElementById("browserAddress");
+const newBrowserTabButton = document.getElementById("newBrowserTab");
+const bookmarkButton = document.getElementById("bookmarkCurrentPage");
+const bookmarksPanel = document.getElementById("browserBookmarks");
+const bookmarkList = document.getElementById("browserBookmarkList");
+const showBookmarksButton = document.getElementById("showBookmarks");
+const closeBookmarksButton = document.getElementById("closeBookmarks");
+const HOME_URL = "meld://home";
+const BOOKMARKS_KEY = "meldBrowserBookmarksV1";
+let browserTabs = [];
+let activeBrowserTabId = null;
+let browserTabSequence = 0;
+let browserBookmarks = [];
+try { browserBookmarks = JSON.parse(readStorage(BOOKMARKS_KEY, "[]")) || []; } catch (_) {}
+
+function browserHomeDocument() {
+    return `<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>
+    *{box-sizing:border-box}body{margin:0;background:#101510;color:#eef5ec;font:15px Arial,sans-serif;min-height:100vh;display:grid;place-items:center;padding:28px}
+    main{width:min(760px,100%);text-align:center}.logo{font-size:13px;letter-spacing:.28em;color:#a6ff68;font-weight:800}
+    h1{font-size:clamp(32px,7vw,58px);margin:14px 0 8px}p{color:#9aa99b;margin:0 0 28px}
+    form{display:flex;gap:8px;background:#1b241d;border:1px solid #344333;border-radius:14px;padding:8px}
+    input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:white;padding:10px;font-size:15px}
+    button{border:0;border-radius:9px;background:#a6ff68;color:#14200f;padding:0 20px;font-weight:800;cursor:pointer}
+    .links{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:28px}
+    .links a{color:#dce8d8;text-decoration:none;background:#1b241d;border:1px solid #344333;border-radius:10px;padding:12px 16px}
+    .links a:hover{border-color:#a6ff68;color:#a6ff68}
+    </style></head><body><main><div class="logo">CIPHANON STUDIOS</div><h1>Meld Browser</h1><p>Your space on the web.</p>
+    <form id="search"><input id="q" placeholder="Search or enter a website address" autofocus><button>Go</button></form>
+    <div class="links"><a href="https://www.google.com">Google</a><a href="https://www.youtube.com">YouTube</a><a href="https://www.coolmathgames.com">Cool Math Games</a><a href="https://www.wikipedia.org">Wikipedia</a></div>
+    <script>document.getElementById('search').addEventListener('submit',e=>{e.preventDefault();parent.postMessage({type:'meld-browser-navigate',value:document.getElementById('q').value},'*')})<\/script>
+    </main></body></html>`;
+}
+
+function normalizeBrowserDestination(value) {
+    let text = String(value || "").trim();
+    if (!text || text === HOME_URL || text === "meld://browser") return HOME_URL;
+    if (/^(https?:\/\/|about:blank)/i.test(text)) return text;
+    if (/^(localhost|[\w-]+\.)+[\w-]{2,}([/:?#].*)?$/i.test(text)) return "https://" + text;
+    return "https://www.google.com/search?q=" + encodeURIComponent(text);
+}
+
+function currentBrowserTab() {
+    return browserTabs.find(tab => tab.id === activeBrowserTabId) || null;
+}
+
+function setBrowserTabUrl(tab, url) {
+    tab.url = normalizeBrowserDestination(url);
+
+    if (tab.url === HOME_URL) {
+        // srcdoc is only used for Meld's internal new-tab homepage.
+        tab.frame.removeAttribute("src");
+        tab.frame.srcdoc = browserHomeDocument();
+        tab.title = "New tab";
+    } else {
+        // IMPORTANT: remove srcdoc entirely. Even srcdoc="" overrides iframe.src
+        // and leaves the frame showing a blank about:srcdoc document.
+        tab.frame.removeAttribute("srcdoc");
+        tab.frame.src = tab.url;
+        try { tab.title = new URL(tab.url).hostname; } catch (_) { tab.title = "Page"; }
+    }
+    if (tab.id === activeBrowserTabId && browserAddress) browserAddress.value = tab.url === HOME_URL ? "meld://home" : tab.url;
+    renderBrowserTabs();
+}
+
+function renderBrowserTabs() {
+    if (!browserTabRow) return;
+    browserTabRow.querySelectorAll(".browserTab").forEach(el => el.remove());
+    const plus = newBrowserTabButton;
+    browserTabs.forEach(tab => {
+        const item = document.createElement("div");
+        item.className = "browserTab" + (tab.id === activeBrowserTabId ? " active" : "");
+        item.dataset.tabId = tab.id;
+        const icon = document.createElement("img");
+        icon.src = "Icons/Meld.png"; icon.alt = ""; icon.className = "browserTabIcon";
+        const title = document.createElement("span");
+        title.className = "browserTabTitle"; title.textContent = tab.title || "New tab";
+        const close = document.createElement("button");
+        close.type = "button"; close.className = "browserTabClose"; close.textContent = "×"; close.setAttribute("aria-label","Close tab");
+        close.addEventListener("click", event => { event.stopPropagation(); closeBrowserTab(tab.id); });
+        item.append(icon,title,close);
+        item.addEventListener("click", () => activateBrowserTab(tab.id));
+        browserTabRow.insertBefore(item, plus);
+    });
+}
+
+function activateBrowserTab(id) {
+    activeBrowserTabId = id;
+    browserTabs.forEach(tab => {
+        tab.frame.classList.toggle("active", tab.id === id);
+        tab.frame.style.display = tab.id === id ? "block" : "none";
+    });
+    const tab = currentBrowserTab();
+    if (tab && browserAddress) browserAddress.value = tab.url === HOME_URL ? "meld://home" : tab.url;
+    renderBrowserTabs();
+}
+
+function createBrowserTab(url = HOME_URL, shouldOpen = true) {
+    if (!browserViewport) return;
+    let frame;
+    if (browserTabs.length === 0 && browserFrame) {
+        frame = browserFrame;
+        frame.classList.add("browserTabFrame");
+    } else {
+        frame = document.createElement("iframe");
+        frame.title = "Meld Browser tab";
+        frame.referrerPolicy = "strict-origin-when-cross-origin";
+        frame.allow = "fullscreen";
+        frame.className = "browserTabFrame";
+        browserViewport.appendChild(frame);
+    }
+    frame.style.display = "none";
+    const tab = { id: "meld-tab-" + (++browserTabSequence), frame, url: HOME_URL, title: "New tab" };
+    browserTabs.push(tab);
+    setBrowserTabUrl(tab, url);
+    activateBrowserTab(tab.id);
+    if (shouldOpen) browser?.classList.add("open");
+    return tab;
+}
+
+function closeBrowserTab(id) {
+    const index = browserTabs.findIndex(tab => tab.id === id);
+    if (index < 0) return;
+    browserTabs[index].frame.remove();
+    browserTabs.splice(index,1);
+    if (!browserTabs.length) {
+        closeBrowserWindow();
+        createBrowserTab(HOME_URL, false);
+        return;
+    }
+    if (activeBrowserTabId === id) activateBrowserTab(browserTabs[Math.max(0,index-1)].id);
+}
+
 function openBrowser(url) {
-    if (!url || !browser || !browserFrame) return;
-
+    if (!url || !browser || !browserViewport) return;
     trackEvent("open_site", { site_name: url });
-
-    browserFrame.src = url;
+    const tab = currentBrowserTab() || createBrowserTab(HOME_URL, false);
+    setBrowserTabUrl(tab, url);
     browser.classList.add("open");
+    bookmarksPanel.hidden = true;
 }
 
 function closeBrowserWindow() {
-    if (!browser || !browserFrame) return;
-
+    if (!browser) return;
     browser.classList.remove("open");
-    browserFrame.src = "about:blank";
+    if (bookmarksPanel) bookmarksPanel.hidden = true;
 }
 
 closeBrowser?.addEventListener("click", closeBrowserWindow);
+newBrowserTabButton?.addEventListener("click", () => createBrowserTab(HOME_URL));
+browserAddress?.addEventListener("keydown", event => {
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+    openBrowser(normalizeBrowserDestination(browserAddress.value));
+    browserAddress.blur();
+});
+document.getElementById("homeButton")?.addEventListener("click", () => openBrowser(HOME_URL));
+document.getElementById("refreshButton")?.addEventListener("click", () => {
+    const tab = currentBrowserTab();
+    if (!tab) return;
+    if (tab.url === HOME_URL) setBrowserTabUrl(tab, HOME_URL);
+    else { const url = tab.url; tab.frame.src = "about:blank"; requestAnimationFrame(() => tab.frame.src = url); }
+});
+browserBackButton?.addEventListener("click", () => { try { currentBrowserTab()?.frame.contentWindow.history.back(); } catch (_) {} });
+browserForwardButton?.addEventListener("click", () => { try { currentBrowserTab()?.frame.contentWindow.history.forward(); } catch (_) {} });
+
+function saveBrowserBookmarks() {
+    writeStorage(BOOKMARKS_KEY, JSON.stringify(browserBookmarks));
+}
+function renderBrowserBookmarks() {
+    if (!bookmarkList) return;
+    bookmarkList.replaceChildren();
+    if (!browserBookmarks.length) {
+        const empty = document.createElement("p"); empty.className = "browserBookmarkEmpty"; empty.textContent = "No bookmarks yet. Tap the star to save a page."; bookmarkList.appendChild(empty); return;
+    }
+    browserBookmarks.forEach((bookmark,index) => {
+        const row = document.createElement("div"); row.className = "browserBookmarkItem";
+        const open = document.createElement("button"); open.type = "button"; open.className = "browserBookmarkOpen"; open.textContent = bookmark.title || bookmark.url;
+        open.addEventListener("click", () => { openBrowser(bookmark.url); bookmarksPanel.hidden = true; });
+        const remove = document.createElement("button"); remove.type = "button"; remove.className = "browserBookmarkRemove"; remove.textContent = "×"; remove.title = "Remove bookmark";
+        remove.addEventListener("click", () => { browserBookmarks.splice(index,1); saveBrowserBookmarks(); renderBrowserBookmarks(); });
+        row.append(open,remove); bookmarkList.appendChild(row);
+    });
+}
+bookmarkButton?.addEventListener("click", () => {
+    const tab = currentBrowserTab(); if (!tab || tab.url === HOME_URL) return;
+    if (!browserBookmarks.some(item => item.url === tab.url)) {
+        browserBookmarks.push({url:tab.url,title:tab.title || tab.url}); saveBrowserBookmarks();
+    }
+    bookmarkButton.classList.add("saved"); renderBrowserBookmarks();
+});
+showBookmarksButton?.addEventListener("click", () => { renderBrowserBookmarks(); bookmarksPanel.hidden = !bookmarksPanel.hidden; });
+closeBookmarksButton?.addEventListener("click", () => { bookmarksPanel.hidden = true; });
+window.addEventListener("message", event => {
+    if (event.data?.type === "meld-browser-navigate") openBrowser(normalizeBrowserDestination(event.data.value));
+});
+createBrowserTab(HOME_URL, false);
 
 /*  PHYSICS SETTINGS  */
 
@@ -490,16 +671,10 @@ movingBlocksToggle?.addEventListener("change", () => {
     setMovingBlocksEnabled(enabled);
 
 
-    if (browserFrame) {
-        const currentURL = browserFrame.src;
-
-        if (
-            currentURL &&
-            currentURL !== "about:blank" &&
-            browserFrame.getAttribute("src") !== "about:blank"
-        ) {
-            browserFrame.src = currentURL;
-        }
+    const activeTab = currentBrowserTab();
+    if (activeTab && activeTab.url !== HOME_URL) {
+        const currentURL = activeTab.url;
+        activeTab.frame.src = currentURL;
     }
 });
 
@@ -1207,21 +1382,6 @@ document.addEventListener("keydown", event => {
     }
 });
 
-if (browserBackButton && browserFrame) {
-    browserBackButton.addEventListener("click", () => {
-        try {
-            browserFrame.contentWindow.history.back();
-        } catch (_) {}
-    });
-}
-
-if (browserForwardButton && browserFrame) {
-    browserForwardButton.addEventListener("click", () => {
-        try {
-            browserFrame.contentWindow.history.forward();
-        } catch (_) {}
-    });
-}
 
 /* INFO PANEL */
 const infoButton = document.getElementById("infoButton");
@@ -2541,29 +2701,6 @@ setMovingBlocksEnabled(movingBlocksEnabled, false);
 
 objects.forEach(render);
 
-const refreshButton = document.getElementById("refreshButton");
-const homeButton = document.getElementById("homeButton");
-const browserAddress = document.getElementById("browserAddress");
-
-refreshButton?.addEventListener("click", () => {
-  const frame = document.getElementById("browserFrame");
-
-  if (frame?.src) {
-    frame.src = frame.src;
-  }
-});
-
-homeButton?.addEventListener("click", () => {
-  const frame = document.getElementById("browserFrame");
-
-  if (frame) {
-    frame.src = "about:blank";
-  }
-
-  if (browserAddress) {
-    browserAddress.value = "meld://browser";
-  }
-});
 
 // Movies page warning
 (() => {
