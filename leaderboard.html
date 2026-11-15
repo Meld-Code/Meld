@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0f0a">
+<title>Meld | Leaderboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="stylesheet" href="./meld-pages.css">
+<script src="./config.js"></script>
+</head>
+<body>
+<header class="pageHeader">
+  <a class="brand" href="./index.html"><img src="Icons/Meld.png" alt=""><span>Meld</span></a>
+  <nav class="pageNav">
+    <a href="./index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="./leaderboard.html" class="active"><i class="fa-solid fa-trophy"></i> Leaderboard</a>
+    <a href="./profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+    <button type="button" id="openStore"><i class="fa-solid fa-store"></i> Store</button>
+  </nav>
+</header>
+
+<main class="page">
+  <div class="pageHeading">
+    <div>
+      <h1>Leaderboard</h1>
+      <p>The top Meld players. Keep playing to climb.</p>
+    </div>
+    <div class="boardTabs" role="tablist" aria-label="Leaderboards">
+      <button type="button" role="tab" class="active" data-board="playtime" aria-selected="true"><i class="fa-solid fa-clock"></i><span>Playtime</span></button>
+      <button type="button" role="tab" data-board="level" aria-selected="false"><i class="fa-solid fa-bolt"></i><span>Level</span></button>
+      <button type="button" role="tab" data-board="games" aria-selected="false"><i class="fa-solid fa-gamepad"></i><span>Games</span></button>
+    </div>
+  </div>
+
+  <section class="card">
+    <div class="cardHead">
+      <h2 id="boardTitle"><i class="fa-solid fa-clock"></i> Most Playtime</h2>
+      <p id="boardSub">Total time spent actively playing on Meld.</p>
+    </div>
+    <div class="podium" id="podium" aria-label="Top three"></div>
+    <div class="boardList" id="boardList"></div>
+    <div class="myStanding" id="myStanding" hidden></div>
+    <p id="message" role="status"></p>
+  </section>
+</main>
+<footer class="pageFooter">CiphAnon Studios · Meld</footer>
+
+<script src="./games-catalog.js"></script>
+<script type="module" src="./tracker.js"></script>
+<script type="module" src="./store.js"></script>
+<script type="module">
+import {
+  auth, db, ref, get, query, orderByChild, limitToLast, onAuthStateChanged,
+  levelFromXp, formatDuration, formatNumber, primaryRank
+} from "./meld-core.js";
+import { el, rankBadge, fillAvatar } from "./meld-ui.js";
+
+const LIMIT = 25;
+const BOARDS = {
+  playtime: {
+    field: "totalTimeSeconds", icon: "fa-clock", title: "Most Playtime",
+    sub: "Total time spent actively playing on Meld.",
+    main: p => formatDuration(p.totalTimeSeconds, true), small: () => "played"
+  },
+  level: {
+    field: "xp", icon: "fa-bolt", title: "Highest Level",
+    sub: "Level comes from playtime and games launched.",
+    main: p => "Lv " + levelFromXp(p.xp), small: p => formatNumber(p.xp) + " XP"
+  },
+  games: {
+    field: "gamesLaunched", icon: "fa-gamepad", title: "Most Games Launched",
+    sub: "How many games each player has started.",
+    main: p => formatNumber(p.gamesLaunched), small: () => "launches"
+  }
+};
+
+const $ = id => document.getElementById(id);
+const cache = {};
+let current = "playtime";
+let me = null;
+let myProfile = null;
+
+function setMessage(text) { $("message").textContent = text || ""; }
+
+async function loadBoard(key, force = false) {
+  const board = BOARDS[key];
+  const cached = cache[key];
+  if (!force && cached && Date.now() - cached.at < 60000) return cached.rows;
+
+  const snapshot = await get(query(ref(db, "users"), orderByChild(board.field), limitToLast(LIMIT)));
+  const rows = [];
+  snapshot.forEach(child => {
+    const value = child.val() || {};
+    if (!value.username) return;
+    if (!(Number(value[board.field]) > 0)) return;
+    rows.push({ uid: child.key, ...value });
+  });
+  rows.sort((a, b) => Number(b[board.field]) - Number(a[board.field]));
+  cache[key] = { at: Date.now(), rows };
+  return rows;
+}
+
+function link(uid) { return "./profile.html?u=" + encodeURIComponent(uid); }
+
+function renderPodium(rows, board) {
+  const podium = $("podium");
+  podium.replaceChildren();
+  const order = [[1, 2], [0, 1], [2, 3]];          // visual order: 2nd, 1st, 3rd
+
+  order.forEach(([index, place]) => {
+    const row = rows[index];
+    const slot = el(row ? "a" : "div", `podSlot p${place}${row ? "" : " vacant"}`);
+    if (row) { slot.href = link(row.uid); slot.title = "View " + row.username; }
+
+    const wrap = el("div", "podAvatarWrap");
+    if (place === 1 && row) wrap.appendChild(el("i", "fa-solid fa-crown crown"));
+    const avatar = el("div", "podAvatar");
+    fillAvatar(avatar, row?.photoURL, row?.username || "?");
+    wrap.appendChild(avatar);
+
+    slot.append(wrap, el("div", "podName", row ? row.username : "—"));
+    if (row) slot.appendChild(rankBadge(primaryRank(row, row.uid)));
+    slot.append(el("div", "podValue", row ? board.main(row) : "Open"));
+    slot.appendChild(el("div", "podBlock", String(place)));
+    podium.appendChild(slot);
+  });
+}
+
+function renderList(rows, board) {
+  const list = $("boardList");
+  list.replaceChildren();
+
+  rows.slice(3).forEach((row, i) => {
+    const item = el("a", "boardRow" + (row.uid === me?.uid ? " me" : ""));
+    item.href = link(row.uid);
+    item.appendChild(el("div", "pos", "#" + (i + 4)));
+    const mini = el("div", "mini");
+    fillAvatar(mini, row.photoURL, row.username);
+    const who = el("div", "who");
+    who.append(el("strong", "", row.username), rankBadge(primaryRank(row, row.uid)));
+    const val = el("div", "val", board.main(row));
+    val.appendChild(el("small", "", board.small(row)));
+    item.append(mini, who, val);
+    list.appendChild(item);
+  });
+
+  if (!rows.length) list.appendChild(el("div", "empty", "Nobody is on this board yet — be the first!"));
+}
+
+function renderStanding(rows, board) {
+  const box = $("myStanding");
+  if (!me || !myProfile) { box.hidden = true; return; }
+  const index = rows.findIndex(row => row.uid === me.uid);
+  box.hidden = false;
+  box.replaceChildren();
+  const mine = board.main(myProfile);
+  if (index >= 0) {
+    box.append(el("span", "", "You're ranked "), el("b", "", "#" + (index + 1)), el("span", "", " · " + mine));
+  } else if (Number(myProfile[board.field]) > 0) {
+    box.append(el("span", "", `You have ${mine} — keep going to reach the top ${LIMIT}.`));
+  } else {
+    box.append(el("span", "", "You're not on this board yet. Play a few games to get on it!"));
+  }
+}
+
+async function show(key, force = false) {
+  current = key;
+  const board = BOARDS[key];
+  document.querySelectorAll(".boardTabs button").forEach(button => {
+    const on = button.dataset.board === key;
+    button.classList.toggle("active", on);
+    button.setAttribute("aria-selected", String(on));
+  });
+  $("boardTitle").replaceChildren(el("i", `fa-solid ${board.icon}`), document.createTextNode(" " + board.title));
+  $("boardSub").textContent = board.sub;
+  setMessage("");
+
+  $("podium").replaceChildren();
+  $("boardList").replaceChildren(el("div", "skeleton"), el("div", "skeleton"), el("div", "skeleton"));
+
+  try {
+    const rows = await loadBoard(key, force);
+    if (current !== key) return;
+    renderPodium(rows, board);
+    renderList(rows, board);
+    renderStanding(rows, board);
+  } catch (error) {
+    console.error("Leaderboard failed:", error);
+    $("boardList").replaceChildren();
+    setMessage(
+      "Couldn't load the leaderboard. In Firebase, signed-in users need read access to " +
+      "'users' and an .indexOn for totalTimeSeconds, xp and gamesLaunched (see UPGRADE-NOTES.md)."
+    );
+  }
+}
+
+document.querySelectorAll(".boardTabs button").forEach(button =>
+  button.addEventListener("click", () => show(button.dataset.board)));
+$("openStore").addEventListener("click", () => window.MeldStore?.open());
+
+onAuthStateChanged(auth, async user => {
+  me = user;
+  myProfile = null;
+  if (user) {
+    try { myProfile = (await get(ref(db, "users/" + user.uid))).val(); } catch (_) { /* ignore */ }
+  }
+  show(current);
+});
+
+setInterval(() => show(current, true), 90000);
+</script>
+</body>
+</html>
