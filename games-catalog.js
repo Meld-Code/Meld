@@ -1,3 +1,4 @@
+
 /* Auto-generated snapshot of the Meld game library (from Ppage.html).
    Used by profiles + leaderboards to show favorite-game cover art.
    Re-run if you add games; unknown games still display fine without art. */
@@ -416,3 +417,4 @@ window.MELD_GAME_CATALOG = [
   "b": "#2b211b"
  }
 ];
+
