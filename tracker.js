@@ -14,11 +14,22 @@ import {
   auth, db, ref, get, update, increment, serverTimestamp, onAuthStateChanged, CFG
 } from "./meld-core.js";
 
-const IS_TOP = window.top === window.self;
+/* "Top" = the window that counts time. A page loaded inside Meld's OWN browser (same-origin
+   parent with the #browser shell) defers to it. If Meld is embedded anywhere else — an
+   about:blank cloak, a bookmarklet iframe, another site — it still counts itself. */
+function detectTop() {
+  if (window.top === window.self) return true;
+  try {
+    return !window.parent.document.getElementById("browser");   // throws if cross-origin => count here
+  } catch (_) {
+    return true;
+  }
+}
+const IS_TOP = detectTop();
 const FLUSH_EVERY_MS = 60_000;
 const IDLE_AFTER_MS = 3 * 60_000;
 const LAUNCH_COOLDOWN_MS = 30_000;
-const pendingKey = uid => `meldPending:${uid}`;
+const pendingKey = id => `meldPending:${id || "guest"}`;
 
 let uid = null;
 let lastInput = Date.now();
@@ -28,8 +39,10 @@ let pendingLaunches = 0;
 let pendingLaunchXp = 0;
 let lastLaunch = new Map();
 let flushing = false;
+let authSeen = false;
 let warned = false;
-let profileOk = false;       // never create a half-empty profile for someone who hasn't finished signing up
+let profileOk = false;
+let lastError = "";       // never create a half-empty profile for someone who hasn't finished signing up
 
 /* ---------- persistence for unsent progress (survives refresh/crash) ---------- */
 function loadPending(userId) {
@@ -45,7 +58,6 @@ function loadPending(userId) {
 }
 
 function savePending() {
-  if (!uid) return;
   try {
     localStorage.setItem(pendingKey(uid), JSON.stringify({
       seconds: pendingSeconds, xp: pendingXp, launches: pendingLaunches, launchXp: pendingLaunchXp
@@ -64,14 +76,15 @@ function browserIsOpen() {
 
 function isActive() {
   if (document.visibilityState !== "visible") return false;
-  if (typeof document.hasFocus === "function" && !document.hasFocus()) return false;
+  const framed = window.top !== window.self;
+  if (!framed && typeof document.hasFocus === "function" && !document.hasFocus()) return false;
   if (browserIsOpen()) return true;            // playing inside an iframe: no events reach us
   return Date.now() - lastInput < IDLE_AFTER_MS;
 }
 
 /* ---------- ticking ---------- */
 function tick() {
-  if (!uid || !IS_TOP || !isActive()) return;
+  if (!IS_TOP || !isActive()) return;
   pendingSeconds += 1;
   pendingXp += (CFG().XP_PER_ACTIVE_MINUTE ?? 2) / 60;
   window.dispatchEvent(new CustomEvent("meld:playtime", { detail: { pendingSeconds } }));
@@ -79,7 +92,8 @@ function tick() {
 
 /* ---------- saving ---------- */
 async function flush() {
-  if (!uid || flushing) return;
+  if (!uid) { savePending(); return; }          // signed out: keep it for when they sign in
+  if (flushing) return;
 
   const seconds = Math.floor(pendingSeconds);
   const xpWhole = Math.floor(pendingXp) + Math.floor(pendingLaunchXp);
@@ -110,6 +124,7 @@ async function flush() {
     savePending();
     window.dispatchEvent(new CustomEvent("meld:playtime", { detail: { pendingSeconds, saved: true } }));
   } catch (error) {
+    lastError = String(error && error.message || error);
     if (!warned) {
       warned = true;
       console.warn(
@@ -126,7 +141,6 @@ async function flush() {
 
 /* ---------- game launches ---------- */
 function recordLaunch(name) {
-  if (!uid) return;
   const key = String(name || "unknown");
   const now = Date.now();
   if (now - (lastLaunch.get(key) || 0) < LAUNCH_COOLDOWN_MS) return;
@@ -155,11 +169,24 @@ window.addEventListener("message", event => {
 
 /* ---------- lifecycle ---------- */
 onAuthStateChanged(auth, user => {
-  if (uid && uid !== user?.uid) { savePending(); }   // park unsent progress under the old account
-  uid = user ? user.uid : null;
-  pendingSeconds = pendingXp = pendingLaunches = pendingLaunchXp = 0;
+  const next = user ? user.uid : null;
+  if (next === uid && authSeen) return;
+  authSeen = true;
+
+  if (uid && uid !== next) {                       // leaving an account: park its unsent progress
+    savePending();
+    pendingSeconds = pendingXp = pendingLaunches = pendingLaunchXp = 0;
+  }
+  if (!uid && next) {                              // guest -> signed in: guest progress is kept and credited
+    try { localStorage.removeItem(pendingKey(null)); } catch (_) { /* ignore */ }
+  }
+
+  uid = next;
   profileOk = false;
-  if (uid && IS_TOP) { loadPending(uid); flush(); }
+  if (IS_TOP) {
+    if (uid) { loadPending(uid); flush(); }
+    else if (pendingSeconds + pendingLaunches === 0) { loadPending(null); }
+  }
 });
 
 if (IS_TOP) {
@@ -175,6 +202,12 @@ if (IS_TOP) {
 
 /* Handy for the profile page: live unsaved seconds. */
 window.MeldTracker = {
+  /* Run  MeldTracker.status()  in the browser console to see why time isn't counting. */
+  status: () => ({
+    signedIn: Boolean(uid), uid, countsTimeHere: IS_TOP, framed: window.top !== window.self,
+    active: isActive(), visible: document.visibilityState, focused: document.hasFocus(),
+    pendingSeconds: Math.floor(pendingSeconds), profileFound: profileOk, lastSaveError: lastError
+  }),
   pendingSeconds: () => Math.floor(pendingSeconds),
   flush
 };
