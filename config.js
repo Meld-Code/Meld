@@ -1,4 +1,5 @@
 
+
 /* =====================================================================
    MELD CONFIG  —  the one file you edit to change site-wide settings.
    Loaded as a normal <script> BEFORE everything else, so every page and
@@ -107,7 +108,9 @@ window.MELD_CONFIG = {
      --------------------------------------------------------------- */
   PARTNERS: [
     { name: "CiphAnon Studios", desc: "The studio behind Meld. Games, tools and experiments built for students.",
-      url: "", image: "Images/CiphAnonStudios.png", tag: "FOUNDING STUDIO" }
+      url: "", image: "Images/CiphAnonStudios.png", tag: "FOUNDING STUDIO" },
+    { name: "Wavey Chps", desc: "",
+      url: "", image: "", tag: "Trusted Partner" }
   ],
 
   /* Shown in Info > Updates (newest first). */
@@ -126,4 +129,5 @@ window.MELD_CONFIG = {
       items: ["Quick-link blocks with physics", "Games library", "Built-in browser and chat"] }
   ]
 };
+
 
