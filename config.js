@@ -109,8 +109,8 @@ window.MELD_CONFIG = {
   PARTNERS: [
     { name: "CiphAnon Studios", desc: "The studio behind Meld. Games, tools and experiments built for students.",
       url: "", image: "Images/CiphAnonStudios.png", tag: "FOUNDING STUDIO" },
-    { name: "Wavey Chps", desc: "",
-      url: "", image: "", tag: "Trusted Partner" }
+    { name: "Wavey Chps", desc: "Wavey Chps is a UBG/WP site that uses scramjet. uh that's about it lowk idk what else to say... and btw anyonebseeing this repo i give permission u can also make custom urls for this if you want and also steal the all the files and modify it to make ur own proxy/ubg site idrc. #skidsaresmartbrotrust😭✌️🥀",
+      url: "https://waveychps.opik.net/", image: "PtnrImg/WaveyChps.png", tag: "Trusted Partner" }
   ],
 
   /* Shown in Info > Updates (newest first). */
