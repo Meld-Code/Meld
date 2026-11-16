@@ -23,7 +23,7 @@ window.MELD_CONFIG = {
      BROWSER / PROXY
      External websites cannot be shown in an iframe directly (most sites
      forbid it), so Meld's browser sends them through the Scramjet proxy
-     you were already using in Loadingtest.html.
+     you were already using in Loadingtest.html.(Shout-out to Amethyst.zone)
      --------------------------------------------------------------- */
   PROXY_BASE: "https://amethyst.zone/scram/service/",
   PROXY_INIT: "https://amethyst.zone/browse",
@@ -82,20 +82,42 @@ window.MELD_CONFIG = {
      --------------------------------------------------------------- */
   RANKS: [
     { id: "owner",     name: "Owner",       color: "#ffb020", icon: "fa-crown",         kind: "special", desc: "Created and runs Meld." },
-    { id: "admin",     name: "Admin",       color: "#ff5d6c", icon: "fa-shield-halved", kind: "special", desc: "Keeps Meld running smoothly." },
-    { id: "moderator", name: "Moderator",   color: "#4ea1ff", icon: "fa-gavel",         kind: "special", desc: "Keeps chat friendly." },
-    { id: "partner",   name: "Partner",     color: "#b98bff", icon: "fa-handshake",     kind: "special", desc: "A trusted Meld partner." },
-    { id: "founder",   name: "Founder",     color: "#ff8a3d", icon: "fa-flag",          kind: "special", desc: "Was here at the very start." },
-    { id: "vip",       name: "VIP",         color: "#ffd166", icon: "fa-gem",           kind: "special", desc: "Lifetime VIP or Meld Plus member." },
-    { id: "supporter", name: "Supporter",   color: "#ff7ad9", icon: "fa-heart",         kind: "special", desc: "Supports Meld with a membership." },
-    { id: "beta",      name: "Beta Tester", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "Helped test Meld before launch." },
+    { id: "trusted",     name: "Trusted",       color: "#ff5d6c", icon: "fa-shield-halved", kind: "special", desc: "A special rank given to reliable members of the Meld community." },
+    { id: "og", name: "OG",   color: "#4ea1ff", icon: "fa-gavel",         kind: "special", desc: "A special legacy rank reserved for the original mebers of Meld who joined during its early days." },
+    { id: "contributor",   name: "Contributor",     color: "#b98bff", icon: "fa-handshake",     kind: "special", desc: "A special rank awarded to members who help improve Meld by providing useful suggestions, reporting bugs, and helping make the platform better." },
+    { id: "supporter",   name: "Supporter",     color: "#ff8a3d", icon: "fa-flag",          kind: "special", desc: "A special rank awarded to members who heolp support, promote, and grow Meld." },
+    { id: "vip1",       name: "VIP i",         color: "#ffd166", icon: "fa-gem",           kind: "special", desc: "Given to members who have spent $1+" },
+    { id: "vip2",       name: "VIP ii",         color: "#ffd166", icon: "fa-gem",           kind: "special", desc: "Given to members who have spent $10+" },
+    { id: "vip3",       name: "VIP iii",         color: "#ffd166", icon: "fa-gem",           kind: "special", desc: "Given to members who have spent $50+" },
+    { id: "vip4",       name: "VIP iV",         color: "#ffd166", icon: "fa-gem",           kind: "special", desc: "Given to members who have spent $100+" },
+    { id: "vip5",       name: "VIP V",         color: "#ffd166", icon: "fa-gem",           kind: "special", desc: "Given to members who have spent $250+" },
+    { id: "socialSupporter",      name: "Social Supporter", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "A special rank awarded to members who follow all official social media accounts belonging to Meld's owner." },
+    { id: "superSupporter",      name: "Super Supporter", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "A special recognition rank awarded to dedicate members who consistently support Meld's creators, enngage with their content, and create their own content featuring Meld." },
+    { id: "tester",      name: "tester", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "A Special rank given to members to help test and build Meld" },
+    { id: "partner",      name: "Partner", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "A special rank rewarded to members who have partnered up with Meld and have their own unblocked site." },
+    { id: "mascot",      name: "Mascot", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "A rank for the mascot account of meld" },
+    { id: "luckyBreak",      name: "Lucky Break", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 10K" },
+    { id: "hiddenGem",      name: "Hidden Gem", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 100K" },
+    { id: "rareEncounter",      name: "rareEncounter", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 1M" },
+    { id: "luckyLegend",      name: "Lucky Legend", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 10M" },
+    { id: "freakAccident",      name: "Freak Accident", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 100M" },
+    { id: "statisticalAnomaly",      name: "Statistical Anomaly", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 1B" },
+    { id: "realityBreaker",      name: "Reality Breaker", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 10B" },
+    { id: "beyondBelief",      name: "Beyond Belief", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 100B" },
+    { id: "howDidYouGetThis",      name: "HOW DID YOU GET THIS?!", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 1T" },
+    { id: "fuckingPotato",      name: "Fucking Potato", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 100T" },
 
-    { id: "member",    name: "Member",      color: "#a0ada0", icon: "fa-user",          kind: "earned",  level: 1,  desc: "Everyone starts here." },
-    { id: "regular",   name: "Regular",     color: "#8fd14f", icon: "fa-seedling",      kind: "earned",  level: 5,  desc: "Reach level 5." },
-    { id: "gamer",     name: "Gamer",       color: "#5fd0ff", icon: "fa-gamepad",       kind: "earned",  level: 10, desc: "Reach level 10." },
-    { id: "veteran",   name: "Veteran",     color: "#c7a6ff", icon: "fa-medal",         kind: "earned",  level: 20, desc: "Reach level 20." },
-    { id: "elite",     name: "Elite",       color: "#ffa94d", icon: "fa-fire",          kind: "earned",  level: 35, desc: "Reach level 35." },
-    { id: "legend",    name: "Legend",      color: "#ff6bcb", icon: "fa-star",          kind: "earned",  level: 50, desc: "Reach level 50." }
+    { id: "member",    name: "Member",      color: "#a0ada0", icon: "fa-user",          kind: "earned",  level: 1,  desc: "Automatically given when you create an account." },
+    { id: "rookie",   name: "Rookie",     color: "#8fd14f", icon: "fa-seedling",      kind: "earned",  level: 5,  desc: "Reach level 5." },
+    { id: "explorer",     name: "Explorer",       color: "#5fd0ff", icon: "fa-gamepad",       kind: "earned",  level: 10, desc: "Reach level 10." },
+    { id: "regular",   name: "Regular",     color: "#c7a6ff", icon: "fa-medal",         kind: "earned",  level: 20, desc: "Reach level 20." },
+    { id: "rising",     name: "Rising",       color: "#ffa94d", icon: "fa-fire",          kind: "earned",  level: 35, desc: "Reach level 35." },
+    { id: "skilled",    name: "Skilled",      color: "#ff6bcb", icon: "fa-star",          kind: "earned",  level: 50, desc: "Reach level 50." },
+    { id: "elite",    name: "Elite",      color: "#ff6bcb", icon: "fa-star",          kind: "earned",  level: 85, desc: "Reach level 85." },
+    { id: "expert",    name: "Expert",      color: "#ff6bcb", icon: "fa-star",          kind: "earned",  level: 100, desc: "Reach level 100." },
+    { id: "master",    name: "Master",      color: "#ff6bcb", icon: "fa-star",          kind: "earned",  level: 150, desc: "Reach level 150." },
+    { id: "legend",    name: "Legend",      color: "#ff6bcb", icon: "fa-star",          kind: "earned",  level: 225, desc: "Reach level 225." },
+    { id: "apex",    name: "Apex",      color: "#ff6bcb", icon: "fa-star",          kind: "earned",  level: 350, desc: "Reach level 350." }
   ],
 
   /* XP rules (shown in Info > Ranks). */
@@ -109,8 +131,8 @@ window.MELD_CONFIG = {
   PARTNERS: [
     { name: "CiphAnon Studios", desc: "The studio behind Meld. Games, tools and experiments built for students.",
       url: "", image: "Images/CiphAnonStudios.png", tag: "FOUNDING STUDIO" },
-    { name: "Wavey Chps", desc: "Wavey Chps is a UBG/WP site that uses scramjet. uh that's about it lowk idk what else to say... and btw anyonebseeing this repo i give permission u can also make custom urls for this if you want and also steal the all the files and modify it to make ur own proxy/ubg site idrc. #skidsaresmartbrotrust😭✌️🥀",
-      url: "https://waveychps.opik.net/", image: "PtnrImg/WaveyChps.png", tag: "Trusted Partner" }
+    { name: "Wavey Chps", desc: "",
+      url: "", image: "", tag: "Trusted Partner" }
   ],
 
   /* Shown in Info > Updates (newest first). */
