@@ -2577,7 +2577,7 @@ this is so long Oh God, I need to make more files in the future.....
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 100000;
+    z-index: 10000000;
     width: 15px;
     height: 15px;
     
