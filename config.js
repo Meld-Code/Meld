@@ -80,45 +80,60 @@ window.MELD_CONFIG = {
      special  = handed out by you (Owner Tools).
      earned   = unlocked automatically by level (levels come from playtime + games launched).
      --------------------------------------------------------------- */
-  RANKS: [
-    { id: "owner",     name: "Owner",       color: "#ffb020", icon: "fa-crown",         kind: "special", desc: "Created and runs Meld." },
-    { id: "trusted",     name: "Trusted",       color: "#ff5d6c", icon: "fa-shield-halved", kind: "special", desc: "A special rank given to reliable members of the Meld community." },
-    { id: "og", name: "OG",   color: "#4ea1ff", icon: "fa-gavel",         kind: "special", desc: "A special legacy rank reserved for the original mebers of Meld who joined during its early days." },
-    { id: "contributor",   name: "Contributor",     color: "#b98bff", icon: "fa-handshake",     kind: "special", desc: "A special rank awarded to members who help improve Meld by providing useful suggestions, reporting bugs, and helping make the platform better." },
-    { id: "supporter",   name: "Supporter",     color: "#ff8a3d", icon: "fa-flag",          kind: "special", desc: "A special rank awarded to members who heolp support, promote, and grow Meld." },
-    { id: "vip1",       name: "VIP i",         color: "#ffd166", icon: "fa-gem",           kind: "special", desc: "Given to members who have spent $1+" },
-    { id: "vip2",       name: "VIP ii",         color: "#ffd166", icon: "fa-gem",           kind: "special", desc: "Given to members who have spent $10+" },
-    { id: "vip3",       name: "VIP iii",         color: "#ffd166", icon: "fa-gem",           kind: "special", desc: "Given to members who have spent $50+" },
-    { id: "vip4",       name: "VIP iV",         color: "#ffd166", icon: "fa-gem",           kind: "special", desc: "Given to members who have spent $100+" },
-    { id: "vip5",       name: "VIP V",         color: "#ffd166", icon: "fa-gem",           kind: "special", desc: "Given to members who have spent $250+" },
-    { id: "socialSupporter",      name: "Social Supporter", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "A special rank awarded to members who follow all official social media accounts belonging to Meld's owner." },
-    { id: "superSupporter",      name: "Super Supporter", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "A special recognition rank awarded to dedicate members who consistently support Meld's creators, enngage with their content, and create their own content featuring Meld." },
-    { id: "tester",      name: "tester", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "A Special rank given to members to help test and build Meld" },
-    { id: "partner",      name: "Partner", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "A special rank rewarded to members who have partnered up with Meld and have their own unblocked site." },
-    { id: "mascot",      name: "Mascot", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "A rank for the mascot account of meld" },
-    { id: "luckyBreak",      name: "Lucky Break", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 10K" },
-    { id: "hiddenGem",      name: "Hidden Gem", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 100K" },
-    { id: "rareEncounter",      name: "rareEncounter", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 1M" },
-    { id: "luckyLegend",      name: "Lucky Legend", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 10M" },
-    { id: "freakAccident",      name: "Freak Accident", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 100M" },
-    { id: "statisticalAnomaly",      name: "Statistical Anomaly", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 1B" },
-    { id: "realityBreaker",      name: "Reality Breaker", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 10B" },
-    { id: "beyondBelief",      name: "Beyond Belief", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 100B" },
-    { id: "howDidYouGetThis",      name: "HOW DID YOU GET THIS?!", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 1T" },
-    { id: "fuckingPotato",      name: "Fucking Potato", color: "#55e6c1", icon: "fa-flask",         kind: "special", desc: "1 in 100T" },
+  
+RANKS: [
+    // SPECIAL RANKS
 
-    { id: "member",    name: "Member",      color: "#a0ada0", icon: "fa-user",          kind: "earned",  level: 1,  desc: "Automatically given when you create an account." },
-    { id: "rookie",   name: "Rookie",     color: "#8fd14f", icon: "fa-seedling",      kind: "earned",  level: 5,  desc: "Reach level 5." },
-    { id: "explorer",     name: "Explorer",       color: "#5fd0ff", icon: "fa-gamepad",       kind: "earned",  level: 10, desc: "Reach level 10." },
-    { id: "regular",   name: "Regular",     color: "#c7a6ff", icon: "fa-medal",         kind: "earned",  level: 20, desc: "Reach level 20." },
-    { id: "rising",     name: "Rising",       color: "#ffa94d", icon: "fa-fire",          kind: "earned",  level: 35, desc: "Reach level 35." },
-    { id: "skilled",    name: "Skilled",      color: "#ff6bcb", icon: "fa-star",          kind: "earned",  level: 50, desc: "Reach level 50." },
-    { id: "elite",    name: "Elite",      color: "#ff6bcb", icon: "fa-star",          kind: "earned",  level: 85, desc: "Reach level 85." },
-    { id: "expert",    name: "Expert",      color: "#ff6bcb", icon: "fa-star",          kind: "earned",  level: 100, desc: "Reach level 100." },
-    { id: "master",    name: "Master",      color: "#ff6bcb", icon: "fa-star",          kind: "earned",  level: 150, desc: "Reach level 150." },
-    { id: "legend",    name: "Legend",      color: "#ff6bcb", icon: "fa-star",          kind: "earned",  level: 225, desc: "Reach level 225." },
-    { id: "apex",    name: "Apex",      color: "#ff6bcb", icon: "fa-star",          kind: "earned",  level: 350, desc: "Reach level 350." }
-  ],
+    { id: "owner", name: "Owner", color: "#FFB547", icon: "fa-crown", kind: "special", desc: "Created and runs Meld." },
+    { id: "trusted", name: "Trusted", color: "#FF647C", icon: "fa-shield-alt", kind: "special", desc: "A special rank given to reliable members of the Meld community." },
+    { id: "og", name: "OG", color: "#5CA9FF", icon: "fa-history", kind: "special", desc: "A special legacy rank reserved for the original members of Meld who joined during its early days." },
+    { id: "contributor", name: "Contributor", color: "#B58AFF", icon: "fa-code-branch", kind: "special", desc: "Awarded to members who help improve Meld through suggestions, bug reports, and contributions." },
+    { id: "supporter", name: "Supporter", color: "#FF985C", icon: "fa-heart", kind: "special", desc: "Awarded to members who help support, promote, and grow Meld." },
+
+    // VIP RANKS
+
+    { id: "vip1", name: "VIP I", color: "#B9C5D6", icon: "fa-gem", kind: "special", desc: "Given to members who have spent $1+." },
+    { id: "vip2", name: "VIP II", color: "#63C7E8", icon: "fa-gem", kind: "special", desc: "Given to members who have spent $10+." },
+    { id: "vip3", name: "VIP III", color: "#8B91FF", icon: "fa-gem", kind: "special", desc: "Given to members who have spent $50+." },
+    { id: "vip4", name: "VIP IV", color: "#C58AFF", icon: "fa-gem", kind: "special", desc: "Given to members who have spent $100+." },
+    { id: "vip5", name: "VIP V", color: "#FFD166", icon: "fa-crown", kind: "special", desc: "Given to members who have spent $250+." },
+
+    // COMMUNITY RANKS
+
+    { id: "socialSupporter", name: "Social Supporter", color: "#55DDB5", icon: "fa-share-alt", kind: "special", desc: "Awarded to members who follow all official social media accounts belonging to Meld's owner." },
+    { id: "superSupporter", name: "Super Supporter", color: "#36CFA5", icon: "fa-heart", kind: "special", desc: "A special recognition rank for dedicated members who consistently support Meld, engage with its content, and create their own content featuring Meld." },
+    { id: "tester", name: "Tester", color: "#45B9FF", icon: "fa-flask", kind: "special", desc: "A special rank given to members who help test and build Meld." },
+    { id: "partner", name: "Partner", color: "#A78BFA", icon: "fa-handshake", kind: "special", desc: "Awarded to members who have partnered with Meld and operate their own unblocked website." },
+    { id: "mascot", name: "Mascot", color: "#FF9F43", icon: "fa-paw", kind: "special", desc: "The official mascot account of Meld." },
+
+    // EXTREMELY RARE RANKS
+
+    { id: "luckyBreak", name: "Lucky Break", color: "#65D68A", icon: "fa-clover", kind: "special", desc: "1 in 10K." },
+    { id: "hiddenGem", name: "Hidden Gem", color: "#42C6C9", icon: "fa-gem", kind: "special", desc: "1 in 100K." },
+    { id: "rareEncounter", name: "Rare Encounter", color: "#579BFF", icon: "fa-eye", kind: "special", desc: "1 in 1M." },
+    { id: "luckyLegend", name: "Lucky Legend", color: "#9B7BFF", icon: "fa-magic", kind: "special", desc: "1 in 10M." },
+    { id: "freakAccident", name: "Freak Accident", color: "#C16CFF", icon: "fa-bolt", kind: "special", desc: "1 in 100M." },
+    { id: "statisticalAnomaly", name: "Statistical Anomaly", color: "#E879F9", icon: "fa-chart-line", kind: "special", desc: "1 in 1B." },
+    { id: "realityBreaker", name: "Reality Breaker", color: "#FF648D", icon: "fa-atom", kind: "special", desc: "1 in 10B." },
+    { id: "beyondBelief", name: "Beyond Belief", color: "#FF795E", icon: "fa-infinity", kind: "special", desc: "1 in 100B." },
+    { id: "howDidYouGetThis", name: "HOW DID YOU GET THIS?!", color: "#FFD166", icon: "fa-bomb", kind: "special", desc: "1 in 1T." },
+    { id: "fuckingPotato", name: "Fucking Potato", color: "#D6A56D", icon: "fa-leaf", kind: "special", desc: "1 in 100T." },
+
+    // LEVEL RANKS
+
+    { id: "member", name: "Member", color: "#A0ADA8", icon: "fa-user", kind: "earned", level: 1, desc: "Automatically given when you create an account." },
+    { id: "rookie", name: "Rookie", color: "#8FD14F", icon: "fa-seedling", kind: "earned", level: 5, desc: "Reach level 5." },
+    { id: "explorer", name: "Explorer", color: "#5FD0FF", icon: "fa-compass", kind: "earned", level: 10, desc: "Reach level 10." },
+    { id: "regular", name: "Regular", color: "#A78BFA", icon: "fa-medal", kind: "earned", level: 20, desc: "Reach level 20." },
+    { id: "rising", name: "Rising", color: "#FF9F43", icon: "fa-fire", kind: "earned", level: 35, desc: "Reach level 35." },
+    { id: "skilled", name: "Skilled", color: "#F472B6", icon: "fa-star", kind: "earned", level: 50, desc: "Reach level 50." },
+    { id: "elite", name: "Elite", color: "#EC69C5", icon: "fa-bolt", kind: "earned", level: 85, desc: "Reach level 85." },
+    { id: "expert", name: "Expert", color: "#D879FF", icon: "fa-award", kind: "earned", level: 100, desc: "Reach level 100." },
+    { id: "master", name: "Master", color: "#A78BFA", icon: "fa-shield-alt", kind: "earned", level: 150, desc: "Reach level 150." },
+    { id: "legend", name: "Legend", color: "#FFD166", icon: "fa-crown", kind: "earned", level: 225, desc: "Reach level 225." },
+    { id: "apex", name: "Apex", color: "#FF5C5C", icon: "fa-dragon", kind: "earned", level: 350, desc: "Reach level 350." }
+],
+
 
   /* XP rules (shown in Info > Ranks). */
   XP_PER_ACTIVE_MINUTE: 2,
