@@ -4,7 +4,10 @@
    ===================================================================== */
 import { initializeApp, getApps, getApp } from
   "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut, updateProfile } from
+import {
+  getAuth, initializeAuth, onAuthStateChanged, signOut, updateProfile,
+  indexedDBLocalPersistence, browserLocalPersistence, browserSessionPersistence, inMemoryPersistence
+} from
   "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 import {
   getDatabase, ref, get, set, update, push, remove, onValue, onDisconnect,
@@ -22,7 +25,18 @@ export const firebaseConfig = {
 };
 
 export const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+/* Try the most durable storage first, then fall back, so you stay logged in even inside
+   iframes, about:blank cloaks and proxies where some storage types are blocked. */
+function makeAuth() {
+  try {
+    return initializeAuth(app, {
+      persistence: [indexedDBLocalPersistence, browserLocalPersistence, browserSessionPersistence, inMemoryPersistence]
+    });
+  } catch (_) {
+    return getAuth(app);                           // already initialised by another module
+  }
+}
+export const auth = makeAuth();
 export const db = getDatabase(app);
 
 export {
