@@ -1,3 +1,4 @@
+
 /* =====================================================================
    MELD EXTRAS (homepage)
    • Discord panel that shows your server invite URL (+ copy / join)
@@ -162,3 +163,4 @@ function renderInfo() {
   if (version) version.textContent = "Meld v" + (cfg.VERSION || "1.0.0");
 }
 renderInfo();
+
