@@ -414,33 +414,22 @@ this is so long Oh God, I need to make more files in the future.....
     margin-bottom: 28px;
     
     }
+
     .welcomeLogo {
     width: 64px;
     height: 64px;
     flex-shrink: 0;
     display: grid;
     place-items: center;
-    
-    border: 1px solid #52604c;
-    border-radius: 14px;
-    
-    background: linear-gradient(145deg, #34412b, #171d17);
-    
-    box-shadow:
-        0 12px 30px #0008,
-        inset 0 1px 0 #ffffff18;
-    
     font-size: 28px;
     font-weight: 900;
-    
     animation: welcomeLogoFloat 4s ease-in-out infinite;
-    
     transition:
         transform .25s ease,
         border-color .25s ease,
         box-shadow .25s ease;
-    
     }
+
     @keyframes welcomeLogoFloat {
     0%,
     100% {
@@ -449,26 +438,17 @@ this is so long Oh God, I need to make more files in the future.....
     50% {
         transform: translateY(-4px);
     }
-    
     }
-    .welcomeLogo:hover {
-    border-color: var(--accent);
-    transform: translateY(-4px) scale(1.04);
-    box-shadow:
-        0 16px 35px #000a,
-        0 0 0 3px #76b90020,
-        inset 0 1px 0 #ffffff22;
-    
-    }
+
     .welcomeLogo img {
+    position: absolute;
     display: block;
-    width: 100%;
+    width: 150px;
     height: 100%;
-    
     object-fit: contain;
     object-position: center;
-    
     }
+    
     .welcomeTitle {
     min-width: 0;
     }
