@@ -86,7 +86,6 @@ RANKS: [
 
     { id: "owner", name: "Owner", color: "#FFB547", icon: "fa-crown", kind: "special", desc: "Created and runs Meld." },
     { id: "trusted", name: "Trusted", color: "#FF647C", icon: "fa-shield-alt", kind: "special", desc: "A special rank given to reliable members of the Meld community." },
-    { id: "og", name: "OG", color: "#5CA9FF", icon: "fa-history", kind: "special", desc: "A special legacy rank reserved for the original members of Meld who joined during its early days." },
     { id: "contributor", name: "Contributor", color: "#B58AFF", icon: "fa-code-branch", kind: "special", desc: "Awarded to members who help improve Meld through suggestions, bug reports, and contributions." },
     { id: "supporter", name: "Supporter", color: "#FF985C", icon: "fa-heart", kind: "special", desc: "Awarded to members who help support, promote, and grow Meld." },
 
@@ -120,7 +119,7 @@ RANKS: [
     { id: "fuckingPotato", name: "Fucking Potato", color: "#D6A56D", icon: "fa-leaf", kind: "special", desc: "1 in 100T." },
 
     // LEVEL RANKS
-
+    { id: "og", name: "OG", color: "#5CA9FF", icon: "fa-cookie-bite", kind: "earned", level: 1, desc: ""},
     { id: "member", name: "Member", color: "#A0ADA8", icon: "fa-user", kind: "earned", level: 1, desc: "Automatically given when you create an account." },
     { id: "rookie", name: "Rookie", color: "#8FD14F", icon: "fa-seedling", kind: "earned", level: 5, desc: "Reach level 5." },
     { id: "explorer", name: "Explorer", color: "#5FD0FF", icon: "fa-compass", kind: "earned", level: 10, desc: "Reach level 10." },
