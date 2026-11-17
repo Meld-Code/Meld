@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0f0a">
+<title>Meld | Profile</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="stylesheet" href="./meld-pages.css">
+<script src="./config.js"></script>
+<script src="./catalog.js"></script>
+</head>
+<body>
+<header class="pageHeader">
+  <a class="brand" href="./index.html"><img src="Icons/Meld.png" alt=""><span>Meld</span></a>
+  <nav class="pageNav">
+    <a href="./index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="./leaderboard.html"><i class="fa-solid fa-trophy"></i> Leaderboard</a>
+    <a href="./profile.html" id="navProfile" class="active"><i class="fa-solid fa-user"></i> Profile</a>
+    <button type="button" id="walletChip" class="walletChip" title="Open the store"><i class="fa-solid fa-coins"></i><span id="walletNum">0</span></button>
+    <button type="button" id="openStore"><i class="fa-solid fa-store"></i> Store</button>
+    <button type="button" id="signout"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</button>
+  </nav>
+</header>
+
+<main class="page">
+  <div class="pageHeading">
+    <div>
+      <h1 id="pageTitle">Your Profile</h1>
+      <p id="pageSub">Your Meld gaming account and community stats.</p>
+    </div>
+    <div class="headActions" id="headActions" hidden>
+      <button class="btn primary" id="customizeBtn" type="button"><i class="fa-solid fa-wand-magic-sparkles"></i> Customize</button>
+    </div>
+  </div>
+
+  <section class="card profileCard">
+    <div class="profileCover" id="cover" data-version=""></div>
+    <div class="profileBody">
+      <div class="avatar" id="avatar">?</div>
+      <div class="profileInfo">
+        <div class="nameLine">
+          <div class="username" id="username">Loading profile…</div>
+          <span id="mainRankSlot"></span>
+          <button class="iconBtn" id="editName" type="button" title="Change username" hidden><i class="fa-solid fa-pen"></i></button>
+          <button class="btn friendAction" id="friendAction" type="button" hidden></button>
+        </div>
+        <div class="rankRow" id="rankRow"></div>
+        <p class="email" id="email"></p>
+        <div class="bio empty" id="bio">No bio yet.</div>
+        <div><button class="btn" id="editBio" type="button" style="margin-top:10px" hidden><i class="fa-solid fa-pen-to-square"></i> Edit bio</button></div>
+        <div class="levelBox">
+          <div class="levelTop"><strong id="levelText">Level 1</strong><span id="xpText">0 / 50 XP</span></div>
+          <div class="xpBar"><span id="xpFill"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cardHead" style="margin-top:22px"><h2><i class="fa-solid fa-chart-simple"></i> Account Overview</h2><p id="overviewSub">Live stats from your Meld account.</p></div>
+  <div class="statsGrid">
+    <div class="stat"><div class="statIcon"><i class="fa-solid fa-clock"></i></div><div class="statLabel">Total Playtime</div><div class="statValue" id="playtime">…</div></div>
+    <div class="stat"><div class="statIcon"><i class="fa-solid fa-bolt"></i></div><div class="statLabel">Level</div><div class="statValue" id="levelStat">…</div></div>
+    <div class="stat"><div class="statIcon"><i class="fa-solid fa-gamepad"></i></div><div class="statLabel">Games Launched</div><div class="statValue" id="launched">…</div></div>
+    <div class="stat"><div class="statIcon"><i class="fa-solid fa-award"></i></div><div class="statLabel">Ranks</div><div class="statValue" id="rankCount">…</div></div>
+    <div class="stat"><div class="statIcon"><i class="fa-solid fa-user-group"></i></div><div class="statLabel">Friends</div><div class="statValue" id="friendCount">…</div></div>
+    <div class="stat"><div class="statIcon"><i class="fa-solid fa-calendar"></i></div><div class="statLabel">Member Since</div><div class="statValue" id="created">…</div></div>
+  </div>
+
+  <!-- wallet + pass (own profile only) -->
+  <section class="card walletCard" id="walletCard" hidden>
+    <div class="cardHead"><h2><i class="fa-solid fa-coins"></i> Meldbux &amp; Season Pass</h2>
+      <div class="headActions"><button class="btn" id="redeemBtn" type="button"><i class="fa-solid fa-key"></i> Redeem code</button><button class="btn primary" id="storeBtn" type="button"><i class="fa-solid fa-store"></i> Open Store</button></div></div>
+    <div class="walletGrid">
+      <div class="walletBig"><span class="lbl">Balance</span><b id="walletBig">0</b><small>Meldbux</small></div>
+      <div class="passMini">
+        <div class="levelTop"><strong id="passTitle">Season Pass</strong><span id="passText"></span></div>
+        <div class="xpBar"><span id="passFill"></span></div>
+        <div class="passBadges"><span class="pill" id="passPro">Normal pass</span><span class="pill" id="passClaimable" hidden></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- daily quests (own profile only) -->
+  <section class="card" id="questCard" hidden>
+    <div class="cardHead"><h2><i class="fa-solid fa-list-check"></i> Daily XP</h2><p id="questSub">Resets every day. XP also counts toward your Season Pass.</p></div>
+    <div class="questList" id="questList"></div>
+  </section>
+
+  <section class="card">
+    <div class="cardHead">
+      <div><h2><i class="fa-solid fa-heart"></i> Favorite Games</h2><p>Hearts from the Games page show up here automatically.</p></div>
+      <button class="btn" id="addGames" type="button" hidden><i class="fa-solid fa-plus"></i> Add games</button>
+    </div>
+    <div class="games" id="games"><div class="empty">Loading games…</div></div>
+  </section>
+
+  <div class="grid2">
+    <section class="card" id="friendsCard">
+      <div class="cardHead"><h2><i class="fa-solid fa-user-group"></i> Friends</h2><p id="friendsSub">Find players and add them.</p></div>
+
+      <div id="friendTools" hidden>
+        <div class="friendSearch">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input id="friendSearch" placeholder="Search a username to add…" autocomplete="off" spellcheck="false" maxlength="20">
+        </div>
+        <div class="searchResults" id="searchResults"></div>
+        <div class="reqBlock" id="incomingBlock" hidden><h4>Requests for you <span class="count" id="incomingCount"></span></h4><div id="incomingList"></div></div>
+        <div class="reqBlock" id="sentBlock" hidden><h4>Sent requests</h4><div id="sentList"></div></div>
+      </div>
+
+      <div class="friends" id="friends"><div class="empty">Loading friends…</div></div>
+    </section>
+
+    <section class="card">
+      <div class="cardHead"><h2><i class="fa-solid fa-award"></i> Ranks</h2><p id="ranksSub">Earn more by leveling up.</p></div>
+      <div class="rankGrid" id="rankGrid"></div>
+    </section>
+  </div>
+
+  <section class="card" id="perksCard" hidden>
+    <div class="cardHead"><h2><i class="fa-solid fa-gem"></i> Perks &amp; Account</h2></div>
+    <div class="statsGrid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr))">
+      <div class="stat"><div class="statLabel">Ads</div><div class="statValue" id="perkAds">On</div></div>
+      <div class="stat"><div class="statLabel">Membership</div><div class="statValue" id="perkMember">None</div></div>
+      <div class="stat"><div class="statLabel">Name changes</div><div class="statValue" id="perkName">1 free</div></div>
+    </div>
+  </section>
+
+  <p id="message" role="status">Connecting to your account…</p>
+</main>
+<footer class="pageFooter">CiphAnon Studios · Meld</footer>
+
+<!-- Name change -->
+<div class="modal" id="nameModal">
+  <div class="modalCard">
+    <h3>Change username</h3>
+    <p class="lead" id="nameLead"></p>
+    <label for="newName">New username</label>
+    <input id="newName" maxlength="20" autocomplete="off" spellcheck="false" placeholder="3–20 letters, numbers or _">
+    <div class="hint" id="nameHint"></div>
+    <div class="modalActions">
+      <button class="btn" type="button" data-close>Cancel</button>
+      <button class="btn primary" id="saveName" type="button">Change name</button>
+    </div>
+  </div>
+</div>
+
+<!-- Bio -->
+<div class="modal" id="bioModal">
+  <div class="modalCard">
+    <h3>Edit bio</h3>
+    <p class="lead">Tell people about yourself. Keep it friendly — max 200 characters.</p>
+    <label for="bioInput">Bio</label>
+    <textarea id="bioInput" maxlength="200" placeholder="What do you like to play?"></textarea>
+    <div class="hint" id="bioCount">0 / 200</div>
+    <div class="modalActions">
+      <button class="btn" type="button" data-close>Cancel</button>
+      <button class="btn primary" id="saveBio" type="button">Save bio</button>
+    </div>
+  </div>
+</div>
+
+<!-- Favorites picker -->
+<div class="modal" id="gamesModal">
+  <div class="modalCard">
+    <h3>Favorite games</h3>
+    <p class="lead">Tick the games you love. They also sync with the hearts on the Games page.</p>
+    <input id="gameSearch" placeholder="Search games…" autocomplete="off">
+    <div class="pickList" id="pickList"></div>
+    <div class="modalActions">
+      <button class="btn" type="button" data-close>Cancel</button>
+      <button class="btn primary" id="saveGames" type="button">Save favorites</button>
+    </div>
+  </div>
+</div>
+
+<!-- Customize -->
+<div class="modal" id="custModal">
+  <div class="modalCard wideCard">
+    <h3>Customize your profile</h3>
+    <p class="lead">Equip anything you own. Changes show everywhere instantly.</p>
+    <div class="custTabs" id="custTabs"></div>
+    <div class="custGrid" id="custGrid"></div>
+    <div class="modalActions">
+      <button class="btn" id="custStore" type="button"><i class="fa-solid fa-store"></i> Get more</button>
+      <button class="btn primary" type="button" data-close>Done</button>
+    </div>
+  </div>
+</div>
+
+<script src="./games-catalog.js"></script>
+<script type="module" src="./tracker.js"></script>
+<script type="module" src="./store.js"></script>
+<script type="module">
+import {
+  auth, db, ref, get, set, update, remove, onValue, runTransaction, onAuthStateChanged, signOut, updateProfile, increment,
+  CFG, levelProgress, formatDuration, formatNumber, resolveRanks, primaryRank, entitlementsActive, validUsername
+} from "./meld-core.js";
+import { el, rankBadge, fillAvatar, gameInfo } from "./meld-ui.js";
+import {
+  renderAvatar, bannerBackground, itemById, itemsOfType, owns, normalizeWallet, watchWallet, ensureWallet, equip,
+  itemPreview, RARITY, passState, tierClaimed, onCatalog, fmt
+} from "./meld-economy.js";
+import * as Friends from "./meld-friends.js";
+
+const $ = id => document.getElementById(id);
+const params = new URLSearchParams(location.search);
+const requestedUid = params.get("u");
+
+let me = null, viewUid = null, isOwn = true, profile = null, stopLive = null;
+let wallet = normalizeWallet(null), stopWallet = null;
+let fState = { friends: {}, incoming: {}, sent: {} }, stopFriends = [];
+let friendsRenderedFor = "";
+
+const setMessage = text => { $("message").textContent = text || ""; };
+const openModal = id => $(id).classList.add("open");
+const closeModal = id => $(id).classList.remove("open");
+document.querySelectorAll(".modal").forEach(modal => {
+  modal.addEventListener("click", event => { if (event.target === modal || event.target.closest("[data-close]")) modal.classList.remove("open"); });
+});
+document.addEventListener("keydown", event => { if (event.key === "Escape") document.querySelectorAll(".modal.open").forEach(m => m.classList.remove("open")); });
+
+function formatDate(value) {
+  const date = new Date(Number(value));
+  if (!value || Number.isNaN(date.getTime())) return "Unknown";
+  return date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+}
+const todayKey = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+
+/* ------------------------------------------------------------------ render */
+function liveSeconds() {
+  const saved = Number(profile?.totalTimeSeconds) || 0;
+  return isOwn ? saved + (window.MeldTracker?.pendingSeconds?.() || 0) : saved;
+}
+function renderPlaytime() { if (profile) $("playtime").textContent = formatDuration(liveSeconds(), true); }
+
+function renderCover() {
+  const cover = $("cover");
+  const banner = profile?.equipped?.banner ? itemById(profile.equipped.banner) : null;
+  cover.dataset.version = CFG().VERSION || "1.2.0";
+  cover.replaceChildren();
+  if (banner && banner.type === "banner" && !/_default$/.test(banner.id)) {
+    cover.style.background = bannerBackground(banner.art);
+  } else {
+    cover.style.background = "";
+    const img = el("img"); img.src = "Images/Chameleon.png"; img.alt = ""; cover.appendChild(img);
+  }
+}
+
+function render() {
+  if (!profile) return;
+  const name = profile.username || profile.displayName || "Member";
+  const ranks = resolveRanks(profile, viewUid);
+  const progress = levelProgress(profile.xp);
+  const main = primaryRank(profile, viewUid);
+
+  document.title = `Meld | ${name}`;
+  renderCover();
+  $("username").textContent = name;
+  renderAvatar($("avatar"), { ...profile, photoURL: profile.photoURL || (isOwn ? me?.photoURL : "") }, name);
+  $("email").textContent = isOwn ? (me?.email || "") : "";
+
+  $("mainRankSlot").replaceChildren(rankBadge(main, true));
+  $("rankRow").replaceChildren(...ranks.filter(r => r.id !== main.id).map(rank => rankBadge(rank, true)));
+
+  const bio = $("bio");
+  const hasBio = typeof profile.bio === "string" && profile.bio.trim();
+  bio.textContent = hasBio ? profile.bio : (isOwn ? "You haven't written a bio yet." : "No bio yet.");
+  bio.classList.toggle("empty", !hasBio);
+
+  $("levelText").textContent = `Level ${progress.level}`;
+  $("xpText").textContent = `${formatNumber(progress.into)} / ${formatNumber(progress.needed)} XP to level ${progress.level + 1}`;
+  $("xpFill").style.width = progress.percent.toFixed(1) + "%";
+
+  renderPlaytime();
+  $("levelStat").textContent = progress.level;
+  $("launched").textContent = formatNumber(profile.gamesLaunched);
+  $("rankCount").textContent = ranks.length;
+  $("created").textContent = formatDate(profile.createdAt);
+
+  renderGames(); renderRankGrid(ranks, main); renderPerks(); renderWallet(); renderQuests(); renderFriendAction();
+}
+
+function renderGames() {
+  const box = $("games");
+  box.replaceChildren();
+  const list = Array.isArray(profile.favoriteGames) ? profile.favoriteGames.filter(n => typeof n === "string") : [];
+  if (!list.length) {
+    box.appendChild(el("div", "empty", isOwn ? "No favorite games yet — tap the heart on a game in the Games page, or use “Add games”." : "No favorite games yet."));
+    return;
+  }
+  list.forEach(gameName => {
+    const info = gameInfo(gameName);
+    const tile = el("div", "gameTile");
+    if (info) { tile.style.setProperty("--a", info.a); tile.style.setProperty("--b", info.b); }
+    if (info?.image) { const img = el("img"); img.src = info.image; img.alt = ""; img.loading = "lazy"; img.onerror = () => img.remove(); tile.appendChild(img); }
+    if (info?.category) tile.appendChild(el("small", "", info.category));
+    tile.appendChild(el("span", "", gameName.trim()));
+    if (isOwn) { const x = el("button", "remove", "×"); x.type = "button"; x.title = "Remove from favorites"; x.addEventListener("click", () => saveFavorites(list.filter(n => n !== gameName))); tile.appendChild(x); }
+    box.appendChild(tile);
+  });
+}
+
+function renderRankGrid(owned, main) {
+  const have = new Set(owned.map(r => r.id));
+  const grid = $("rankGrid");
+  grid.replaceChildren();
+  $("ranksSub").textContent = isOwn ? "Click a rank you own to show it as your main rank." : "Ranks this player has earned.";
+  const earned = (CFG().RANKS || []).filter(r => r.kind === "earned");
+  const specials = (CFG().RANKS || []).filter(r => r.kind === "special" && have.has(r.id));
+  [...specials, ...earned].forEach(rank => {
+    const isMine = have.has(rank.id);
+    const card = el(isOwn && isMine ? "button" : "div", "rankCard" + (isMine ? "" : " locked") + (main.id === rank.id ? " main" : ""));
+    if (card.tagName === "BUTTON") card.type = "button";
+    card.style.setProperty("--c", rank.color);
+    const ico = el("div", "ico"); ico.appendChild(el("i", `fa-solid ${rank.icon}`));
+    const text = el("div");
+    text.append(el("strong", "", rank.name), el("span", "", main.id === rank.id ? "Main rank ★" : isMine ? (isOwn ? "Click to display" : "Unlocked") : rank.desc));
+    card.append(ico, text);
+    if (isOwn && isMine) card.addEventListener("click", async () => {
+      try { await equip(me.uid, "mainRank", rank.id === ranks0Best() ? "" : rank.id); }
+      catch (error) { setMessage("Couldn't change your main rank."); }
+    });
+    grid.appendChild(card);
+  });
+}
+const ranks0Best = () => (resolveRanks({ ...profile, equipped: {} }, viewUid)[0] || {}).id;
+
+function renderPerks() {
+  $("perksCard").hidden = !isOwn;
+  if (!isOwn) return;
+  const ent = entitlementsActive(profile);
+  $("perkAds").textContent = ent.adFree ? "Off (ad-free)" : "On";
+  $("perkMember").textContent = ent.membershipTier
+    ? (ent.membershipTier === "plus" ? "Meld Plus" : "Supporter") + " · until " + new Date(ent.membershipExpiresAt).toLocaleDateString()
+    : (profile.entitlements?.vip ? "Lifetime VIP" : "None");
+  const used = Number(profile.nameChangesUsed) || 0;
+  $("perkName").textContent = used < 1 ? "1 free" : ent.nameChangeCredits ? `${ent.nameChangeCredits} token${ent.nameChangeCredits > 1 ? "s" : ""}` : "Paid";
+}
+
+/* ------------------------------------------------------------------ wallet + pass */
+function renderWallet() {
+  $("walletCard").hidden = !isOwn;
+  $("walletChip").hidden = false;
+  $("walletNum").textContent = fmt(wallet.meldbux);
+  if (!isOwn) return;
+  $("walletBig").textContent = fmt(wallet.meldbux);
+  const state = passState(profile, wallet);
+  $("passTitle").textContent = `${state.pass.name || "Season Pass"} · Tier ${state.tier}`;
+  $("passText").textContent = state.tier >= state.pass.tiers ? "Max tier!" : `${fmt(state.seasonXp - state.tier * state.per)} / ${fmt(state.per)} XP`;
+  $("passFill").style.width = state.percent.toFixed(1) + "%";
+  $("passPro").textContent = state.pro ? "★ Pro Pass" : "Normal pass";
+  $("passPro").classList.toggle("gold", state.pro);
+  let claimable = 0;
+  for (let n = 1; n <= state.tier; n++) {
+    const r = (state.pass.rewards || {})[n] || {};
+    if (r.free && !tierClaimed(wallet, n, "free")) claimable++;
+    if (state.pro && r.pro && !tierClaimed(wallet, n, "pro")) claimable++;
+  }
+  $("passClaimable").hidden = !claimable;
+  $("passClaimable").textContent = claimable + " reward" + (claimable > 1 ? "s" : "") + " ready!";
+}
+
+/* ------------------------------------------------------------------ daily XP / quests */
+function dailyProgress() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(`meldDaily:${me?.uid || "guest"}`) || "null");
+    const base = saved && saved.date === todayKey() ? saved : { seconds: 0, launches: 0 };
+    return { seconds: base.seconds + 0, launches: base.launches + 0 };
+  } catch (_) { return { seconds: 0, launches: 0 }; }
+}
+
+async function grantXp(amount, extra) {
+  await update(ref(db, `users/${me.uid}`), Object.assign({ xp: increment(amount), seasonXp: increment(amount) }, extra || {}));
+}
+
+function renderQuests() {
+  $("questCard").hidden = !isOwn;
+  if (!isOwn) return;
+  const cfg = CFG().XP || {};
+  const list = $("questList");
+  list.replaceChildren();
+  const today = todayKey();
+  const claims = profile.questClaims || {};
+  const progress = dailyProgress();
+  const live = (window.MeldTracker?.daily?.() || progress);
+
+  /* login bonus */
+  const last = profile.daily || {};
+  const bonusDone = last.date === today;
+  const streakNext = last.date === yesterdayKey() ? (Number(last.streak) || 0) + 1 : 1;
+  const loginXp = (cfg.DAILY_LOGIN ?? 40) + Math.min(cfg.STREAK_MAX ?? 50, (streakNext - 1) * (cfg.STREAK_BONUS ?? 5));
+  list.appendChild(questRow("fa-gift", "Daily login bonus", bonusDone ? `Come back tomorrow · ${last.streak || 1}-day streak` : `Day ${streakNext} streak`, bonusDone ? 1 : 1, 1, loginXp, bonusDone, async () => {
+    await grantXp(loginXp, { daily: { date: today, streak: streakNext } });
+  }));
+
+  (cfg.QUESTS || []).forEach(q => {
+    const have = Math.min(q.goal, Math.max(progress[q.metric] || 0, live[q.metric] || 0));
+    const claimed = Boolean(claims[`${today}_${q.id}`]);
+    const label = q.metric === "seconds" ? `${Math.floor(have / 60)} / ${Math.floor(q.goal / 60)} min` : `${have} / ${q.goal}`;
+    list.appendChild(questRow(q.metric === "seconds" ? "fa-clock" : "fa-gamepad", q.name, q.desc + " · " + label, have, q.goal, q.xp, claimed, async () => {
+      await grantXp(q.xp, { [`questClaims/${today}_${q.id}`]: true });
+    }));
+  });
+}
+const yesterdayKey = () => { const d = new Date(Date.now() - 86400000); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+
+function questRow(icon, title, sub, have, goal, xp, claimed, onClaim) {
+  const row = el("div", "questRow" + (claimed ? " done" : ""));
+  const ico = el("div", "qIco"); ico.appendChild(el("i", "fa-solid " + icon));
+  const text = el("div", "qText");
+  text.append(el("strong", "", title), el("span", "", sub));
+  const bar = el("div", "qBar"); const fill = el("span"); fill.style.width = Math.min(100, (have / goal) * 100) + "%"; bar.appendChild(fill); text.appendChild(bar);
+  const btn = el("button", "btn" + (have >= goal && !claimed ? " primary" : ""), claimed ? "Claimed" : have >= goal ? `Claim +${xp} XP` : `+${xp} XP`);
+  btn.type = "button"; btn.disabled = claimed || have < goal;
+  btn.addEventListener("click", async () => {
+    btn.disabled = true;
+    try { await onClaim(); } catch (error) { console.error(error); setMessage("Couldn't claim that. Check your Firebase rules (see UPGRADE-NOTES.md)."); btn.disabled = false; }
+  });
+  row.append(ico, text, btn);
+  return row;
+}
+setInterval(() => { if (isOwn && profile) renderQuests(); }, 20000);
+
+/* ------------------------------------------------------------------ customization */
+const CUST = [["pfp", "fa-circle-user", "Picture"], ["border", "fa-circle-notch", "Border"], ["banner", "fa-image", "Banner"], ["style", "fa-palette", "Meld Style"]];
+let custTab = "pfp";
+function renderCust() {
+  const tabs = $("custTabs");
+  tabs.replaceChildren(...CUST.map(([id, icon, label]) => {
+    const b = el("button", "custTab" + (custTab === id ? " active" : ""));
+    b.type = "button"; b.append(el("i", "fa-solid " + icon), document.createTextNode(" " + label));
+    b.addEventListener("click", () => { custTab = id; renderCust(); }); return b;
+  }));
+  const grid = $("custGrid"); grid.replaceChildren();
+  const order = { common: 0, rare: 1, epic: 2, legendary: 3, mythic: 4 };
+  const items = itemsOfType(custTab).filter(item => owns(wallet, item)).sort((a, b) => order[b.rarity] - order[a.rarity]);
+  const current = (profile?.equipped || {})[custTab] || "";
+  items.forEach(item => {
+    const defaultItem = /_(default|none)$/.test(item.id);
+    const on = current === item.id || (!current && defaultItem);
+    const card = el("button", "custItem" + (on ? " on" : ""));
+    card.type = "button"; card.style.setProperty("--rc", RARITY(item.rarity).color);
+    card.append(itemPreview(item, profile), el("strong", "", item.name), el("small", "", on ? "Equipped" : RARITY(item.rarity).name));
+    card.addEventListener("click", async () => { try { await equip(me.uid, custTab, defaultItem ? "" : item.id); } catch (e) { setMessage("Couldn't equip that."); } });
+    grid.appendChild(card);
+  });
+  if (!items.length) grid.appendChild(el("div", "empty", "You don't own any of these yet."));
+}
+$("customizeBtn").addEventListener("click", () => { renderCust(); openModal("custModal"); });
+$("custStore").addEventListener("click", () => { closeModal("custModal"); window.MeldStore?.open(custTab); });
+$("redeemBtn").addEventListener("click", () => window.MeldStore?.open("meldbux"));
+
+/* ------------------------------------------------------------------ friends */
+function friendRow(uid, user, rightEl, sub) {
+  const row = el("a", "friend");
+  row.href = "./profile.html?u=" + encodeURIComponent(uid);
+  const mini = el("div", "mini");
+  renderAvatar(mini, user, user?.username);
+  const text = el("div");
+  text.append(el("strong", "", user?.username || "Member"), el("span", "sub", sub || ""));
+  row.append(mini, text);
+  if (rightEl) { rightEl.addEventListener("click", e => e.stopPropagation()); row.appendChild(rightEl); }
+  return row;
+}
+function smallBtn(label, cls, handler) {
+  const b = el("button", "btn tiny " + (cls || ""), label); b.type = "button";
+  b.addEventListener("click", async event => { event.preventDefault(); event.stopPropagation(); b.disabled = true; try { await handler(); } catch (e) { console.error(e); setMessage(e.message || "Something went wrong."); } b.disabled = false; });
+  return b;
+}
+async function userOf(uid) { try { const v = (await get(ref(db, `users/${uid}`))).val(); return v ? { id: uid, ...v } : null; } catch (_) { return null; } }
+
+function myName() { return (myProfileCache?.username) || me?.displayName || "Member"; }
+let myProfileCache = null;
+
+async function renderFriendTools() {
+  $("friendTools").hidden = !isOwn;
+  if (!isOwn) return;
+  const inc = Object.keys(fState.incoming), sent = Object.keys(fState.sent);
+  $("incomingBlock").hidden = !inc.length; $("incomingCount").textContent = inc.length || "";
+  $("sentBlock").hidden = !sent.length;
+
+  const incUsers = await Promise.all(inc.map(async id => [id, await userOf(id)]));
+  $("incomingList").replaceChildren(...incUsers.map(([id, user]) => {
+    const wrap = el("div", "btnPair");
+    wrap.append(smallBtn("Accept", "primary", () => Friends.acceptRequest(me.uid, id)), smallBtn("Decline", "", () => Friends.declineRequest(me.uid, id)));
+    return friendRow(id, user || { username: fState.incoming[id]?.senderUsername }, wrap, "wants to be friends");
+  }));
+  const sentUsers = await Promise.all(sent.map(async id => [id, await userOf(id)]));
+  $("sentList").replaceChildren(...sentUsers.map(([id, user]) =>
+    friendRow(id, user || { username: fState.sent[id]?.recipientUsername }, smallBtn("Cancel", "", () => Friends.cancelRequest(me.uid, id)), "pending")));
+}
+
+async function renderFriendsList() {
+  const box = $("friends");
+  const ids = isOwn ? Object.keys(fState.friends) : null;
+  if (!isOwn) {
+    $("friendCount").textContent = "—";
+    box.replaceChildren(el("div", "empty", "Friend lists are private."));
+    return;
+  }
+  $("friendCount").textContent = ids.length;
+  if (!ids.length) { box.replaceChildren(el("div", "empty", "No friends yet — search a username above to add someone.")); return; }
+  let presence = {};
+  try { presence = (await get(ref(db, "chatPresence"))).val() || {}; } catch (_) { /* optional */ }
+  const rows = (await Promise.all(ids.map(userOf))).filter(Boolean);
+  rows.sort((a, b) => Number(Boolean(presence[b.id]?.online)) - Number(Boolean(presence[a.id]?.online)));
+  box.replaceChildren(...rows.map(friend => {
+    const row = friendRow(friend.id, friend, null, presence[friend.id]?.online ? "Online" : "Offline");
+    const dot = el("span", "dot" + (presence[friend.id]?.online ? " on" : ""));
+    row.querySelector(".mini").appendChild(dot);
+    row.appendChild(rankBadge(primaryRank(friend, friend.id)));
+    return row;
+  }));
+}
+
+let searchTimer = 0, searchToken = 0;
+$("friendSearch").addEventListener("input", () => {
+  clearTimeout(searchTimer);
+  const box = $("searchResults");
+  const text = $("friendSearch").value.trim();
+  if (text.length < 2) { box.replaceChildren(); return; }
+  searchTimer = setTimeout(async () => {
+    const token = ++searchToken;
+    box.replaceChildren(el("div", "empty", "Searching…"));
+    try {
+      const found = await Friends.searchPlayers(text, me.uid);
+      if (token !== searchToken) return;
+      if (!found.length) { box.replaceChildren(el("div", "empty", "No players found.")); return; }
+      box.replaceChildren(...found.map(user => {
+        let control;
+        if (fState.friends[user.uid]) control = el("span", "pill", "Friends");
+        else if (fState.sent[user.uid]) control = el("span", "pill", "Requested");
+        else if (fState.incoming[user.uid]) control = smallBtn("Accept", "primary", () => Friends.acceptRequest(me.uid, user.uid));
+        else control = smallBtn("Add", "primary", async () => { await Friends.sendRequest(me.uid, myName(), user.uid, user.username, fState); setMessage(`Friend request sent to ${user.username}.`); $("friendSearch").dispatchEvent(new Event("input")); });
+        return friendRow(user.uid, user, control, "Lv " + levelProgress(user.xp).level);
+      }));
+    } catch (error) {
+      console.error(error);
+      box.replaceChildren(el("div", "empty", "Search isn't available (Firebase needs .indexOn usernameLower — see UPGRADE-NOTES.md)."));
+    }
+  }, 280);
+});
+
+/* “Add friend” button on someone else's profile */
+function renderFriendAction() {
+  const btn = $("friendAction");
+  if (isOwn || !me || !viewUid) { btn.hidden = true; return; }
+  btn.hidden = false; btn.disabled = false; btn.className = "btn friendAction"; btn.onclick = null;
+  const name = profile.username || "Member";
+  if (fState.friends[viewUid]) { btn.innerHTML = '<i class="fa-solid fa-user-check"></i> Friends'; btn.disabled = true; }
+  else if (fState.sent[viewUid]) { btn.innerHTML = '<i class="fa-solid fa-clock"></i> Requested'; btn.disabled = true; }
+  else if (fState.incoming[viewUid]) { btn.innerHTML = '<i class="fa-solid fa-user-plus"></i> Accept request'; btn.classList.add("primary"); btn.onclick = () => Friends.acceptRequest(me.uid, viewUid); }
+  else { btn.innerHTML = '<i class="fa-solid fa-user-plus"></i> Add friend'; btn.classList.add("primary");
+    btn.onclick = async () => { btn.disabled = true; try { await Friends.sendRequest(me.uid, myName(), viewUid, name, fState); } catch (e) { setMessage(e.message); btn.disabled = false; } }; }
+}
+
+function watchFriendState(user) {
+  stopFriends.forEach(fn => fn()); stopFriends = [];
+  fState = { friends: {}, incoming: {}, sent: {} };
+  const refresh = () => { renderFriendsList(); renderFriendTools(); renderFriendAction(); };
+  stopFriends.push(Friends.watchFriends(user.uid, v => { fState.friends = v; refresh(); }));
+  stopFriends.push(Friends.watchIncoming(user.uid, v => { fState.incoming = v; refresh(); }));
+  stopFriends.push(Friends.watchSent(user.uid, v => { fState.sent = v; refresh(); }));
+}
+
+/* ------------------------------------------------------------------ editing */
+async function saveFavorites(list) {
+  try {
+    await set(ref(db, `users/${me.uid}/favoriteGames`), list);
+    try { localStorage.setItem("gameHubFavorites", JSON.stringify(list)); } catch (_) { /* ignore */ }
+  } catch (error) { console.error(error); setMessage("Couldn't save favorites — check your Firebase rules."); }
+}
+
+$("addGames").addEventListener("click", () => {
+  const chosen = new Set(Array.isArray(profile?.favoriteGames) ? profile.favoriteGames : []);
+  const catalog = (window.MELD_GAME_CATALOG || []).slice().sort((a, b) => a.name.localeCompare(b.name));
+  const list = $("pickList");
+  const build = filter => {
+    list.replaceChildren();
+    catalog.filter(g => g.name.toLowerCase().includes(filter.toLowerCase())).forEach(game => {
+      const label = el("label", "pick");
+      const box = el("input"); box.type = "checkbox"; box.checked = chosen.has(game.name);
+      box.addEventListener("change", () => box.checked ? chosen.add(game.name) : chosen.delete(game.name));
+      label.append(box, el("span", "", game.name.trim()), el("small", "", game.category));
+      list.appendChild(label);
+    });
+  };
+  $("gameSearch").value = ""; $("gameSearch").oninput = event => build(event.target.value); build("");
+  $("saveGames").onclick = async () => { await saveFavorites([...chosen]); closeModal("gamesModal"); };
+  openModal("gamesModal");
+});
+
+$("editBio").addEventListener("click", () => {
+  $("bioInput").value = profile?.bio || "";
+  $("bioCount").textContent = `${$("bioInput").value.length} / 200`;
+  openModal("bioModal");
+});
+$("bioInput").addEventListener("input", () => { $("bioCount").textContent = `${$("bioInput").value.length} / 200`; });
+$("saveBio").addEventListener("click", async () => {
+  try { await update(ref(db, `users/${me.uid}`), { bio: $("bioInput").value.trim().slice(0, 200) }); closeModal("bioModal"); }
+  catch (error) { console.error(error); $("bioCount").textContent = "Couldn't save — check your Firebase rules."; }
+});
+
+function nameState() {
+  const used = Number(profile?.nameChangesUsed) || 0;
+  const credits = entitlementsActive(profile).nameChangeCredits;
+  return { used, credits, free: used < 1, canChange: used < 1 || credits > 0 };
+}
+$("editName").addEventListener("click", () => {
+  const state = nameState();
+  $("newName").value = ""; $("nameHint").className = "hint"; $("nameHint").textContent = "";
+  $("nameLead").textContent = state.free
+    ? "Your first username change is free. After that, each change needs a Name Change Token from the Store."
+    : state.credits > 0
+      ? `You've used your free change. This will use 1 of your ${state.credits} Name Change Token${state.credits > 1 ? "s" : ""}.`
+      : "You've used your free change. Another change needs a Name Change Token from the Store.";
+  $("saveName").textContent = state.canChange ? "Change name" : "Get a token";
+  openModal("nameModal"); $("newName").focus();
+});
+$("saveName").addEventListener("click", async () => {
+  const hint = $("nameHint");
+  const state = nameState();
+  if (!state.canChange) { closeModal("nameModal"); window.MeldStore?.open("perks"); return; }
+  const wanted = $("newName").value.trim();
+  const oldName = profile.username || "";
+  if (!validUsername(wanted)) { hint.className = "hint err"; hint.textContent = "Use 3–20 letters, numbers or underscores."; return; }
+  if (wanted === oldName) { hint.className = "hint err"; hint.textContent = "That's already your name."; return; }
+  const lower = wanted.toLowerCase(), oldLower = oldName.toLowerCase(), caseOnly = lower === oldLower;
+  $("saveName").disabled = true; hint.className = "hint"; hint.textContent = "Checking…";
+  let claimed = false;
+  try {
+    if (!caseOnly) {
+      const claim = await runTransaction(ref(db, `usernames/${lower}`), current => current === null ? me.uid : undefined);
+      if (!claim.committed) throw new Error("That username is taken. Try another.");
+      claimed = true;
+    }
+    const patch = { username: wanted, usernameLower: lower, displayName: wanted };
+    if (!caseOnly) {
+      patch.nameChangesUsed = state.used + 1; patch.previousUsername = oldName;
+      if (!state.free) patch["entitlements/nameChangeCredits"] = Math.max(0, state.credits - 1);
+    }
+    await update(ref(db, `users/${me.uid}`), patch);
+    if (!caseOnly && oldLower) { await remove(ref(db, `usernames/${oldLower}`)).catch(() => {}); }
+    await updateProfile(me, { displayName: wanted }).catch(() => {});
+    closeModal("nameModal"); setMessage(`You're now ${wanted}.`);
+  } catch (error) {
+    if (claimed) { await remove(ref(db, `usernames/${lower}`)).catch(() => {}); }
+    hint.className = "hint err";
+    hint.textContent = error.message?.includes("PERMISSION") ? "Firebase rules blocked this change (see UPGRADE-NOTES.md)." : (error.message || "Couldn't change your name.");
+  } finally { $("saveName").disabled = false; }
+});
+
+/* ------------------------------------------------------------------ boot */
+$("openStore").addEventListener("click", () => window.MeldStore?.open());
+$("walletChip").addEventListener("click", () => window.MeldStore?.open("meldbux"));
+$("storeBtn").addEventListener("click", () => window.MeldStore?.open("pass"));
+$("signout").addEventListener("click", async () => {
+  $("signout").disabled = true;
+  try { await signOut(auth); location.replace("./auth.html"); }
+  catch (error) { console.error(error); setMessage("Couldn't sign out. Please try again."); $("signout").disabled = false; }
+});
+
+window.addEventListener("meld:playtime", renderPlaytime);
+setInterval(renderPlaytime, 1000);
+onCatalog(() => { render(); if ($("custModal").classList.contains("open")) renderCust(); });
+
+onAuthStateChanged(auth, user => {
+  if (!user) { location.replace("./auth.html"); return; }
+  me = user;
+  viewUid = requestedUid || user.uid;
+  isOwn = viewUid === user.uid;
+
+  $("pageTitle").textContent = isOwn ? "Your Profile" : "Player Profile";
+  $("pageSub").textContent = isOwn ? "Your Meld gaming account and community stats." : "Viewing another Meld player.";
+  $("navProfile").classList.toggle("active", isOwn);
+  [ "editName", "editBio", "addGames" ].forEach(id => { $(id).hidden = !isOwn; });
+  $("headActions").hidden = !isOwn;
+  $("friendsSub").textContent = isOwn ? "Find players and manage requests." : "Friend lists are private.";
+
+  if (stopWallet) stopWallet();
+  ensureWallet(user.uid);
+  stopWallet = watchWallet(user.uid, w => { wallet = w; renderWallet(); if ($("custModal").classList.contains("open")) renderCust(); });
+  watchFriendState(user);
+  get(ref(db, `users/${user.uid}`)).then(s => { myProfileCache = s.val(); }).catch(() => {});
+
+  if (stopLive) stopLive();
+  setMessage("Loading profile…");
+  stopLive = onValue(ref(db, `users/${viewUid}`), snapshot => {
+    if (!snapshot.exists()) { $("username").textContent = "Profile not found"; setMessage("That profile doesn't exist."); return; }
+    profile = snapshot.val();
+    if (isOwn) myProfileCache = profile;
+    setMessage("");
+    render();
+    if ($("custModal").classList.contains("open")) renderCust();
+  }, error => { console.error(error); setMessage("Couldn't load this profile. Check your connection and Firebase rules."); });
+});
+</script>
+</body>
+</html>
