@@ -36,9 +36,9 @@ window.MELD_CONFIG = {
     games:       { label: "Games",       url: "Ppage.html" },
     proxy:       { label: "Proxy",       url: "Loadingtest.html" },
     movies:      { label: "Movies",      url: "https://vuflix.co/", proxy: true },
-    roblox:      { label: "Roblox",      url: "https://angst.clawschools.org/embed.html#https://nowgg.fun/apps/a/19900/b.html", proxy: false },
+    roblox:      { label: "Roblox",      url: "https://angst.clawschools.org/embed.html#https://nowgg.fun/apps/a/19900/b.html", proxy: true },
     minecraft:   { label: "Minecraft",   url: "https://meld-code.github.io/MC/", proxy: false },
-    youtube:     { label: "YouTube",     url: "https://meld-code.github.io/YT", proxy: false },
+    youtube:     { label: "YouTube",     url: "https://meld-code.github.io/YT", proxy: true },
     ai:          { label: "AI",          url: "https://chat.morphic.sh/", proxy: true },
     anime:       { label: "Anime",       url: "ComingSoon.html" },
     home:        { label: "Home",        url: "ComingSoon.html" },
@@ -86,7 +86,7 @@ RANKS: [
 
     { id: "owner", name: "Owner", color: "#FFB547", icon: "fa-crown", kind: "special", desc: "Created and runs Meld." },
     { id: "trusted", name: "Trusted", color: "#FF647C", icon: "fa-shield-alt", kind: "special", desc: "A special rank given to reliable members of the Meld community." },
-    { id: "og", name: "OG", color: "#5CA9FF", icon: "fa-history", kind: "special", desc: "A special legacy rank reserved for the original members of Meld who joined during its early days." },
+    { id: "og", name: "OG", color: "#5CA9FF", icon: "fa-history", kind: "special", desc: "A special limited rank reserved for the original members of Meld who joined during its early days." },
     { id: "contributor", name: "Contributor", color: "#B58AFF", icon: "fa-code-branch", kind: "special", desc: "Awarded to members who help improve Meld through suggestions, bug reports, and contributions." },
     { id: "supporter", name: "Supporter", color: "#FF985C", icon: "fa-heart", kind: "special", desc: "Awarded to members who help support, promote, and grow Meld." },
 
@@ -121,6 +121,7 @@ RANKS: [
 
     // LEVEL RANKS
 
+    { id: "og", name: "OG", color: "#5CA9FF", icon: "fa-history", kind: "earned", level: 1, desc: "A special limited rank reserved for the original members of Meld who joined during its early days." },
     { id: "member", name: "Member", color: "#A0ADA8", icon: "fa-user", kind: "earned", level: 1, desc: "Automatically given when you create an account." },
     { id: "rookie", name: "Rookie", color: "#8FD14F", icon: "fa-seedling", kind: "earned", level: 5, desc: "Reach level 5." },
     { id: "explorer", name: "Explorer", color: "#5FD0FF", icon: "fa-compass", kind: "earned", level: 10, desc: "Reach level 10." },
@@ -146,8 +147,8 @@ RANKS: [
   PARTNERS: [
     { name: "CiphAnon Studios", desc: "The studio behind Meld. Games, tools and experiments built for students.",
       url: "", image: "Images/CiphAnonStudios.png", tag: "FOUNDING STUDIO" },
-    { name: "Wavey Chps", desc: "",
-      url: "", image: "", tag: "Trusted Partner" }
+    { name: "Wavey Chps", desc: "ooooo ima add this later ",
+      url: "", image: "PtnrImg/WaveyChps.png", tag: "Trusted Partner" }
   ],
 
   /* Shown in Info > Updates (newest first). */
