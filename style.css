@@ -3900,7 +3900,7 @@ PROFILE AND LEADERBOARD MOBILE
     z-index: 7600;
 
     min-width: px;
-    height: 60px;
+    height: 42px;
     padding: 0 12px;
 
     display: flex;
@@ -3988,7 +3988,7 @@ PROFILE AND LEADERBOARD MOBILE
     bottom: 88px;
     z-index: 999999;
 
-    width: min(390px, calc(100vw - 32px));
+    width: min(500px, calc(100vw - 32px));
     height: min(580px, calc(100dvh - 120px));
 
     display: flex;
