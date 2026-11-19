@@ -628,6 +628,7 @@ this is so long Oh God, I need to make more files in the future.....
     strong {
         color: var(--accent-light);
     }
+
     .creatorStudio {
     color: var(--muted);
     font-size: 9px;
@@ -967,6 +968,7 @@ this is so long Oh God, I need to make more files in the future.....
     PHYSICS WORLD AND BLOCKS
  */
     .world {
+        color: var(--accent-light);
     position: fixed;
     inset: 0;
     z-index: 100;
@@ -978,7 +980,6 @@ this is so long Oh God, I need to make more files in the future.....
     width: 148px;
     height: 148px;
     padding: 8px;
-    
     overflow: hidden;
     
     border: 1px solid #45533d;
