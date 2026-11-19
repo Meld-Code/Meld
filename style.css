@@ -2492,9 +2492,10 @@ this is so long Oh God, I need to make more files in the future.....
     .online-dot {
     width: 9px;
     height: 9px;
+    position: relative;
+    top: -2.5px;
     flex-shrink: 0;
-    border-radius: 50%;
-    background: var(--accent-light);
+    color: var(--accent-light);
     box-shadow: 0 0 10px var(--accent-light,#a3e635);
     
     }
