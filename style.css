@@ -3899,8 +3899,8 @@ PROFILE AND LEADERBOARD MOBILE
     bottom: auto;
     z-index: 7600;
 
-    min-width: 42px;
-    height: 42px;
+    min-width: px;
+    height: 60px;
     padding: 0 12px;
 
     display: flex;
