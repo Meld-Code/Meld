@@ -86,7 +86,7 @@ RANKS: [
 
     { id: "owner", name: "Owner", color: "#FFB547", icon: "fa-crown", kind: "special", desc: "Created and runs Meld." },
     { id: "trusted", name: "Trusted", color: "#FF647C", icon: "fa-shield-alt", kind: "special", desc: "A special rank given to reliable members of the Meld community." },
-    { id: "og", name: "OG", color: "#5CA9FF", icon: "fa-history", kind: "special", desc: "A special limited rank reserved for the original members of Meld who joined during its early days." },
+   // { id: "og", name: "OG", color: "#5CA9FF", icon: "fa-history", kind: "special", desc: "A special limited rank reserved for the original members of Meld who joined during its early days." },
     { id: "contributor", name: "Contributor", color: "#B58AFF", icon: "fa-code-branch", kind: "special", desc: "Awarded to members who help improve Meld through suggestions, bug reports, and contributions." },
     { id: "supporter", name: "Supporter", color: "#FF985C", icon: "fa-heart", kind: "special", desc: "Awarded to members who help support, promote, and grow Meld." },
 
