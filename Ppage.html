@@ -1494,11 +1494,13 @@ animation: random-picker-pop .5s cubic-bezier(.2, 1.6, .4, 1);
 }
 /* Picker buttons */
 .random-picker-actions {
+  position: relative;
 min-height: 48px;
 display: flex;
 justify-content: center;
 align-items: center;
 gap: 10px;
+z-index: 10;
 }
 .random-picker-button {
 min-height: 43px;
@@ -1514,6 +1516,7 @@ color: var(--text);
 cursor: pointer;
 font-weight: 800;
 transition: .18s ease;
+z-index: 10px;
 }
 .random-picker-button:hover {
 transform: translateY(-2px);
@@ -1667,10 +1670,11 @@ display: none;
 .RandomTobnyi {
   position: absolute;
   height: 800px;
-  width: 920px;
-  left:-475px;
+  width: auto;
+  left:-680px;
   top:-25px;
-  z-index: 9;
+  z-index: 4;
+  pointer-events: none;
 }
 </style>
 </head>
