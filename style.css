@@ -2555,7 +2555,6 @@ this is so long Oh God, I need to make more files in the future.....
     
     overflow: hidden;
     
-    border-radius: 50px 50px 25px 25px;
     
     background:
         linear-gradient(
@@ -2567,6 +2566,63 @@ this is so long Oh God, I need to make more files in the future.....
     transform: rotate(50deg);
     
     }
+
+    .bannerCrease1 {
+        position: absolute;
+        right: -90px;
+        width: 100px;
+        height: 20px;
+        top: 150px;
+        right: -45px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        border-radius: 100px;
+        background: linear-gradient( 146deg, #3d600000, #3d6000 );
+        transform: rotate(50deg);
+        filter: blur( 3px);
+    }
+
+    .bannerCrease2 {
+        position: absolute;
+    right: -90px; 
+    width: 200px;
+    height: 20px;
+    top: 100px;
+    right: -90px;
+    margin-bottom: 20px;
+    
+    overflow: hidden;
+    
+    border-radius: 100px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #3d600000,
+        #3d5516
+        
+    );
+    
+    transform: rotate(50deg);
+    filter: blur( 3px);
+    
+    }
+
+    .bannerCrease3 {
+        position: absolute;
+        right: -90px;
+        width: 200px;
+        height: 20px;
+        top: -20px;
+        right: 50px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        border-radius: 100px;
+        background: linear-gradient( 135deg, #3d600000, #3d5516 );
+        transform: rotate( 227deg);
+        filter: blur( 3px);
+    }
+    
     /* 
     CUSTOM CURSOR
      */
