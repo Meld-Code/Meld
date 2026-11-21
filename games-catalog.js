@@ -1,10 +1,11 @@
 
+
 /* Auto-generated snapshot of the Meld game library (from Ppage.html).
    Used by profiles + leaderboards to show favorite-game cover art.
    Re-run if you add games; unknown games still display fine without art. */
 window.MELD_GAME_CATALOG = [
  {
-  "name": "GTA 5",
+  "name": "Grand Theft Auto V",
   "image": "Images/GTA5L.png",
   "category": "Action",
   "a": "#6e3b25",
@@ -361,7 +362,7 @@ window.MELD_GAME_CATALOG = [
   "b": "#2b211b"
  },
  {
-  "name": "GTA 3",
+  "name": "Grand Theft Auto III",
   "image": "Images/GTA5.png",
   "category": "Action",
   "a": "#9c6a43",
@@ -415,6 +416,280 @@ window.MELD_GAME_CATALOG = [
   "category": "",
   "a": "#9c6a43",
   "b": "#2b211b"
- }
+ },
+ {
+   "name": "Grand Theft Auto VI",
+   "image": "Images/GTA5.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "1080° Snowboarding",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Abobo's Big Adventure",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Advance Wars By Web",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Adventure Capitalist",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Age of Empires II",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Ages of Conflict",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Amazing Alex",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Ambidextro",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Amnesia: The Dark Descent",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Angry Birds 2",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Arx Fatalis",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "AssaultCube",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Axiom Verge",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Azeroth Survivors",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Bad Monday Simulator",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Baldi's Basics Birthday Bash",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Mouse Dash",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Ballance",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Beatblock",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Bendy and the Ink Machine",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Beneath a Steel Sky",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "BERGENTRUCK 201x",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Binding of Isaac: Repentance",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Black Ops Zombies",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "BLOODMONEY!",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Boil Noodles at Night",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Bounce Tales",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Broken Sword 2.5",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Brotato Paws n' Claws",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Burnout 3: Takedown",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "C.O.W.-Boys",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Cadillacs and Dinosaurs",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Call of Duty Webports",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Call of Mini: Dino Hunter",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Card Wars",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Carrion",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Castlevania Romhacks",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+  {
+   "name": "Catan Universe",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
 ];
+
 
