@@ -125,7 +125,7 @@ window.MELD_GAME_CATALOG = [
  },
  {
   "name": "Baldi's Basics",
-  "image": "",
+  "image": "Images/baldb.png",
   "category": "Horror",
   "a": "#9c6a43",
   "b": "#2b211b"
@@ -139,7 +139,7 @@ window.MELD_GAME_CATALOG = [
  },
  {
   "name": "Call Of Battle",
-  "image": "",
+  "image": "Images/call-of-battle.png",
   "category": "Fps",
   "a": "#9c6a43",
   "b": "#2b211b"
@@ -167,7 +167,7 @@ window.MELD_GAME_CATALOG = [
  },
  {
   "name": "Crash Out Crew",
-  "image": "",
+  "image": "Images/CrashOutCrew.png",
   "category": "Car",
   "a": "#9c6a43",
   "b": "#2b211b"
@@ -223,7 +223,7 @@ window.MELD_GAME_CATALOG = [
  },
  {
   "name": "Poke Arena 2D",
-  "image": "Images/.png",
+  "image": "Images/pa.png",
   "category": "Pokemon",
   "a": "#9c6a43",
   "b": "#2b211b"
@@ -272,7 +272,7 @@ window.MELD_GAME_CATALOG = [
  },
  {
   "name": "No Merci Michel",
-  "image": "Images/.png",
+  "image": "Images/nmm.png",
   "category": "2 Player",
   "a": "#9c6a43",
   "b": "#2b211b"
@@ -328,7 +328,7 @@ window.MELD_GAME_CATALOG = [
  },
  {
   "name": "Among Us Legacy",
-  "image": "Images/AU.png",
+  "image": "Images/aul.png",
   "category": "Strategy",
   "a": "#9c6a43",
   "b": "#2b211b"
@@ -349,7 +349,7 @@ window.MELD_GAME_CATALOG = [
  },
  {
   "name": "CupHead",
-  "image": "Images/.png",
+  "image": "Images/ch.png",
   "category": "Action",
   "a": "#9c6a43",
   "b": "#2b211b"
@@ -363,14 +363,14 @@ window.MELD_GAME_CATALOG = [
  },
  {
   "name": "Grand Theft Auto III",
-  "image": "Images/GTA5.png",
+  "image": "Images/gta3.png",
   "category": "Action",
   "a": "#9c6a43",
   "b": "#2b211b"
  },
  {
   "name": "How To Fish ",
-  "image": "Images/.png",
+  "image": "Images/hof.png",
   "category": "",
   "a": "#9c6a43",
   "b": "#2b211b"
@@ -391,7 +391,7 @@ window.MELD_GAME_CATALOG = [
  },
  {
   "name": "Miside",
-  "image": "Images/.png",
+  "image": "Images/MiSide.png",
   "category": "",
   "a": "#9c6a43",
   "b": "#2b211b"
@@ -412,42 +412,42 @@ window.MELD_GAME_CATALOG = [
  },
  {
   "name": "Stardew Valley",
-  "image": "Images/.png",
+  "image": "Images/stv.png",
   "category": "",
   "a": "#9c6a43",
   "b": "#2b211b"
  },
  {
    "name": "Grand Theft Auto VI",
-   "image": "Images/GTA5.png",
+   "image": "Images/gta6.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "1080° Snowboarding",
-   "image": "Images/.png",
+   "image": "Images/1080snowboardingbox.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "Abobo's Big Adventure",
-   "image": "Images/.png",
+   "image": "Images/aba.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "Advance Wars By Web",
-   "image": "Images/.png",
+   "image": "Images/awbw.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "Adventure Capitalist",
-   "image": "Images/.png",
+   "image": "Images/adc.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
@@ -461,7 +461,7 @@ window.MELD_GAME_CATALOG = [
   },
   {
    "name": "Ages of Conflict",
-   "image": "Images/.png",
+   "image": "Images/wws.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
@@ -475,63 +475,63 @@ window.MELD_GAME_CATALOG = [
   },
   {
    "name": "Ambidextro",
-   "image": "Images/.png",
+   "image": "Images/amb.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "Amnesia: The Dark Descent",
-   "image": "Images/.png",
+   "image": "Images/ATDD.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "Angry Birds 2",
-   "image": "Images/.png",
+   "image": "Images/ab2.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "Arx Fatalis",
-   "image": "Images/.png",
+   "image": "Images/af.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "AssaultCube",
-   "image": "Images/.png",
+   "image": "Images/ac.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "Axiom Verge",
-   "image": "Images/.png",
+   "image": "Images/av.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "Azeroth Survivors",
-   "image": "Images/.png",
+   "image": "Images/azerothSurv.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "Bad Monday Simulator",
-   "image": "Images/.png",
+   "image": "Images/bms.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "Baldi's Basics Birthday Bash",
-   "image": "Images/.png",
+   "image": "Images/bbbb.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
@@ -552,7 +552,7 @@ window.MELD_GAME_CATALOG = [
   },
   {
    "name": "Beatblock",
-   "image": "Images/.png",
+   "image": "Images/bb.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
@@ -566,14 +566,14 @@ window.MELD_GAME_CATALOG = [
   },
   {
    "name": "Beneath a Steel Sky",
-   "image": "Images/.png",
+   "image": "Images/bass.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "BERGENTRUCK 201x",
-   "image": "Images/.png",
+   "image": "Images/bt201x.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
@@ -587,7 +587,7 @@ window.MELD_GAME_CATALOG = [
   },
   {
    "name": "Black Ops Zombies",
-   "image": "Images/.png",
+   "image": "Images/codboz.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
@@ -601,42 +601,42 @@ window.MELD_GAME_CATALOG = [
   },
   {
    "name": "Boil Noodles at Night",
-   "image": "Images/.png",
+   "image": "Images/bnan.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "Bounce Tales",
-   "image": "Images/.png",
+   "image": "Images/bt.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "Broken Sword 2.5",
-   "image": "Images/.png",
+   "image": "Images/bs.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "Brotato Paws n' Claws",
-   "image": "Images/.png",
+   "image": "Images/brotato.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "Burnout 3: Takedown",
-   "image": "Images/.png",
+   "image": "Images/BurnOut3TakeDown.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "C.O.W.-Boys",
-   "image": "Images/.png",
+   "image": "Images/comb.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
@@ -657,7 +657,7 @@ window.MELD_GAME_CATALOG = [
   },
   {
    "name": "Call of Mini: Dino Hunter",
-   "image": "Images/.png",
+   "image": "Images/comdh.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
@@ -671,35 +671,28 @@ window.MELD_GAME_CATALOG = [
   },
   {
    "name": "Carrion",
-   "image": "Images/.png",
+   "image": "Images/c.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "Castlevania Romhacks",
-   "image": "Images/.png",
+   "image": "Images/cv.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
   {
    "name": "Catan Universe",
-   "image": "Images/.png",
+   "image": "Images/cu.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
   },
-   {
-   "name": "Minecraft 1.8 Mobile",
-   "image": "Images/.png",
-   "category": "Open World",
-   "a": "#9c6a43",
-   "b": "#2b211b"
-  },
-   {
+  {
    "name": "Cave Story",
-   "image": "Images/.png",
+   "image": "Images/caves.png",
    "category": "Open World",
    "a": "#9c6a43",
    "b": "#2b211b"
