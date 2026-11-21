@@ -1952,7 +1952,9 @@ filter: none;
 /* Keep the play icon hover-only */
 
 .game-card:hover {
-transform: scale(1.10);
+transform: scale(1.20);
+z-index: 10;
+box-shadow: 5px #000 ;
 }
 </style>
 
@@ -1980,11 +1982,7 @@ transform: scale(1.10);
 
   </nav>
   <div class="topbar-spacer"></div>
-  <div class="topLinks">
-    <a href="./index.html"><i class="fa-solid fa-house"></i><span>Meld Home</span></a>
-    <a href="./leaderboard.html"><i class="fa-solid fa-trophy"></i><span>Leaderboard</span></a>
-    <a href="./profile.html"><i class="fa-solid fa-user"></i><span>Profile</span></a>
-  </div>
+  
 </header>
 <main>
   <section
@@ -2250,7 +2248,7 @@ transform: scale(1.10);
             title="Reload game"
             aria-label="Reload game"
           >
-            <i class="fa-solid fa-rotate-right"></i><span>Reload</span>
+            <i class="fa-solid fa-rotate-right"></i>
           </button>
 
           <button
@@ -2260,7 +2258,7 @@ transform: scale(1.10);
             title="Fullscreen player"
             aria-label="Fullscreen player"
           >
-            <i class="fa-solid fa-expand"></i><span>Fullscreen</span>
+            <i class="fa-solid fa-expand"></i>
           </button>
         </div>
 
@@ -3103,7 +3101,7 @@ alt="Meld Games"
     },
     {
       name: "Grand Theft Auto VI",
-      url: "gta6.html",
+      url: "broken",
       image: "Images/GTA5L.png",
       icon: "",
       a: "#80c30b",
