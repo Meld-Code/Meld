@@ -690,6 +690,20 @@ window.MELD_GAME_CATALOG = [
    "a": "#9c6a43",
    "b": "#2b211b"
   },
+   {
+   "name": "Minecraft 1.8 Mobile",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
+   {
+   "name": "Cave Story",
+   "image": "Images/.png",
+   "category": "Open World",
+   "a": "#9c6a43",
+   "b": "#2b211b"
+  },
 ];
 
 
