@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><style id="dld-pre-blur">img { filter: blur(60px); }</style><script nonce="RdoSo32l6/SFIWJJ6gJHog" src="https://mail-attachment.googleusercontent.com/__DLD__fed9a1a7ac839431bc758270898f28030fee4f9a619e8b89601b34027ee66c37/resources/setup.js"></script><script nonce="O/T6TdmBX+jIkDWQuxzjRQ" src="https://mail-attachment.googleusercontent.com/__DLD__fed9a1a7ac839431bc758270898f28030fee4f9a619e8b89601b34027ee66c37/resources/frontend.min.js" server="https://localhost:49193" id="__dld-frontend__" async defer></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#101210">
@@ -532,7 +532,7 @@
     filter: brightness(1.1);
    }
    
-   .cover-symbol {
+   /*.cover-symbol {
     position: relative;
     z-index: 2;
     font-size: clamp(34px, 4.4vw, 62px);
@@ -542,7 +542,7 @@
 
 
 
-   }
+   } */
    
    .game-card:hover .cover-symbol {
     transform: scale(1.1);
@@ -1677,6 +1677,285 @@ display: none;
   pointer-events: none;
 }
 </style>
+<style id="meld-games-v2">
+/* =====================================================================
+   MELD GAMES v2 — redesign + ratings.  Overrides the base styles above.
+   ===================================================================== */
+:root{--glass:rgba(22,26,22,.72);--ring:rgba(163,230,53,.55);--good:#7ddc3c;--mixed:#ffb547;--bad:#ff626e}
+body{background:radial-gradient(ellipse 80% 50% at 50% -10%,#2b3d1f 0,transparent 60%),radial-gradient(ellipse 50% 40% at 100% 30%,#1b2a3a55 0,transparent 70%),var(--bg);background-attachment:fixed}
+
+/* ---- top bar */
+.topbar{height:64px;background:rgba(13,16,13,.82);border-bottom:1px solid #ffffff12;backdrop-filter:blur(18px) saturate(1.4);gap:26px}
+.brand{font-size:19px}.brand-mark img{filter:drop-shadow(0 4px 14px #76b90066)}
+.nav-button{border-radius:10px;height:40px;align-self:center;padding:0 15px;transition:.18s}
+.nav-button:hover{background:#ffffff0d}
+.nav-button.active{background:#76b9001f;color:var(--green-light)}
+.nav-button.active::after{display:none}
+.topLinks{display:flex;align-items:center;gap:6px}
+.topLinks a{display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 13px;border:1px solid #ffffff14;border-radius:10px;background:#ffffff08;color:#cfd8cb;font-weight:650;font-size:13px;text-decoration:none;transition:.18s}
+.topLinks a:hover{border-color:var(--green);color:#fff;background:#76b9001a}
+@media(max-width:850px){.topLinks a span{display:none}.topLinks a{padding:0 11px}}
+
+/* ---- library header */
+.heading-row{align-items:flex-end;margin-bottom:22px}
+#pageTitle{margin:0 0 6px;font-size:clamp(30px,4vw,46px);letter-spacing:-1.8px;background:linear-gradient(90deg,#fff,#c9f28a 60%,#8bd13a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:4px 11px;border:1px solid #76b90055;border-radius:999px;background:#76b90014;margin-bottom:10px}
+.eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green-light);box-shadow:0 0 10px var(--green-light)}
+.header-count{padding:8px 15px;border:1px solid #ffffff14;border-radius:999px;background:#ffffff08;font-weight:700;color:#cfd8cb}
+.statStrip{display:flex;flex-wrap:wrap;gap:10px;margin:-6px 0 20px}
+.statChip{display:flex;align-items:center;gap:10px;padding:9px 14px;border:1px solid #ffffff12;border-radius:12px;background:var(--glass);font-size:12px;color:var(--muted)}
+.statChip i{color:var(--green-light);font-size:15px}.statChip b{display:block;color:var(--text);font-size:14px;line-height:1.2}
+
+/* ---- toolbar */
+.toolbar{position:sticky;top:64px;z-index:30;margin:0 -12px 18px;padding:12px;border-radius:16px;background:rgba(14,17,14,.8);border:1px solid #ffffff10;backdrop-filter:blur(14px)}
+#search{height:44px;border-radius:12px;background:#0d100d;border-color:#ffffff14}
+#search:focus{border-color:var(--green);box-shadow:0 0 0 4px #76b90022}
+.filter-button,.action-button{border-radius:11px;border-color:#ffffff14;background:#ffffff08}
+.filter-button.active{background:linear-gradient(135deg,#a3e635,#76b900);color:#10150a;border-color:transparent;font-weight:800}
+.sortWrap{display:flex;align-items:center;gap:8px;margin-left:auto;color:var(--muted);font-size:12px;font-weight:700}
+.sortWrap select{height:41px;padding:0 34px 0 13px;border:1px solid #ffffff14;border-radius:11px;background:#0d100d url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239ca69b'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E") no-repeat right 12px center;color:var(--text);font:inherit;font-weight:700;cursor:pointer;appearance:none}
+.sortWrap select:focus{outline:2px solid var(--green-light)}
+.category-panel{padding:14px;border:1px solid #ffffff10;border-radius:16px;background:var(--glass);margin-bottom:18px}
+.category-button{border-radius:999px!important}
+
+/* ---- recently played */
+.recentBlock{margin:4px 0 6px}.recentBlock[hidden]{display:none}
+.recentRow{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:thin}
+.recentItem{flex:0 0 auto;display:flex;align-items:center;gap:10px;min-width:200px;padding:8px 14px 8px 8px;border:1px solid #ffffff12;border-radius:14px;background:var(--glass);cursor:pointer;text-align:left;transition:.18s}
+.recentItem:hover{border-color:var(--ring);transform:translateY(-2px)}
+.recentItem .rc{position:relative;width:46px;height:46px;border-radius:10px;overflow:hidden;background:linear-gradient(145deg,var(--cover-a),var(--cover-b));flex:0 0 46px}
+.recentItem .rc img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.recentItem strong{display:block;font-size:13px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.recentItem small{color:var(--muted);font-size:11px}
+
+/* ---- grid + cards */
+.section-line h2{font-size:20px}
+.game-grid{grid-template-columns:repeat(auto-fill,minmax(176px,1fr))!important;gap:22px 18px}
+.game-card{border-radius:16px;border:1px solid #ffffff12;background:linear-gradient(180deg,#1d221d,#151915);box-shadow:0 6px 20px #0005;transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s,border-color .22s}
+.game-card:hover{transform:translateY(-7px) scale(1.015);border-color:var(--ring);box-shadow:0 22px 44px #000a,0 0 0 1px #a3e63533,0 0 40px #76b90022}
+.cover{aspect-ratio:3/3.7}
+.cover::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#0c0f0cf2 0%,#0c0f0c55 34%,transparent 62%);pointer-events:none;z-index:1}
+.play-overlay{position:absolute;inset:0;z-index:3;display:grid;place-items:center;opacity:0;background:#05080599;transition:opacity .2s}
+.play-overlay span{display:grid;place-items:center;width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#b8f55a,#76b900);color:#0f1608;font-size:21px;padding-left:4px;transform:scale(.7);transition:transform .25s cubic-bezier(.2,1.4,.4,1);box-shadow:0 10px 30px #76b90088}
+.game-card:hover .play-overlay,.game-card:focus-visible .play-overlay{opacity:1}
+.game-card:hover .play-overlay span{transform:scale(1)}
+.cover-label{z-index:2}
+.card-info{padding:12px 13px 13px}
+.card-title{font-size:14px;font-weight:800;margin-bottom:6px}
+.cardMetaRow{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:22px}
+.card-meta{padding:2px 9px;border-radius:999px;background:#ffffff0d;border:1px solid #ffffff10;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:62%}
+.favorite{border-radius:50%;width:34px;height:34px;background:#0b0e0bb3;backdrop-filter:blur(8px);border-color:#ffffff30;transition:.18s}
+.favorite:hover{transform:scale(1.12);background:#28351bdd}
+.favorite.active{background:#76b900;color:#10150a;border-color:#b8f55a}
+.new-badge{z-index:4}
+.random-game-card .cover{background:conic-gradient(from 210deg at 50% 50%,#1e3a10,#3b6a14,#1b2a3a,#1e3a10)}
+
+/* ---- rating chips */
+.rateChip{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:800;border:1px solid transparent;white-space:nowrap}
+.rateChip i{font-size:10px}
+.rateChip.tone-great,.rateChip.tone-good{color:var(--good);background:#7ddc3c1a;border-color:#7ddc3c44}
+.rateChip.tone-mixed{color:var(--mixed);background:#ffb5471a;border-color:#ffb54744}
+.rateChip.tone-bad{color:var(--bad);background:#ff626e1a;border-color:#ff626e44}
+.rateChip.tone-new{color:#9ca69b;background:#ffffff0a;border-color:#ffffff14}
+.rateChip.tone-none{display:none}
+
+/* ---- player page */
+.player-top{padding:14px 18px;margin-bottom:16px;border:1px solid #ffffff10;border-radius:16px;background:var(--glass);backdrop-filter:blur(12px)}
+.player-heading p{color:var(--green-light);letter-spacing:1.5px;font-weight:700;font-size:11px}
+.playerRate{display:flex;gap:8px;align-items:center}
+.miniRate{display:inline-flex;align-items:center;gap:8px;min-height:41px;padding:0 14px;border:1px solid #ffffff14;border-radius:11px;background:#ffffff08;cursor:pointer;font-weight:800;transition:.18s}
+.miniRate:hover:not(:disabled){transform:translateY(-2px)}
+.miniRate.like:hover:not(:disabled){border-color:var(--good);color:var(--good)}.miniRate.dislike:hover:not(:disabled){border-color:var(--bad);color:var(--bad)}
+.miniRate.chosen.like{background:var(--good);color:#0d1507;border-color:var(--good)}
+.miniRate.chosen.dislike{background:var(--bad);color:#1b0709;border-color:var(--bad)}
+.miniRate:disabled:not(.chosen){opacity:.5}
+.player-shell{border-radius:16px;box-shadow:0 24px 60px #000a,0 0 0 1px #ffffff10}
+.sidebar{border-radius:16px;border-color:#ffffff12;background:linear-gradient(180deg,#1b201b,#141814)}
+.sidebar-cover{border-radius:12px;box-shadow:0 14px 34px #0008}
+.ratePanel{margin-top:16px;padding:15px;border:1px solid #ffffff12;border-radius:14px;background:#0d110d}
+.rateHead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.rateHead h3{margin:0;font-size:11px;letter-spacing:1.6px;color:var(--muted)}
+.rateLabel{font-size:12px;font-weight:800}
+.rateLabel.tone-great,.rateLabel.tone-good{color:var(--good)}.rateLabel.tone-mixed{color:var(--mixed)}.rateLabel.tone-bad{color:var(--bad)}.rateLabel.tone-none,.rateLabel.tone-new{color:var(--muted)}
+.rateButtons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rateBtn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:13px 8px;border:1px solid #ffffff14;border-radius:13px;background:#ffffff08;cursor:pointer;transition:.18s}
+.rateBtn i{font-size:22px;transition:transform .2s}.rateBtn b{font-size:17px;font-variant-numeric:tabular-nums}.rateBtn small{color:var(--muted);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.rateBtn:hover:not(:disabled) i{transform:scale(1.25) rotate(-8deg)}
+.rateBtn.like:hover:not(:disabled){border-color:var(--good);background:#7ddc3c14}.rateBtn.dislike:hover:not(:disabled){border-color:var(--bad);background:#ff626e14}
+.rateBtn.like i{color:var(--good)}.rateBtn.dislike i{color:var(--bad)}
+.rateBtn.chosen.like{background:linear-gradient(145deg,#8fe84b,#4f9d16);color:#0d1507;border-color:transparent;box-shadow:0 8px 24px #7ddc3c44}
+.rateBtn.chosen.dislike{background:linear-gradient(145deg,#ff7a85,#c93440);color:#1b0709;border-color:transparent;box-shadow:0 8px 24px #ff626e44}
+.rateBtn.chosen i,.rateBtn.chosen small{color:inherit}
+.rateBtn:disabled:not(.chosen){opacity:.45;cursor:not-allowed}.rateBtn:disabled{cursor:default}
+.rateBar{display:flex;height:9px;margin-top:13px;border-radius:99px;overflow:hidden;background:#222822}
+.rateBar .up{background:linear-gradient(90deg,#4f9d16,#8fe84b);transition:width .5s}.rateBar .down{background:linear-gradient(90deg,#ff7a85,#c93440);transition:width .5s}
+.rateFoot{margin:9px 0 0!important;font-size:11.5px!important;text-align:center;color:var(--muted)}
+.rateFoot a{color:var(--green-light)}
+.related{margin-top:16px;padding-top:14px;border-top:1px solid #ffffff12}.related[hidden]{display:none}
+.related h3{margin:0 0 10px;font-size:12px}
+.relItem{display:flex;align-items:center;gap:11px;width:100%;margin-bottom:8px;padding:7px;border:1px solid #ffffff10;border-radius:12px;background:#ffffff06;cursor:pointer;text-align:left;transition:.18s}
+.relItem:hover{border-color:var(--ring);background:#76b9001a}
+.relItem .rc{position:relative;width:44px;height:44px;flex:0 0 44px;border-radius:9px;overflow:hidden;background:linear-gradient(145deg,var(--cover-a),var(--cover-b))}
+.relItem .rc img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.relItem strong{display:block;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:150px}
+.relItem .rateChip{margin-top:2px}
+
+/* ---- toast */
+#gameToast{position:fixed;left:50%;bottom:26px;z-index:3000;transform:translate(-50%,24px);opacity:0;pointer-events:none;padding:12px 20px;border:1px solid var(--green);border-radius:14px;background:#0b0f0bf2;color:#eaf7d6;font-weight:700;box-shadow:0 18px 50px #000b;transition:.28s;max-width:90vw;text-align:center}
+#gameToast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}#gameToast a{color:var(--green-light);margin-left:6px}
+#gameToast.err{border-color:var(--bad)}
+
+/* ---- featured banner polish */
+.featured-content h1{text-shadow:0 8px 30px #000a}
+.featured-button{border-radius:12px;min-height:46px;padding:0 20px}
+@media(max-width:600px){.game-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px 12px}.toolbar{position:static;margin:0 0 16px}.sortWrap{margin-left:0;width:100%}.sortWrap select{flex:1}.playerRate{width:100%}.miniRate{flex:1;justify-content:center}.player-top{flex-wrap:wrap}.card-meta{max-width:55%}}
+@media(prefers-reduced-motion:reduce){.game-card,.game-card:hover,.rateBtn i,.play-overlay span{transition:none!important;transform:none!important}}
+</style>
+<style id="meld-games-v3">
+/* ===== v3: boxy image-only cards; details appear on hover ===== */
+.game-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))!important;gap:16px!important}
+.game-card{aspect-ratio:1/1;border-radius:14px;background:#0f130f}
+.game-card .cover{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;border-radius:0}
+.game-card .cover::after{opacity:0}
+.game-card .cover-image{transition:transform .5s cubic-bezier(.2,.8,.2,1),filter .3s}
+.game-card:hover .cover-image,.game-card:focus-visible .cover-image{transform:scale(1.09);filter:brightness(.62) saturate(1.1)}
+/* everything except the picture is hidden until hover */
+.game-card:not(.random-game-card) .cover-label,
+.game-card:not(.random-game-card) .new-badge,
+.game-card .favorite{opacity:0;transition:opacity .22s,transform .22s,background .18s}
+.game-card:not(.random-game-card) .cover:has(.cover-image) .cover-symbol{opacity:0}
+.game-card:hover .cover-label,.game-card:hover .new-badge,.game-card:hover .favorite,
+.game-card:focus-visible .cover-label,.game-card:focus-visible .new-badge,.game-card:focus-visible .favorite,
+.game-card:focus-within .favorite{opacity:1}
+.game-card .favorite{top:10px;right:10px}
+.game-card:not(.random-game-card) .cover-label{display:none}
+.game-card .play-overlay{background:transparent;place-items:center;padding-bottom:34px}
+.game-card .play-overlay span{width:54px;height:54px;font-size:19px}
+/* info panel slides up over the picture on hover */
+.game-card:not(.random-game-card) .card-info{position:absolute;inset:auto 0 0 0;z-index:5;padding:46px 14px 13px;background:linear-gradient(0deg,#070a07f5 0%,#070a07d9 46%,transparent 100%);opacity:0;transform:translateY(12px);transition:opacity .25s,transform .25s;pointer-events:none}
+.game-card:not(.random-game-card):hover .card-info,
+.game-card:not(.random-game-card):focus-visible .card-info{opacity:1;transform:none}
+.game-card .card-title{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;font-size:15px;line-height:1.25;margin-bottom:8px}
+.game-card .card-meta{max-width:60%}
+/* the random card keeps its label visible (it has no picture) */
+.random-game-card .card-info{position:absolute;inset:auto 0 0 0;z-index:5;padding:40px 14px 13px;background:linear-gradient(0deg,#070a07ee,transparent)}
+.random-game-card .cover-label{display:block;position:absolute;top:14px;left:0;right:0;text-align:center}
+/* phones / tablets have no hover: always show the info strip */
+@media (hover:none){
+  .game-card:not(.random-game-card) .card-info{opacity:1;transform:none;padding-top:34px}
+  .game-card .favorite{opacity:1}
+  .game-card:not(.random-game-card) .new-badge{opacity:1}
+  .game-card .play-overlay{display:none}
+}
+@media(max-width:600px){.game-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.game-card .card-title{font-size:13px}}
+</style>
+<style id="meld-games-v4">
+/* ===== v4: game player page redesign ===== */
+.player-page{max-width:1760px;margin:0 auto;padding:18px clamp(14px,3vw,40px) 60px}
+/* header */
+.player-top{gap:14px;padding:14px 16px;border-radius:18px;background:linear-gradient(135deg,#1d251a,#12160f);border:1px solid #ffffff12}
+.back-button{width:auto;height:44px;padding:0 16px 0 14px;display:inline-flex;align-items:center;gap:9px;border-radius:12px;border:1px solid #ffffff18;background:#ffffff0a;color:var(--text);font-weight:750;font-size:13px}
+.back-button:hover{background:#76b9001f;border-color:var(--green)}
+.back-button::after{content:"Library";font-size:13px}
+.player-heading h1{font-size:clamp(22px,2.6vw,32px);letter-spacing:-.8px}
+.player-heading p{display:none}
+.playerChips{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:7px}
+.pChip{display:inline-flex;align-items:center;gap:6px;padding:3px 11px;border-radius:999px;border:1px solid #ffffff16;background:#ffffff0a;color:#cfd8cb;font-size:11px;font-weight:800;letter-spacing:.4px;text-transform:uppercase}
+.pChip.live{color:#9ae65a;border-color:#76b90055;background:#76b9001a}
+.pChip.live::before{content:"";width:7px;height:7px;border-radius:50%;background:#a3e635;box-shadow:0 0 9px #a3e635;animation:pPulse 1.8s ease-in-out infinite}
+@keyframes pPulse{50%{opacity:.35}}
+#playerFavorite{border-radius:12px;min-height:44px;padding:0 18px;font-weight:750}
+#playerFavorite[aria-pressed="true"]{background:#76b900;border-color:#b8f55a;color:#10150a}
+.miniRate{min-height:44px;border-radius:12px}
+
+/* stage: big and cinematic */
+.player-layout{grid-template-columns:minmax(0,1fr) 340px;gap:18px}
+.player-shell{border-radius:18px;border:1px solid #ffffff14;background:#000;box-shadow:0 30px 80px #000c,0 0 0 1px #00000080}
+.player-toolbar{min-height:52px;padding:8px 14px;background:linear-gradient(180deg,#1b211a,#141913);border-bottom:1px solid #ffffff0f}
+.status-dot{width:9px;height:9px;box-shadow:0 0 10px currentColor;color:var(--green)}
+#playerStatus{font-size:12px;font-weight:650;color:#aeb9aa;max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.player-toolbar .icon-button{width:auto;height:36px;padding:0 13px;gap:8px;border-radius:10px;border:1px solid #ffffff14;background:#ffffff09;font-size:12px;font-weight:750;display:inline-flex}
+.player-toolbar .icon-button:hover{border-color:var(--green);background:#76b9001f}
+.frame-wrap{height:clamp(500px,calc(100vh - 218px),1040px);min-height:420px}
+.player-actions{display:none}
+.player-note{margin-top:12px;padding:11px 16px;border-radius:12px;border:1px solid #ffffff10;background:#ffffff06;color:#9ca69b;font-size:12px}
+.player-note strong{color:#e6c35c;margin-right:6px}
+
+/* loading cover with the game's art behind it */
+.loading-cover{background:#070a07;overflow:hidden}
+.loading-cover::before{content:"";position:absolute;inset:-30px;background:var(--cover-img,none) center/cover no-repeat;filter:blur(26px) brightness(.38) saturate(1.3);transform:scale(1.1)}
+.loading-cover>*{position:relative}
+.spinner{width:46px;height:46px;border-width:4px}
+.loading-cover strong{font-size:20px;letter-spacing:-.3px}
+
+/* sidebar: tidy, sticky */
+.sidebar{position:sticky;top:78px;padding:14px;border-radius:18px;background:linear-gradient(180deg,#1a2018,#12160f);max-height:calc(100vh - 96px);overflow:auto;scrollbar-width:thin;scrollbar-color:#3a4535 transparent}
+.sidebar-cover{aspect-ratio:16/9;margin-bottom:12px;border-radius:13px}
+.sidebar h2{font-size:19px;letter-spacing:-.4px}
+.sidebar p{line-height:1.6}
+#sidebarDescription{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:12px}
+#sidebarDescription:hover{-webkit-line-clamp:unset}
+#sidebarReload,#sidebarBack,.sidebar .details{display:none}
+.ratePanel{margin-top:4px}
+
+/* tablets / phones */
+@media(max-width:1100px){
+  .player-layout{grid-template-columns:1fr}
+  .sidebar{position:static;max-height:none}
+  .frame-wrap{height:clamp(380px,68vh,760px)}
+}
+@media(max-width:600px){
+  .player-page{padding:10px 10px 40px}
+  .player-top{flex-wrap:wrap;padding:12px}
+  .back-button{order:0}
+  .player-heading{flex-basis:100%;order:3}
+  .playerRate{order:1;margin-left:auto}#playerFavorite{order:2}
+  .player-toolbar .icon-button span{display:none}.player-toolbar .icon-button{padding:0 11px}
+  .frame-wrap{height:62vh;min-height:320px}
+}
+</style>
+<style id="meld-games-v5">
+/* ===== v5: phone fixes for the player page ===== */
+html,body{overflow-x:hidden}
+@media(max-width:1100px){
+  .sidebar{display:block!important}
+  .sidebar-cover{width:100%!important;margin-bottom:12px}
+  .sidebar .ratePanel,.sidebar .related{max-width:none}
+}
+@media(max-width:700px){
+  .topbar{gap:8px;padding:0 10px}
+  .topLinks{display:none}
+  .brand{font-size:16px;gap:6px}.brand-mark img{max-width:34px;max-height:34px}
+  .nav{gap:2px}.nav-button{padding:0 10px;font-size:13px}
+  .nav-button i{display:none}
+}
+@media(max-width:600px){
+  .player-top{display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"back rate fav" "title title title";gap:10px}
+  .back-button{grid-area:back;width:44px;padding:0;justify-content:center}.back-button::after{content:none}
+  .playerRate{grid-area:rate;justify-content:flex-end;margin:0}
+  .miniRate{flex:0 0 auto;padding:0 12px}
+  #playerFavorite{grid-area:fav;padding:0 14px}
+  .player-heading{grid-area:title;flex-basis:auto}
+  .player-heading h1{font-size:24px}
+  .status-dot+#playerStatus{max-width:100%}
+}
+
+/* Keep game cover images visible all the time */
+.game-card .cover-image {
+opacity: 1;
+filter: none;
+}
+/* Optional: keep the hover zoom, but remove the darkening */
+.game-card:hover .cover-image,
+.game-card:focus-visible .cover-image {
+filter: none;
+}
+/* Keep the play icon hover-only */
+
+.game-card:hover {
+transform: scale(1.10);
+}
+</style>
+
 </head>
 <body>
 <header class="topbar">
@@ -1701,6 +1980,11 @@ display: none;
 
   </nav>
   <div class="topbar-spacer"></div>
+  <div class="topLinks">
+    <a href="./index.html"><i class="fa-solid fa-house"></i><span>Meld Home</span></a>
+    <a href="./leaderboard.html"><i class="fa-solid fa-trophy"></i><span>Leaderboard</span></a>
+    <a href="./profile.html"><i class="fa-solid fa-user"></i><span>Profile</span></a>
+  </div>
 </header>
 <main>
   <section
@@ -1820,6 +2104,13 @@ display: none;
     </div>
   </div>
 
+  <div class="statStrip" id="statStrip">
+    <div class="statChip"><i class="fa-solid fa-gamepad"></i><div><b id="statGames">0</b>Games</div></div>
+    <div class="statChip"><i class="fa-solid fa-layer-group"></i><div><b id="statCats">0</b>Categories</div></div>
+    <div class="statChip"><i class="fa-solid fa-thumbs-up"></i><div><b id="statVotes">0</b>Community votes</div></div>
+    <div class="statChip"><i class="fa-solid fa-crown"></i><div><b id="statTop">—</b>Highest rated</div></div>
+  </div>
+
   <div class="toolbar">
     <label class="search-wrap">
       <i
@@ -1853,6 +2144,17 @@ display: none;
       <i class="fa-solid fa-heart"></i>
       Favorites
     </button>
+
+    <label class="sortWrap" for="sortSelect">
+      <i class="fa-solid fa-arrow-down-wide-short"></i>
+      <select id="sortSelect" aria-label="Sort games">
+        <option value="az">A → Z</option>
+        <option value="top">Top rated</option>
+        <option value="liked">Most liked</option>
+        <option value="voted">Most rated</option>
+        <option value="new">New &amp; updated</option>
+      </select>
+    </label>
   </div>
 
   <div class="category-panel" id="categoryPanel" hidden>
@@ -1867,6 +2169,11 @@ display: none;
     </button>
 
     <div id="categoryButtons"></div>
+  </div>
+
+  <div class="recentBlock" id="recentBlock" hidden>
+    <div class="section-line"><h2><i class="fa-solid fa-clock-rotate-left" style="color:var(--green-light);margin-right:8px"></i>Continue playing</h2><span id="clearRecent" style="cursor:pointer">Clear</span></div>
+    <div class="recentRow" id="recentRow"></div>
   </div>
 
   <div class="section-line">
@@ -1899,7 +2206,13 @@ display: none;
 
     <div class="player-heading">
       <h1 id="playerTitle">Game</h1>
+      <div class="playerChips" id="playerChips"></div>
       <p>Meld Games / NOW PLAYING</p>
+    </div>
+
+    <div class="playerRate" id="playerRate">
+      <button class="miniRate like" data-rate="like" type="button" aria-label="Like this game"><i class="fa-solid fa-thumbs-up"></i><span data-count="likes">0</span></button>
+      <button class="miniRate dislike" data-rate="dislike" type="button" aria-label="Dislike this game"><i class="fa-solid fa-thumbs-down"></i><span data-count="dislikes">0</span></button>
     </div>
 
     <button
@@ -1937,7 +2250,7 @@ display: none;
             title="Reload game"
             aria-label="Reload game"
           >
-            <i class="fa-solid fa-rotate-right"></i>
+            <i class="fa-solid fa-rotate-right"></i><span>Reload</span>
           </button>
 
           <button
@@ -1947,7 +2260,7 @@ display: none;
             title="Fullscreen player"
             aria-label="Fullscreen player"
           >
-            <i class="fa-solid fa-expand"></i>
+            <i class="fa-solid fa-expand"></i><span>Fullscreen</span>
           </button>
         </div>
 
@@ -2073,6 +2386,21 @@ alt="Meld Games"
         Back to library
       </button>
 
+      <div class="ratePanel" id="ratePanel">
+        <div class="rateHead"><h3>COMMUNITY RATING</h3><span class="rateLabel tone-none" id="rateLabel">No ratings yet</span></div>
+        <div class="rateButtons">
+          <button class="rateBtn like" data-rate="like" type="button"><i class="fa-solid fa-thumbs-up"></i><b data-count="likes">0</b><small>Like</small></button>
+          <button class="rateBtn dislike" data-rate="dislike" type="button"><i class="fa-solid fa-thumbs-down"></i><b data-count="dislikes">0</b><small>Dislike</small></button>
+        </div>
+        <div class="rateBar" aria-hidden="true"><span class="up" id="rateUp" style="width:0"></span><span class="down" id="rateDown" style="width:0"></span></div>
+        <p class="rateFoot" id="rateFoot">Be the first to rate this game.</p>
+      </div>
+
+      <div class="related" id="related" hidden>
+        <h3>MORE LIKE THIS</h3>
+        <div id="relatedList"></div>
+      </div>
+
       <div class="details">
         <h3>PLAYER INFORMATION</h3>
 
@@ -2137,16 +2465,18 @@ alt="Meld Games"
   </div>
 </div>
 </main>
+<div id="gameToast" role="status" aria-live="polite"></div>
+
 <script>
   "use strict";
   
   const games = [
     {
-      name: "GTA 5",
+      name: "Grand Theft Auto V",
       url: "https://gta.deloskiyt.pl/",
       image: "Images/GTA5L.png",
-      icon: "fa-circle-play",
-      a: "#6e3b25",
+      icon: "",
+      a: "#80c30b",
       b: "#171d1a",
       category: "Action",
       description: "Experience the action-packed open world of Los Santos in GTA 5! Explore a massive city, drive incredible vehicles, complete missions, and experience an exciting criminal adventure. Switch between three unique characters and discover everything this vast open world has to offer.",
@@ -2156,8 +2486,8 @@ alt="Meld Games"
       name: "Hollow Knight",
       url: "https://play.1gdata.com/15i2c21c/index.html",
       image: "Images/HollowKnight.png",
-      icon: "fa-circle-play",
-      a: "#263c57",
+      icon: "",
+      a: "#80c30b",
       b: "#111521",
       category: "Adventure",
       description: "Explore the mysterious underground kingdom of Hallowwnest in Hollow Knight! Battle dangerous creatures, discorver hidden areas, unlock powerful abilities, and uncover the secrets of a forgotten kingdom. Embark on an atmospheric adventure filled with challenging enemies, epic bosses, and exciting exploration.",
@@ -2167,8 +2497,8 @@ alt="Meld Games"
       name: "Minecraft 26.2",
       url: "https://eaglercraft-26-2-u1-cdn.u2471966200.workers.dev/eaglercraft-26.2-u1.html?v=u1-20260930",
       image: "Images/ML.png",
-      icon: "fa-circle-play",
-      a: "#577b42",
+      icon: "",
+      a: "#80c30b",
       b: "#19291d",
       category: "Sandbox",
       description: "Explore a massive block-based world in Minecraft! Gather Resources, craft tools, build incredible structures, and survive against dangerous mobs. Create your own adventures and let your imagination run wild!",
@@ -2178,8 +2508,8 @@ alt="Meld Games"
       name: "Hacked Minecraft 1.8.8",
       url: "https://meld-code.github.io/MC/DragonX_V2_International%20(1)%20(1)%20(3).html",
       image: "Images/ML.png",
-      icon: "fa-circle-play",
-      a: "#477a65",
+      icon: "",
+      a: "#80c30b",
       b: "#14251e",
       category: "Sandbox",
       description: "Play Minecraft 1.8.8 with a twist! Explore, build, and survive in a classic version of Minecraft with access to modified gameplay features. Enjoy familiar block-building adventures with a different experience! and use cheats to give yourself an advantage against other users."
@@ -2188,8 +2518,8 @@ alt="Meld Games"
       name: "Roblox",
       url: "https://angst.clawschools.org/embed.html#https://nowgg.fun/apps/a/19900/b.html",
       image: "Images/RBL.png",
-      icon: "fa-circle-play",
-      a: "#707579",
+      icon: "",
+      a: "#80c30b",
       b: "#1a1c20",
       category: "Adventure",
       description: "Explore millions of player-created experiences in Roblox! Play exciting games, discover unique worlds, customize your avatar, and connect with friends. From adventures and simulators to obbys and competitive challenges, there's always something new to play!",
@@ -2199,8 +2529,8 @@ alt="Meld Games"
       name: "Minecraft 1.8.8",
       url: "https://meld-code.github.io/MC/",
       image: "Images/ML.png",
-      icon: "fa-circle-play",
-      a: "#77914c",
+      icon: "",
+      a: "#80c30b",
       b: "#202b19",
       category: "Sandbox",
       description: "Jump into the classic Minecraft 1.8.8 experience! Explore a blocky world, gather resources, craft items, build amazing structures, and survive against dangerous mobs. Enjoy classic gameplay, iconic combat, and endless creative possibilites!"
@@ -2209,8 +2539,8 @@ alt="Meld Games"
       name: "Rocket Soccer Derby",
       url: "https://db.duckmath.org/html/rocket_soccer_derby/",
       image: "Images/RSDL.png",
-      icon: "fa-circle-play",
-      a: "#3d7f8c",
+      icon: "",
+      a: "#80c30b",
       b: "#15242d",
       category: "Sports",
       description: "Jump into Rocket Soccer Derby, where soccer meets high-spped racing! Drive powerful cars, compete in exciting soccer matches, score incredible goals, and outply your opponents. Take control of the field and become the ultimate Rocket Soccer champion!"
@@ -2219,8 +2549,8 @@ alt="Meld Games"
       name: "Cluster Rush",
       url: "https://db.duckmath.org/html/cluster_rush/",
       image: "Images/ClusterRush.png",
-      icon: "fa-circle-play",
-      a: "#c57d36",
+      icon: "",
+      a: "#80c30b",
       b: "#37231b",
       category: "Action",
       description: "Jump into Cluster Rush, a fast-paced platforming game where you must leap between moving trucks, avoid obstacles, and stay on top of the convoy. Test your reflexes, master your timing and see how far you can make it without falling!",
@@ -2230,8 +2560,8 @@ alt="Meld Games"
       name: "Steal A Brainrot",
       url: "https://db.duckmath.org/html/steal_a_brainrot_2/",
       image: "Images/SABB.png",
-      icon: "fa-circle-play",
-      a: "#a64d77",
+      icon: "",
+      a: "#80c30b",
       b: "#321a34",
       category: "Simulator",
       description: "Jump into Steal a Brainrot, a chaotic multiplayer game where you collect hilarious Brainrot characters, build your collection, and earn money. Buy rare characters, steal from other player, protect your base, and grow yur brainrot empire!"
@@ -2240,8 +2570,8 @@ alt="Meld Games"
       name: "Fan-Made Amoung Us ",
       url: "https://db.duckmath.org/html/among_us/",
       image: "Images/AU.png",
-      icon: "fa-circle-play",
-      a: "#b54d4d",
+      icon: "",
+      a: "#80c30b",
       b: "#351b26",
       category: "Strategy",
       description: "Experience a fan-made version of Amoung Us! Work together with crewmates, complete tasks, and uncover the imposters hiding amoung you. Use teamwork, deceptio, and clever strategies to survive and win!",
@@ -2251,8 +2581,8 @@ alt="Meld Games"
       name: "Ping Pong Go",
       url: "https://tataedu23.github.io/g66/class-924/",
       image: "Images/PPG.png",
-      icon: "fa-circle-play",
-      a: "#3c7f59",
+      icon: "",
+      a: "#80c30b",
       b: "#152c22",
       category: "Sports",
       description: "Grab your paddle and jump onto exciting table tennis matches in Ping Pong Go! Challenge opponents, master your timing, return powerful shots, and compete to become a ping pong champion. Test your reflexes and see how many matches your can win!",
@@ -2262,8 +2592,8 @@ alt="Meld Games"
       name: "Retro Bowl College",
       url: "https://db.duckmath.org/html/retro_bowl_college/",
       image: "Images/RetroBowlCollege.png",
-      icon: "fa-circle-play",
-      a: "#a87845",
+      icon: "",
+      a: "#80c30b",
       b: "#33231a",
       category: "Sports",
       description: "Take charge of your own college football team in Retro Bowl College! Recruit talented players, manage your roster, call the plays, and lead your team through an exciting college football season. Build a championship-winning program and fight your way to the top!"
@@ -2272,8 +2602,8 @@ alt="Meld Games"
       name: "Minecraft 1.5.2",
       url: "https://catfoolyou.github.io/Eagler-Online/",
       image: "Images/ML.png",
-      icon: "fa-circle-play",
-      a: "#6c8751",
+      icon: "",
+      a: "#80c30b",
       b: "#202c1a",
       category: "Sandbox",
       description: "Experience classic Minecraft 1.5.2! Explore a blocky world, gather resources, craft items, build amazing structures, and survive against dangerous mobs. Enjoy the nostalgic gameplay of one of Minecraft's classic versions!"
@@ -2282,8 +2612,8 @@ alt="Meld Games"
       name: "Minecraft Classic",
       url: "https://db.duckmath.org/html/minecraft_classic/",
       image: "Images/ML.png",
-      icon: "fa-circle-play",
-      a: "#6e9856",
+      icon: "",
+      a: "#80c30b",
       b: "#23331d",
       category: "Sandbox",
       description: "Go back to where it all began with Minecraft Classic! Build whatever you can imagine using simple blocks, explore your creativity, and create unique structures in this nostalgic version of Minecraft."
@@ -2292,8 +2622,8 @@ alt="Meld Games"
       name: "Skate 3",
       url: "https://skate.aaddpp.lol/",
       image: "Images/Skate3.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Sports",
       description: "Hit the streets in Skate 3 and become a skateboarding legend! Explore an open world, perform incredible tricks, land massive combos, and challenge yourself to master every obstacle. Grab your board and show off your skills!",
@@ -2303,8 +2633,8 @@ alt="Meld Games"
       name: "60 Seconds",
       url: "https://meld-code.github.io/files/60Seconds.html",
       image: "Images/60Seconds.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Strategy",
       description: "Survive a nuclear apocalypse in 60 Seconds! Make quick decisions, collect supplies, and prepare your family for life inside a fallout shelter. Manage your resources, face unexpected challenges, and see how long you can survive!"
@@ -2313,8 +2643,8 @@ alt="Meld Games"
       name: "8 Ball Pool",
       url: "https://meld-code.github.io/files/8BallPool.html",
       image: "Images/8BallPool.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Sports",
       description: "Rack up the balls and get ready for 8 Ball Pool! Aim carefully, plan your shots, and use your skills to sink every ball. Challenge opponents, master the table, and prove you're a pool champion!"
@@ -2323,8 +2653,8 @@ alt="Meld Games"
       name: "Baldi's Basics",
       url: "https://meld-code.github.io/files/BaldiBasics.html",
       image: "",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Horror",
       description: "Enter a strange schoolhouse in Baldi's Basics! Collect notebooks, solve math problems, and explore the hallways while avoiding Baldi and other unusual characters. Stay alert, find your way around, and try to escape the school!"
@@ -2333,8 +2663,8 @@ alt="Meld Games"
       name: "Counter Strike 1.6",
       url: "https://meld-code.github.io/files/CS16.html",
       image: "",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Action",
       description: "Experience the classic Counter-Strike 1.6! Compete in intense team-based matches, test your reflexes, and work with your teammates to complete objectives."
@@ -2343,8 +2673,8 @@ alt="Meld Games"
       name: "Call Of Battle",
       url: "https://meld-code.github.io/files/CallOfBattle.html",
       image: "",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Fps",
       description: "A fun shooter game."
@@ -2353,8 +2683,8 @@ alt="Meld Games"
       name: "Celeste",
       url: "https://meld-code.github.io/files/Celeste.html",
       image: "Images/Celeste.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Platformer",
       description: "Climb the mysterious Celeste Mountain! Jump across dangerous obstacles, master difficult levels, and help Madeline reach the summit."
@@ -2363,8 +2693,8 @@ alt="Meld Games"
       name: "Cheese Chompers",
       url: "https://meld-code.github.io/files/CheeseChompers.html",
       image: "Images/CheeseChompers.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "RPG",
       description: "A cheese game."
@@ -2373,8 +2703,8 @@ alt="Meld Games"
       name: "Chicken War",
       url: "https://meld-code.github.io/files/ChickenWar.html",
       image: "",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Action",
       description: "Get ready for an exciting chicken-themed battle! Take on opponents, overcome challenges, and see if you can come out on top."
@@ -2383,8 +2713,8 @@ alt="Meld Games"
       name: "Crash Out Crew",
       url: "https://meld-code.github.io/files/CrashOutCrew.html",
       image: "",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Car",
       description: "A car game."
@@ -2393,8 +2723,8 @@ alt="Meld Games"
       name: "Death Penalty World Cup",
       url: "https://meld-code.github.io/files/DeathPenaltyWorldCup.html",
       image: "",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Sports",
       description: "Step onto the football pitch! Take your shots, compete against different teams, and test your penalty-taking skills."
@@ -2403,8 +2733,8 @@ alt="Meld Games"
       name: "Death Run 3D",
       url: "https://meld-code.github.io/files/DeathRun.html",
       image: "Images/DeathRun.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Arcade",
       description: "Put your reflexes to the ultimate test! Race through dangerous tunnels, dodge incoming obstacles, and see how far you can survive."
@@ -2413,8 +2743,8 @@ alt="Meld Games"
       name: "PokeBonk",
       url: "https://pokebonk.com",
       image: "Images/PokeBonk.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Pokemon",
       description: "A fun Pokemon game.",
@@ -2424,52 +2754,51 @@ alt="Meld Games"
       name: "BunnyHop",
       url: "https://bunnyhop.lol",
       image: "Images/BunnyHop.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Skill",
       description: "Test your movement skills! Master your timing, maintain your momentum, and navigate challenging courses.",
-      isNew: true
+
     },
     {
       name: "Clutcher",
       url: "https://www.clutcher.io",
       image: "Images/Clutcher.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Skill",
       description: "Put your skills to the test! Take on challenging situations, sharpen your reflexes, and see if you can pull off the perfect play.",
-      isNew: true
+
     },
     {
       name: "Messenger",
       url: "https://messenger.abeto.com",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Open World",
       description: "Embark on an exciting adventure! Explore mysterious worlds, overcome challenging obstacles, and discover secrets in a colorful pixel-art adventure.",
-      isNew: true
+
     },
     {
       name: "DeadShot",
       url: "https://deadshot.io/",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Fps",
       description: "Test your accuracy in an action-packed gaming experience! Take on challenging levels, improve your precision, and see how well you can perform.",
-      isNew: true
     },
     {
       name: "Poke Arena 2D",
       url: "https://pokearena2d.com",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Pokemon",
       description: "Enter a world of creature battles! Discover unique Pokémon-inspired adventures, challenge opponents, and test your abilities in exciting arena battles.",
@@ -2479,41 +2808,41 @@ alt="Meld Games"
       name: "MarioKart 8",
       url: "https://mariokart8.online",
       image: "Images/MarioKart8.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Racing",
       description: "Race through exciting tracks! Choose your favorite characters, compete against rivals, collect power-ups, and use your racing skills to cross the finish line first.",
-      isNew: true
+
     },
     {
       name: "Kour",
       url: "https://kour.io",
       image: "Images/Kour.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Fps",
       description: "Jump into a fast-paced multiplayer game! Compete against players from around the world, explore different maps, and challenge yourself in exciting online matches.",
-      isNew: true
+ 
     },
     {
       name: "Tide Water",
       url: "https://dgreenheck.github.io/tidewater/",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Fishing",
       description: "A fun fishing game.",
-      isNew: true
+
     },
     {
       name: "Doodle Shooter",
       url: "https://doodleshooter.vercel.app/",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Fps",
       description: "Enjoy a fun doodle-style arcade experience! Take on challenging levels, overcome obstacles, and see how far you can progress.",
@@ -2523,41 +2852,41 @@ alt="Meld Games"
       name: "Car Game",
       url: "https://whiteout.plgb.chatgpt.site/",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Driving",
       description: "Get behind the wheel! Explore different environments, control your vehicle, and take on challenges as you put your driving skills to the test.",
-      isNew: true
+
     },
     {
       name: "Jelly Baby",
       url: "https://jelly.scottsun.io/",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Simulator",
       description: "A fun simulator game.",
-      isNew: true
+
     },
     {
       name: "No Merci Michel",
       url: "https://no.merci-michel.com/",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "2 Player",
       description: "A fun arm-wrestling game.",
-      isNew: true
+
     },
     {
       name: "Tree Stump",
       url: "https://screen.toys/firewood/",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Tree Stump",
       description: "Tree Stump.",
@@ -2567,85 +2896,85 @@ alt="Meld Games"
       name: "Tiny Skys",
       url: "https://tinyskies.vercel.app/",
       image: "Images/TinySkys.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Flying",
       description: "A flying game.",
-      isNew: true
+
     },
     {
       name: "Star Wars Model",
       url: "https://mameson.com/experiment/glsl/fluffed_2/fluffed_2.html",
       image: "Images/StarWarsModel.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Model",
       description: "A Star Wars model.",
-      isNew: true
+
     },
     {
       name: "Kit Racing",
       url: "https://mrdoob.github.io/Starter-Kit-Racing/",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Driving",
       description: "A fun car game.",
-      isNew: true
+
     },
     {
       name: "Chibi Game",
       url: "https://worawork.vercel.app/",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Open World",
       description: "A fun open-world game.",
-      isNew: true
+
     },
     {
       name: "Jelly Tetris",
       url: "https://holtsetio.com/lab/tetris/",
       image: "Images/JellyTetris.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Mind",
       description: "Put your puzzle-solving skills to the test! Arrange colorful jelly-shaped pieces, complete rows, and aim for the highest score.",
-      isNew: true
+
     },
     {
       name: "Horizon Drive",
       url: "https://www.shopify.com/ca/editions/summer2025/drive",
       image: "Images/HorizonDrive.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Driving",
       description: "Hit the road! Enjoy an exciting driving experience, explore beautiful environments, and put your driving skills to the test.",
-      isNew: true
+
     },
     {
       name: "Among Us Legacy",
       url: "https://wasm.rip/files/amongus/legacy/",
       image: "Images/AU.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Strategy",
       description: "Join your crewmates aboard a spaceship and work together to complete tasks while trying to uncover the imposters hiding among you. Use teamwork, deception, and clever strategies to survive, expose the imposters, and win the game!",
-      isNew: true
+
     },
     {
       name: "Among Us",
       url: "https://wasm.rip/files/amongus/latest/",
       image: "Images/AU.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Strategy",
       description: "Join your crewmates aboard a spaceship and work together to complete tasks while trying to uncover the imposters hiding among you. Use teamwork, deception, and clever strategies to survive, expose the imposters, and win the game!",
@@ -2655,19 +2984,19 @@ alt="Meld Games"
       name: "Cluster Truck",
       url: "https://wasm.rip/files/ClusterTruck/clustertruck.html",
       image: "Images/ClusterRush.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Action",
       description: "Jump into Cluster Rush, a fast-paced platforming game where you must leap between moving trucks, avoid obstacles, and stay on top of the convoy. Test your reflexes, master your timing and see how far you can make it without falling!",
-      isNew: true
+
     },
     {
       name: "CupHead",
       url: "https://wasm.rip/files/cuphead/index.html",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Action",
       description: "",
@@ -2677,19 +3006,19 @@ alt="Meld Games"
       name: "Granny 3",
       url: "https://wasm.rip/files/granny/granny3.html",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Horror",
       description: "",
-      isNew: true
+
     },
     {
-      name: "GTA 3",
+      name: "Grand Theft Auto III",
       url: "https://wasm.rip/files/gta3/index.html",
       image: "Images/GTA5.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "Action",
       description: "CupHead is a classic run-and-gun action game inspired by 1930s cartoons. Play as CupHead or Mugman as you explore strange worlds, battle challenging bosses, and collect powerful abilities. with hand-drawn animation, jazz music, and intense gameplay, every level is a unique adventure!",
@@ -2699,8 +3028,8 @@ alt="Meld Games"
       name: "How To Fish ",
       url: "https://wasm.rip/files/HowToFish/HowToFish.html",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "",
       description: "Get ready for a fishing adventure like no other! Explore mysterious islands, catch all kinds of fish, complete quests, and discover new areas. Earn rewards, collect rare catches, and see how far your fishing adventure can take you!",
@@ -2710,52 +3039,52 @@ alt="Meld Games"
       name: "Inscryption",
       url: "https://wasm.rip/files/inscryption/index.html",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "",
       description: "",
-      isNew: true
+
     },
     {
       name: "Lethal",
       url: "https://wasm.rip/files/lethal/index.html",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "",
       description: "",
-      isNew: true
+
     },
     {
       name: "Miside",
       url: "https://wasm.rip/files/miside/miside.html",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "",
       description: "",
-      isNew: true
+
     },
     {
       name: "OneShot",
       url: "https://wasm.rip/files/oneshot-wme/index.html",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "",
       description: "",
-      isNew: true
+
     },
     {
       name: "Peak",
       url: "https://wasm.rip/files/peak/PEAK.html",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "",
       description: "",
@@ -2765,13 +3094,442 @@ alt="Meld Games"
       name: "Stardew Valley",
       url: "https://wasm.rip/files/stardewvalley/index.html",
       image: "Images/.png",
-      icon: "fa-circle-play",
-      a: "#9c6a43",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+
+    },
+    {
+      name: "Grand Theft Auto VI",
+      url: "gta6.html",
+      image: "Images/GTA5L.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isTopRated: true
+    },
+    {
+      name: "1080° Snowboarding",
+      url: "https://www.lemon-web.net/applications/lemon-web-games#1080snowboarding",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
       b: "#2b211b",
       category: "",
       description: "",
       isNew: true
     },
+    {
+      name: "Abobo's Big Adventure",
+      url: "https://www.kongregate.com/en/games/pestoforce/abobos-big-adventure",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Advance Wars By Web",
+      url: "https://awbw.amarriner.com/",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Adventure Capitalist",
+      url: "https://www.lemon-web.net/applications/lemon-web-games#adventurecapitalist",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Age of Empires II",
+      url: "https://dos.zone/age-of-empires2/",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Ages of Conflict",
+      url: "https://wasm.rip/files/aoc/index.html",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Amazing Alex",
+      url: "https://nomadic-ua.itch.io/amazing-alex",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Ambidextro",
+      url: "https://ambidextro.surge.sh/",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Amnesia: The Dark Descent",
+      url: "https://agentcube.github.io/amnesia-web-wasm",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Angry Birds 2",
+      url: "https://naotomori1.github.io/AngryBirds2Port/",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Arx Fatalis",
+      url: "https://wasm.continuation-labs.com/arxdemo/",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "AssaultCube",
+      url: "https://crishoux.com/assaultcube-web/",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Axiom Verge",
+      url: "https://agentcube.github.io/axiomverge-wasm",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Azeroth Survivors",
+      url: "https://wow.aethus.pl/",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Bad Monday Simulator",
+      url: "https://lumpytouch.itch.io/bad-monday-simulator",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Baldi's Basics Birthday Bash",
+      url: "https://wasm.rip/files/birthdaybash/index.html",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Mouse Dash",
+      url: "https://mousedash.net",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Ballance",
+      url: "https://ballance.fayaz.workers.dev/",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Beatblock",
+      url: "https://wasm.rip/files/beatblock/index.html",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Bendy and the Ink Machine",
+      url: "https://wasm.rip/files/BATIM/index.html",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Beneath a Steel Sky",
+      url: "https://scummweb.tsilva.eu/#game-beneath-a-steel-sky",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "BERGENTRUCK 201x",
+      url: "https://raw.githack.com/freebuisness/html/main/455-fix2.html",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Binding of Isaac: Repentance",
+      url: "https://tboi.online/",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Black Ops Zombies",
+      url: "https://vel.gg/bsz",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "BLOODMONEY!",
+      url: "https://raw.githack.com/freebuisness/html/main/454-fix2.html",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Boil Noodles at Night",
+      url: "https://wasm.rip/files/boilnoodles/index.html",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Bounce Tales",
+      url: "https://prasannaone.github.io/BounceTales/",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Broken Sword 2.5",
+      url: "https://scummweb.tsilva.eu/#game-broken-sword-2-5-the-return-of-the-templars",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Brotato Paws n' Claws",
+      url: "https://wasm.rip/files/bpac/index.html",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Burnout 3: Takedown",
+      url: "https://burnout3.gamingretro.online/",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "C.O.W.-Boys",
+      url: "https://games4me.alwaysdata.net/moomesa_web/",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Cadillacs and Dinosaurs",
+      url: "https://games4me.alwaysdata.net/cadillacs_web/",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Call of Duty Webports",
+      url: "https://cod-webports.pages.dev/",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Call of Mini: Dino Hunter",
+      url: "https://comdh.krig.games/",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Card Wars",
+      url: "https://savavlad.com/cardwars/",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Carrion",
+      url: "https://agentcube.github.io/carrion-wasm",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Castlevania Romhacks",
+      url: "https://kbhgames.com/game/castlevania-the-holy-relics",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },
+    {
+      name: "Catan Universe",
+      url: "https://catanuniverse.com/en/game/",
+      image: "Images/.png",
+      icon: "",
+      a: "#80c30b",
+      b: "#2b211b",
+      category: "",
+      description: "",
+      isNew: true
+    },  
   ];
   
   const featuredSlides = [
@@ -2786,7 +3544,7 @@ alt="Meld Games"
       description: "Explore a massive block-based world in Minecraft! Gather Resources, craft tools, build incredible structures, and survive against dangerous mobs. Create your own adventures and let your imagination run wild!"
     },
     {
-      name: "GTA 5",
+      name: "Grand Theft Auto VI",
       video: "GTA5.mp4",
       description: "Experience the action-packed open world of Los Santos in GTA 5! Explore a massive city, drive incredible vehicles, complete missions, and experience an exciting criminal adventure. Switch between three unique characters and discover everything this vast open world has to offer."
     },
@@ -3032,7 +3790,13 @@ alt="Meld Games"
     coverLabel.textContent = game.category || "";
   
     cover.append(symbol, coverLabel);
-  
+
+    const playOverlay = document.createElement("div");
+    playOverlay.className = "play-overlay";
+    playOverlay.setAttribute("aria-hidden", "true");
+    playOverlay.innerHTML = "<span><i class=\"fa-solid fa-play\"></i></span>";
+    cover.appendChild(playOverlay);
+
     const favorite = document.createElement("button");
     favorite.type = "button";
     favorite.className =
@@ -3064,7 +3828,15 @@ alt="Meld Games"
     meta.className = "card-meta";
     meta.textContent = game.category || "Game";
   
-    info.append(title, meta);
+    const chip = document.createElement("span");
+    chip._game = game;
+    paintChip(chip, game);
+
+    const metaRow = document.createElement("div");
+    metaRow.className = "cardMetaRow";
+    metaRow.append(meta, chip);
+
+    info.append(title, metaRow);
     card.append(cover, favorite, info);
   
     card.addEventListener("click", () => openGame(game));
@@ -3129,6 +3901,213 @@ alt="Meld Games"
     return card;
   }
   
+  /* ===================== v2: ratings, sorting, recents ===================== */
+
+  const NO_STATS = { likes: 0, dislikes: 0, total: 0, percent: 0, myVote: 0, label: "No ratings yet", tone: "none", score: 0 };
+  const ratingStats = game => (window.MeldRatings ? window.MeldRatings.stats(game.name) : NO_STATS);
+  const sortSelect = $("sortSelect");
+  const RECENT_KEY = "meldRecentGames";
+
+  function paintChip(chip, game) {
+    const s = ratingStats(game);
+    chip.className = `rateChip tone-${s.tone}`;
+    chip.title = `${s.label} · ${s.likes} like${s.likes === 1 ? "" : "s"}, ${s.dislikes} dislike${s.dislikes === 1 ? "" : "s"}`;
+    chip.innerHTML = s.total >= 3
+      ? `<i class="fa-solid fa-thumbs-up"></i>${s.percent}%`
+      : s.total
+        ? `<i class="fa-solid fa-thumbs-up"></i>${s.likes}`
+        : "";
+  }
+
+  function sortGames(list) {
+    const alpha = (a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: "base" });
+    const mode = sortSelect ? sortSelect.value : "az";
+    if (mode === "top") return list.sort((a, b) => (ratingStats(b).score - ratingStats(a).score) || alpha(a, b));
+    if (mode === "liked") return list.sort((a, b) => (ratingStats(b).likes - ratingStats(a).likes) || alpha(a, b));
+    if (mode === "voted") return list.sort((a, b) => (ratingStats(b).total - ratingStats(a).total) || alpha(a, b));
+    if (mode === "new") {
+      const weight = g => (g.isNew ? 3 : g.isUpdated ? 2 : g.isTopRated ? 1 : 0);
+      return list.sort((a, b) => (weight(b) - weight(a)) || alpha(a, b));
+    }
+    return list.sort(alpha);
+  }
+
+  function paintStats() {
+    let votes = 0, best = null, bestScore = -1;
+    games.forEach(game => {
+      const s = ratingStats(game);
+      votes += s.total;
+      if (s.total >= 3 && s.score > bestScore) { best = game; bestScore = s.score; }
+    });
+    $("statGames").textContent = games.length;
+    $("statCats").textContent = getCategories().length;
+    $("statVotes").textContent = votes.toLocaleString();
+    $("statTop").textContent = best ? best.name : "—";
+  }
+
+  /* recently played */
+  function readRecent() {
+    try { const list = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]"); return Array.isArray(list) ? list.filter(n => typeof n === "string") : []; }
+    catch (_) { return []; }
+  }
+  function pushRecent(game) {
+    try { localStorage.setItem(RECENT_KEY, JSON.stringify([game.name, ...readRecent().filter(n => n !== game.name)].slice(0, 8))); } catch (_) { /* ignore */ }
+  }
+  function miniCover(game) {
+    const box = document.createElement("div");
+    box.className = "rc";
+    box.style.setProperty("--cover-a", game.a || "#444");
+    box.style.setProperty("--cover-b", game.b || "#171b17");
+    const image = createCoverImage(game, "");
+    if (image) box.appendChild(image);
+    return box;
+  }
+  function renderRecent() {
+    const block = $("recentBlock"), row = $("recentRow");
+    const list = readRecent().map(name => games.find(g => g.name === name)).filter(Boolean);
+    const show = list.length && !favoritesOnly && selectedCategory === "All" && !search.value.trim();
+    block.hidden = !show;
+    row.replaceChildren();
+    if (!show) return;
+    list.forEach(game => {
+      const item = document.createElement("button");
+      item.type = "button";
+      item.className = "recentItem";
+      const text = document.createElement("div");
+      const name = document.createElement("strong"); name.textContent = game.name;
+      const cat = document.createElement("small"); cat.textContent = game.category || "Game";
+      text.append(name, cat);
+      item.append(miniCover(game), text);
+      item.addEventListener("click", () => openGame(game));
+      row.appendChild(item);
+    });
+  }
+  $("clearRecent").addEventListener("click", () => { try { localStorage.removeItem(RECENT_KEY); } catch (_) { /* ignore */ } renderRecent(); });
+
+  /* player header chips: live / category / rating */
+  function renderPlayerChips(game) {
+    const box = $("playerChips");
+    box.replaceChildren();
+    const live = document.createElement("span"); live.className = "pChip live"; live.textContent = "Now playing";
+    box.appendChild(live);
+    if (game.category) { const cat = document.createElement("span"); cat.className = "pChip"; cat.textContent = game.category; box.appendChild(cat); }
+    const chip = document.createElement("span"); chip._game = game; paintChip(chip, game); box.appendChild(chip);
+    loadingCover.style.setProperty("--cover-img", game.image ? `url("${game.image}")` : "none");
+  }
+
+  /* toast */
+  let toastTimer = null;
+  function showToast(message, isError, signIn) {
+    const toast = $("gameToast");
+    toast.textContent = message;
+    if (signIn) {
+      const link = document.createElement("a");
+      link.href = "./auth.html"; link.textContent = "Sign in →";
+      toast.appendChild(link);
+    }
+    toast.classList.toggle("err", Boolean(isError));
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 3600);
+  }
+
+  /* like / dislike on the player page */
+  function paintRatingUI() {
+    if (!selectedGame) return;
+    const s = ratingStats(selectedGame);
+    const signedIn = Boolean(window.MeldRatings && window.MeldRatings.signedIn());
+
+    document.querySelectorAll('[data-count="likes"]').forEach(e => { e.textContent = s.likes.toLocaleString(); });
+    document.querySelectorAll('[data-count="dislikes"]').forEach(e => { e.textContent = s.dislikes.toLocaleString(); });
+
+    document.querySelectorAll("[data-rate]").forEach(button => {
+      const isLike = button.dataset.rate === "like";
+      const chosen = s.myVote === (isLike ? 1 : -1);
+      button.classList.toggle("chosen", chosen);
+      button.disabled = s.myVote !== 0;
+      button.setAttribute("aria-pressed", String(chosen));
+    });
+
+    const label = $("rateLabel");
+    label.textContent = s.label;
+    label.className = `rateLabel tone-${s.tone}`;
+
+    $("rateUp").style.width = s.total ? `${(s.likes / s.total) * 100}%` : "0";
+    $("rateDown").style.width = s.total ? `${(s.dislikes / s.total) * 100}%` : "0";
+
+    const foot = $("rateFoot");
+    foot.replaceChildren();
+    if (s.myVote) {
+      foot.textContent = `You ${s.myVote === 1 ? "liked" : "disliked"} this game · saved, can't be changed. ${s.percent}% positive from ${s.total} rating${s.total === 1 ? "" : "s"}.`;
+    } else if (!signedIn) {
+      foot.append(document.createTextNode(s.total ? `${s.percent}% positive from ${s.total} rating${s.total === 1 ? "" : "s"}. ` : "Be the first to rate this game. "));
+      const link = document.createElement("a"); link.href = "./auth.html"; link.textContent = "Sign in to vote";
+      foot.appendChild(link);
+    } else {
+      foot.textContent = s.total
+        ? `${s.percent}% positive from ${s.total} rating${s.total === 1 ? "" : "s"}. You can vote once per game.`
+        : "Be the first to rate this game — one vote per game.";
+    }
+  }
+
+  async function castVote(value) {
+    if (!selectedGame) return;
+    if (!window.MeldRatings) { showToast("Ratings are still loading — try again in a second."); return; }
+    if (!window.MeldRatings.signedIn()) { showToast("You need an account to rate games.", true, true); return; }
+    if (window.MeldRatings.stats(selectedGame.name).myVote) { showToast("You already rated this game."); return; }
+    const buttons = document.querySelectorAll("[data-rate]");
+    buttons.forEach(b => { b.disabled = true; });
+    try {
+      await window.MeldRatings.vote(selectedGame.name, value);
+      showToast(value === 1 ? "👍 Thanks! You liked this game." : "👎 Thanks for the feedback.");
+    } catch (error) {
+      showToast(error.message || "Couldn't save your vote.", true);
+    }
+    paintRatingUI();
+  }
+  document.querySelectorAll("[data-rate]").forEach(button => {
+    button.addEventListener("click", () => castVote(button.dataset.rate === "like" ? 1 : -1));
+  });
+
+  /* more like this */
+  function renderRelated(game) {
+    const list = $("relatedList");
+    list.replaceChildren();
+    const same = games.filter(g => g !== game && g.category && g.category === game.category);
+    const pool = (same.length >= 2 ? same : games.filter(g => g !== game))
+      .map(g => ({ g, r: Math.random() }))
+      .sort((a, b) => a.r - b.r)
+      .slice(0, 4)
+      .map(x => x.g);
+    $("related").hidden = !pool.length;
+    pool.forEach(other => {
+      const item = document.createElement("button");
+      item.type = "button";
+      item.className = "relItem";
+      const text = document.createElement("div");
+      const name = document.createElement("strong"); name.textContent = other.name;
+      const chip = document.createElement("span"); chip._game = other; paintChip(chip, other);
+      text.append(name, chip);
+      item.append(miniCover(other), text);
+      item.addEventListener("click", () => openGame(other));
+      list.appendChild(item);
+    });
+  }
+
+  /* live updates when anyone's votes change */
+  let ratingsTimer = null;
+  window.addEventListener("meld:ratings", () => {
+    document.querySelectorAll(".rateChip").forEach(chip => { if (chip._game) paintChip(chip, chip._game); });
+    paintStats();
+    paintRatingUI();
+    const ratingSort = sortSelect && ["top", "liked", "voted"].includes(sortSelect.value);
+    if (ratingSort && !libraryPage.classList.contains("hidden")) {
+      clearTimeout(ratingsTimer);
+      ratingsTimer = setTimeout(renderGames, 500);
+    }
+  });
+  if (sortSelect) sortSelect.addEventListener("change", renderGames);
+
   function renderGames() {
     const term = search.value.trim().toLowerCase();
   
@@ -3155,6 +4134,8 @@ alt="Meld Games"
     $("resultCount").textContent =
       `${visible.length} game${visible.length === 1 ? "" : "s"}`;
     $("headerCount").textContent = `${games.length} games`;
+    paintStats();
+    renderRecent();
   
     $("gridTitle").textContent = favoritesOnly
       ? "Your favorites"
@@ -3188,15 +4169,7 @@ alt="Meld Games"
       grid.appendChild(makeRandomGameCard());
     }
   
-    visible
-      .slice()
-      .sort((a, b) =>
-        a.name.localeCompare(b.name, undefined, {
-          numeric: true,
-          sensitivity: "base"
-        })
-      )
-      .forEach(game => grid.appendChild(makeCard(game)));
+    sortGames(visible.slice()).forEach(game => grid.appendChild(makeCard(game)));
   }
   
   /* Horizontal slot-machine reel */
@@ -3565,6 +4538,10 @@ audio.close().catch(() => {});
       `${game.category || "Game"} • This game is displayed inside the Game Hub player.`;
   
     updateSidebarCover(game);
+    pushRecent(game);
+    renderPlayerChips(game);
+    paintRatingUI();
+    renderRelated(game);
     document.title = `${game.name} - Game Hub`;
     updatePlayerFavorite();
     loadGame();
@@ -3601,7 +4578,7 @@ audio.close().catch(() => {});
   
     clearTimeout(loadTimer);
     loadingCover.classList.add("hidden");
-    setStatus("Game page responded — gameplay not verified", "waiting");
+    setStatus("Loaded — if the screen stays blank, press Reload", "waiting");
   });
   
   function updatePlayerFavorite() {
@@ -3966,6 +4943,7 @@ document.exitFullscreen().catch(() => {});
   </script>
   
 <script type="module" src="./tracker.js"></script>
+<script type="module" src="./game-ratings.js"></script>
 <script type="module" src="./favorites-sync.js"></script>
 </body>
       </html>
